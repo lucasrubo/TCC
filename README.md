@@ -24,6 +24,11 @@ Ex.: `git commit -a -m "build(pyhton): adicionou autologon pelo facebook"`
 # Rebase na hora de dar um Pull Request
 Recomendo nao mexermos no mesmo arquivo ao mesmo tempo!
 
+Caso precise juntar alguns commits em um só:
+`git rebase -i HEAD~2`
+
+### Caso precise juntar muitos commits em um só:
+
 Remodela seu branch para conseguir puxar mudancas sem problema:
 `git rebase main`
 
