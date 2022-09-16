@@ -3,9 +3,9 @@
   <header class="header_section">
     <div class="container-fluid">
       <nav class="navbar navbar-expand-lg custom_nav-container ">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="/">
           <span>
-            Heustonn
+            Heustonn teste
           </span>
         </a>
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
@@ -13,24 +13,23 @@
           aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
             <ul class="navbar-nav  ">
-              <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+              <li class="nav-item <% if(variant == 'index'){ %><%= "active" %><% } %>">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item <% if(variant == 'sobre'){ %><%= "active" %><% } %>">
+                <a class="nav-link"  href="/sobre"> About</a>
+              </li>
+              <li class="nav-item <% if(variant == 'servico'){ %><%= "active" %><% } %>">
+                <a class="nav-link" href="/servicos"> Services</a>
+              </li>
+              <li class="nav-item <% if(variant == 'contato'){ %><%= "active" %><% } %>">
+                <a class="nav-link" href="/contato">Contact us</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html"> About </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="service.html"> Services </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
+                <a href="#" class="nav-link" data-reveal-id="loginModel" data-animation="fade">Login</a>
               </li>
             </ul>
           </div>
