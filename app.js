@@ -20,8 +20,12 @@ app.get('/contato', (req, res) => {
     res.render('contato');
 });
 // servico page
-app.get('/servico', (req, res) => {
+app.get('/servicos', (req, res) => {
     res.render('servicos');
+});
+// conta page
+app.get('/conta', (req, res) => {
+    res.render('conta');
 });
 
 app.listen(port,() => {

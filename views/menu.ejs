@@ -5,7 +5,7 @@
       <nav class="navbar navbar-expand-lg custom_nav-container ">
         <a class="navbar-brand" href="/">
           <span>
-            Heustonn teste
+            <img class="logo-png" src="images/patinha.png">
           </span>
         </a>
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
@@ -22,14 +22,14 @@
               <li class="nav-item <% if(variant == 'sobre'){ %><%= "active" %><% } %>">
                 <a class="nav-link"  href="/sobre"> About</a>
               </li>
-              <li class="nav-item <% if(variant == 'servico'){ %><%= "active" %><% } %>">
+              <li class="nav-item <% if(variant == 'servicos'){ %><%= "active" %><% } %>">
                 <a class="nav-link" href="/servicos"> Services</a>
               </li>
               <li class="nav-item <% if(variant == 'contato'){ %><%= "active" %><% } %>">
                 <a class="nav-link" href="/contato">Contact us</a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link" data-reveal-id="loginModel" data-animation="fade">Login</a>
+                <a href="#" id="login" class="nav-link" data-reveal-id="loginModel" data-animation="fade">Login</a>
               </li>
             </ul>
           </div>

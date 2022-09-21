@@ -3,7 +3,20 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
-
+#loginModel{
+  background: white !important;
+}
+.full-tela{
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.center-login{
+  margin-top:100px
+}
 .layout_padding {
   padding: 75px 0;
 }
@@ -83,7 +96,9 @@ body {
   background-color: #464646;
   margin: 0;
 }
-
+.hero_area{
+  margin-top:55px;
+}
 /*header section*/
 .sub_page .hero_area {
   height: auto;
@@ -96,6 +111,10 @@ body {
 .header_section {
   background-color: #000000;
   font-family: "Poppins", sans-serif;
+  position: fixed;
+  width: 100%;
+  z-index: 101;
+  top: 0;
 }
 
 .header_section .container-fluid {

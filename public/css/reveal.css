@@ -27,14 +27,12 @@
 	
 	.reveal-modal {
 		max-height: 100%; /*altura da modal*/
+		max-width: 500px;
 		overflow: auto; /*habilita o overflow no corpo da modal*/
 		visibility: hidden;
 		top: 100px; 
-		left: 50%;
-		/*margin-left: -300px;*/
-		width: 520px;
 		background: #eee url(modal-gloss.png) no-repeat -200px -80px;
-		position: absolute;
+		position: sticky;
 		z-index: 101;
 		padding: 30px 40px 34px;
 		-moz-border-radius: 5px;
