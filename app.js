@@ -7,7 +7,7 @@ app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// index page
+// index pages
 app.get('/', (req, res) => {
     res.render('index');
 });
