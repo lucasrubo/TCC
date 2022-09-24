@@ -55,7 +55,7 @@
  Create Modal BG
 ----------------------------*/
 			if(modalBG.length == 0) {
-				modalBG = $('<div class="reveal-modal-bg" />').insertAfter(modal);
+				modalBG = $('<a href="" id="reveal-modal-bg" class="reveal-modal-bg" />').insertAfter(modal);
 			}		    
      
 /*---------------------------

@@ -1,5 +1,5 @@
 <%- include('header'); %>
-<%- include('menu', {variant:'contato'}); %>
+<%- include('menu', {variant:'cadastro-usuario'}); %>
 
   <!-- contact section -->
 
@@ -12,26 +12,15 @@
     <div class="container layout_padding2-top">
       <div class="row">
         <div class="col-md-6 mx-auto">
-          <form action="">
+          <form action="/cadastrar-usuario-post" method="post">
             <div>
-              <input type="text" placeholder="NAME">
+              <input name="name" id="name" type="text" placeholder="NAME">
             </div>
             <div>
-              <input type="email" placeholder="EMAIL">
+              <input name="email" id="email" type="email" placeholder="EMAIL">
             </div>
             <div>
-              <input type="text" placeholder="PHONE NUMBER">
-            </div>
-            <div>
-              <select name="" id="">
-                <option value="" disabled selected>TYPE OF SERVICE</option>
-                <option value="">Service 1</option>
-                <option value="">Service 2</option>
-                <option value="">Service 3</option>
-              </select>
-            </div>
-            <div>
-              <input type="text" class="message-box" placeholder="MESSAGE">
+              <input name="senha" id="senha" type="password" placeholder="PASSWORD">
             </div>
             <div class="d-flex justify-content-center ">
               <button>

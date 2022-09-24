@@ -135,7 +135,7 @@
     </p>
   </section>
   <!-- footer section -->
-  <div class="full-tela">
+  <div id="full-tela" class="full-tela no-pointer">
     <center class="center-login">
       <div id="loginModel" class="reveal-modal contact_section">        
         <div class="custom_heading-container">
@@ -146,7 +146,7 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6 mx-auto">
-              <form action="/conta" method="post">
+              <form id="login" action="/conta" method="post">
                 <div>
                   <input type="email" name="login_email" id="login_email" placeholder="EMAIL">
                 </div>
@@ -162,7 +162,7 @@
             </div>
           </div>
         </div>
-        <a class="close-reveal-modal">&#215;</a>
+        <a id="login-close" class="close-reveal-modal">&#215;</a>
       </div>
     </center>
   </div>

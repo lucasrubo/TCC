@@ -14,6 +14,9 @@ body {
   top: 0;
   left: 0;
 }
+.no-pointer{  
+  pointer-events: none;
+}
 .center-login{
   margin-top:100px
 }

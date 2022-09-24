@@ -30,13 +30,13 @@ Caso precise juntar alguns commits em um só:
 ### Caso precise juntar muitos commits em um só:
 
 Remodela seu branch para conseguir puxar mudancas sem problema:
-`git rebase origin main`
+`git rebase main`
 
 reseta para o branch para igualar a branch principal, deixando todos seus commits intactos:
 `git reset --soft main`
 
 Puxa os commits da main:
-`git pull origin main`
+`git pull main`
 
 Restaura seus commits depois de um reset --soft:
 `git restore --staged .`
@@ -80,6 +80,11 @@ Sequelize é uma biblioteca Javascript que facilita o gerenciamento de um banco 
 
 Instalar o drive do banco de dados
 ### npm install --save mysql2
+
+
+### npm install --save body-parser
+
+### npm install bcrypt
 
 Depois de instalar o MySql e o workbench rodar o database:
 `CREATE DATABASE tcc character set utf8mb4 collate utf8mb4_unicode_ci;`
