@@ -30,13 +30,13 @@ Caso precise juntar alguns commits em um só:
 ### Caso precise juntar muitos commits em um só:
 
 Remodela seu branch para conseguir puxar mudancas sem problema:
-`git rebase main`
+`git rebase origin main`
 
 reseta para o branch para igualar a branch principal, deixando todos seus commits intactos:
 `git reset --soft main`
 
 Puxa os commits da main:
-`git pull main`
+`git pull origin main`
 
 Restaura seus commits depois de um reset --soft:
 `git restore --staged .`
