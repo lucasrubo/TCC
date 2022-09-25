@@ -5,9 +5,9 @@
       <nav class="navbar navbar-expand-lg custom_nav-container ">
         <a class="navbar-brand" href="/">
           <span>
-            <img class="logo-png" src="images/patinha.png">
+            <img class="logo-png" src="../images/patinha.png">
           </span>
-        </a>
+        </a>      
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
           data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
           aria-label="Toggle navigation">
@@ -16,27 +16,36 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
             <ul class="navbar-nav  ">
-              <li class="nav-item <% if(variant == 'index'){ %><%= "active" %><% } %>">
-                <a class="nav-link" href="/">Início</a>
+              <li id="inicio-menu" class="nav-item dropdown">
+                <a class="nav-link link-direto <% if(variant == 'index'){ %><%= "active" %><% } %>" <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=/" %><% } %>>Início</a>                
+                  <div class="dropdown-content">
+                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=/#quem-somos" %><% } %>> Sobre</a>
+                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=/#servicos" %><% } %>> Serviços</a>
+                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>> Contato</a>
+                  </div>
               </li>
-              <li class="nav-item <% if(variant == 'sobre'){ %><%= "active" %><% } %>">
-                <a class="nav-link"  href="/sobre"> Sobre</a>
-              </li>
-              <li class="nav-item <% if(variant == 'servicos'){ %><%= "active" %><% } %>">
-                <a class="nav-link" href="/servicos"> Serviços</a>
-              </li>
-              <li class="nav-item <% if(variant == 'cadastro-usuario'){ %><%= "active" %><% } %>">
-                <a class="nav-link" href="/cadastro-usuario">cadastro usuario</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" id="login" class="nav-link" data-reveal-id="loginModel" data-animation="fade">Login</a>
+              <li id="sistemas" class="nav-item dropdown">
+                <a class="nav-link link-direto <% if(variant == 'sistema'){ %><%= "active" %><% } %>">Sistemas</a>              
+                <div class="dropdown-content">
+                  <a href="/sistema/cadastro-usuario" class="link-direto" >Cadastro de Úsuario</a>
+                </div>
               </li>
             </ul>
           </div>
         </div>
-        <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
-          <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
-        </form>
+          
+        <div class="dropdown dropdown-user">
+          <a class="navbar-user">
+            <span>
+              <img src="../images/usuario-branco.png" alt="" class="user-logo" />
+            </span>
+          </a>                       
+          <div class="dropdown-content" style="right:0;margin-top: 4px;">
+            <a href="" class="link-direto">Perfil</a>
+            <a href="" class="link-direto">Configurações</a>            
+            <a href="#" id="login" class="nav-link" data-reveal-id="loginModel" data-animation="fade">Login</a>
+          </div>
+        </div>
       </nav>
     </div>
   </header>

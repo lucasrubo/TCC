@@ -1,7 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const User = require('./models/User');
+const db = require('./models/db');
+
+const path = require('path')
+
+const { eAdmin } = require('./middlewares/auth');
+const { response } = require('express');
+
+const app = express();
+const port = 8080;
 
 const generatePassword = async (password) => {
     return await new Promise((res, rej) => {
@@ -12,30 +24,50 @@ const generatePassword = async (password) => {
       });
     });
 };
-async function passCheck(event) {
-    var fromDB = await pool.query('SELECT password from User WHERE email  = ? Limit 1', event.emailID);
-    // --------------------------------------------------------------------------^
-    // Added limit 1 to make sure the only one record will be returned.
-    if (fromDB.length > 0 && await bcrypt.compare(event.password, fromDB[0].password)) {
-      //Here i am comparing
-      console.log('valid');
-    } else {
-      console.log('invalid');
-    }
-  }
 
-const app = express();
-const port = 8080;
+//testando 
+function verifyJWT(req, res, next){
+    const token = req.headers['authorization'];
+    const index = blacklist.findIndex(item=> item === token);
+    if(index !== -1) return res.status(401).end();
+    jwt.verify(token,"D62ST92Y7A6V7K5C6W9ZU6W8KS3",(err,decoded) => {
+        if(err) return res.status(401).end();
+
+        req.uderId = decoded.userId;
+        next();
+    })
+}
+//testando
 
 app.use(express.json());
 
 app.use(express.static('./public'));
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', [  path.join(__dirname, './views'),
+                    path.join(__dirname, './views/sistema/')]);
 
 app.use(bodyParser.urlencoded({ extended: false }))
 //parse application/json
 app.use(bodyParser.json())
+
+app.get('/sistema', eAdmin, async (req, res) => {
+    await User.findAll({
+        attributes: ['id', 'name', 'email'],
+        order: [['id', "DESC"]]
+    })
+    .then((users) => {
+        return res.json({
+            erro: false,
+            users,
+            id_usuario_logado: req.userId
+        });
+    }).catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro: Nenhum usuário encontrado!"
+        });
+    });    
+});
 
 // index pages
 app.get('/', (req, res) => {
@@ -46,7 +78,7 @@ app.get('/sobre', (req, res) => {
     res.render('sobre');
 });
 // contato page
-app.get('/cadastro-usuario', (req, res) => {
+app.get('/sistema/cadastro-usuario', (req, res) => {
     res.render('cadastro-usuario');
 });
 // servico page
@@ -58,7 +90,7 @@ app.get('/conta', (req, res) => {
     res.render('conta');
 });
 
-app.post("/cadastrar-usuario-post", async function(req, res){
+app.post("/cadastrar-usuario-post", async (req, res) => {    
     const senha_criptografada = await generatePassword(req.body.senha)
     User.create({
         name: req.body.name,
@@ -69,10 +101,50 @@ app.post("/cadastrar-usuario-post", async function(req, res){
         res.redirect('cadastro-usuario');
     }).catch(function(erro){
         console.log("Erro: Usuário Não Cadastrado! " + erro)
-        res.redirect('cadastro-usuario');
-    })
+        res.redirect('sistema/cadastro-usuario');
+    }) 
 });
 
+app.post('/login', async (req, res) => {
+    const user = await User.findOne({
+        attributes: ['id', 'name', 'email', 'password'],
+        where: {
+            email: req.body.login_email
+        }
+    });
+
+    if(user === null){
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro: Usuário ou a senha incorreta! Nenhum usuário com este e-mail"
+        });
+    }
+    
+    if(!(await bcrypt.compare(req.body.login_senha, user.password))){
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro: Usuário ou a senha incorreta! Senha incorreta!"
+        });
+    }
+
+    var token = jwt.sign({id: user.id}, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", {
+        //expiresIn: 600 //10 min
+        //expiresIn: 60 //1 min
+        expiresIn: '7d' // 7 dia
+    });
+    res.set({'Authorization': 'Bearer '+token});
+    res.render('index');
+    return res.json({
+        erro: false,
+        mensagem: "Login realizado com sucesso!",
+        token
+    });
+});
+const blacklist = [];
+app.post('/logout', (req, res) => {
+    blacklist.push(req.headers['authorization']);
+    res.end();
+});
 app.listen(port,() => {
     console.log(`Servidor rodando na porta ${port}`);
 });

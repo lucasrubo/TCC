@@ -1,6 +1,17 @@
 @media (max-width: 1120px) {}
 
 @media (max-width: 992px) {
+    
+    .dropdown-user{
+        position: absolute !important;
+        right: -8px;
+        top: 14px;
+    }
+
+    .navbar-toggler{
+        margin-right: 25px !important;
+    }
+
     .custom_nav-container .nav_search-btn {
         display: none;
     }
