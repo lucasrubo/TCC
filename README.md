@@ -89,5 +89,7 @@ Instalar o drive do banco de dados
 
 ### npm install path
 
+### npm install jsonwebtoken
+
 Depois de instalar o MySql e o workbench rodar o database:
 `CREATE DATABASE tcc character set utf8mb4 collate utf8mb4_unicode_ci;`
