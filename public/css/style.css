@@ -3,6 +3,21 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.botao-sair{
+  border: 0;
+  background: #f9f9f9;
+  padding: 5px 0px;
+  width: 100%;
+  text-align: left;
+}
+.dropdown-user:hover .usuario {
+  color: #565656 !important;
+}
+span.usuario {
+  font-size: 19px;
+  color: white;
+  cursor:default;
+}
 img.logo-png {
   max-height: 30px;
   max-width: 30px;

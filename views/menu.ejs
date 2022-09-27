@@ -24,17 +24,20 @@
                     <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>> Contato</a>
                   </div>
               </li>
+              <% if(user_name){ %>
               <li id="sistemas" class="nav-item dropdown">
                 <a class="nav-link link-direto <% if(variant == 'sistema'){ %><%= "active" %><% } %>">Sistemas</a>              
                 <div class="dropdown-content">
                   <a href="/sistema/cadastro-usuario" class="link-direto" >Cadastro de Úsuario</a>
                 </div>
               </li>
+              <% }  %>
             </ul>
           </div>
         </div>
           
         <div class="dropdown dropdown-user">
+          <span class="usuario"><%= user_name %></span>
           <a class="navbar-user">
             <span>
               <img src="../images/usuario-branco.png" alt="" class="user-logo" />
@@ -44,6 +47,9 @@
             <a href="" class="link-direto">Perfil</a>
             <a href="" class="link-direto">Configurações</a>            
             <a href="#" id="login" class="nav-link" data-reveal-id="loginModel" data-animation="fade">Login</a>
+            <form method="post" action="../logout">
+              <button type="submit" class="link-direto botao-sair">Sair</button>
+            </form>                      
           </div>
         </div>
       </nav>

@@ -2,6 +2,9 @@
 
 @media (max-width: 992px) {
     
+    span.usuario {
+        display: none;
+    }
     .dropdown-user{
         position: absolute !important;
         right: -8px;

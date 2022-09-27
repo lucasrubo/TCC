@@ -81,10 +81,13 @@ Sequelize é uma biblioteca Javascript que facilita o gerenciamento de um banco 
 Instalar o drive do banco de dados
 ### npm install --save mysql2
 
-
 ### npm install --save body-parser
 
 ### npm install bcrypt
+
+### npm install cookie-parser
+
+### npm install path
 
 Depois de instalar o MySql e o workbench rodar o database:
 `CREATE DATABASE tcc character set utf8mb4 collate utf8mb4_unicode_ci;`
