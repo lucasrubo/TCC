@@ -12,19 +12,30 @@
     <div class="container layout_padding2-top">
       <div class="row">
         <div class="col-md-6 mx-auto">
-          <form action="/cadastrar-usuario-post" method="post">
+          <form action="/sistema/cadastrar-usuario-post" method="post">
             <div>
-              <input name="name" id="name" type="text" placeholder="NAME">
+              <input name="name" id="name" type="text" placeholder="NOME">
             </div>
             <div>
-              <input name="email" id="email" type="email" placeholder="EMAIL">
+              <input name="username" id="username" type="text" placeholder="USERNAME" required>
             </div>
             <div>
-              <input name="senha" id="senha" type="password" placeholder="PASSWORD">
+              <input name="email" id="email" type="email" placeholder="EMAIL" required>
+            </div>
+            <div>
+              <select name="type" id="type" required>
+                <option value="" disabled selected>Tipo de Usuário</option>
+                <option value="admin">admin</option>
+                <option value="normal">normal</option>
+                <option value="sistema">sistema</option>
+              </select>
+            </div>
+            <div>
+              <input name="senha" id="senha" type="password" placeholder="PASSWORD" required>
             </div>
             <div class="d-flex justify-content-center ">
               <button>
-                SEND
+                Cadastrar
               </button>
             </div>
           </form>

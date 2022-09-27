@@ -8,7 +8,7 @@ module.exports = {
             const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
             // console.log(decode);
             const user = await User.findOne({
-                attributes: ['name', 'email'],
+                attributes: ['username','name', 'email','type'],
                 where: {
                     id: decode.id
                 }

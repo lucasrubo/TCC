@@ -8,9 +8,18 @@ const User = db.define('users', {
         allowNull: false,
         primaryKey: true
     },
-    name: {
+    type:{
         type: Sequelize.STRING,
         allowNull: false,
+    },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
+    username: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
     },
     email: {
         type: Sequelize.STRING,
@@ -26,6 +35,6 @@ const User = db.define('users', {
 //Criar a tabela
 //User.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// User.sync({ alter: true })
+//User.sync({ alter: true })
 
 module.exports = User;
