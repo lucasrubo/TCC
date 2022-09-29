@@ -1,11 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
+const { promisify } = require('util');
+var fs = require('fs');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('./models/User');
+const Image = require('./models/Images');
 const db = require('./models/db');
 
 const path = require('path')
@@ -13,6 +16,7 @@ const path = require('path')
 const { logado } = require('./middlewares/auth');
 const func = require('./models/functions');
 const { getUser } = require('./middlewares/getUser');
+const uploadUser  = require('./middlewares/uploadImage');
 
 const app = express();
 const port = 8080;
@@ -51,6 +55,50 @@ app.get('/usuario/perfil',getUser, async (req, res) => {
     }else{
         // console.log('foi');
         res.redirect('/')
+    }
+});
+app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) => {   
+    if (req.file) {
+        //console.log(req.file);
+        const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+        
+        const check_id = await Image.findOne({
+            attributes: ['id','image'],
+            where: {
+                user_id: decode.id
+            }
+        });
+        const old_image = check_id.image;
+        await Image.upsert({
+            id: check_id.id,
+            image: req.file.filename,
+            user_id: decode.id
+        })
+        .then(() => {
+            fs.unlink('public/upload/'+old_image, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }                  
+                //file removed
+                });
+            return res.json({
+                erro: false,
+                mensagem: "Update realizado com sucesso!"
+            });
+        }).catch(() => {
+            fs.unlink('public/upload/'+req.file.filename, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }                  
+                //file removed
+                });
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro: Update não realizado com sucesso!"
+            });
+        });
     }
 });
 app.post('/login', async (req, res) => {
