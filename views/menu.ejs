@@ -36,16 +36,16 @@
               </li>
               <% }else{  %>
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" href="#inicio">Início</a>   
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=/" %><% } %>>Início</a> 
                 </li> 
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" href="#quem-somos"> Sobre</a> 
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=/#quem-somos" %><% } %>> Sobre</a>
                 </li>
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" href="#servicos"> Serviços</a> 
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=/#servicos" %><% } %>> Serviços</a>
                 </li>
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" href="#contato"> Contato</a>
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>> Contato</a>
                 </li>
                 <% } %>
             </ul>
@@ -56,7 +56,11 @@
           <span class="usuario"><%= userValues.username %></span>
           <a class="navbar-user">
             <span>
-              <img src="../images/usuario-branco.png" alt="" class="user-logo" />
+              <% if(userValues.imagem){ %>
+              <img class="user-logo" src="../upload/<%= userValues.imagem %>">
+              <% }else{ %>      
+              <img src="../images/usuario-branco.png" alt="" class="user-logo" />  
+              <% } %>            
             </span>
           </a>                       
           <div class="dropdown-content" style="right:0;margin-top: 4px;">

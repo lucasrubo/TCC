@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const User = require('../models/User');
+const Image = require('../models/Images');
 
 module.exports = {
     logado: async function (req, res, next){
@@ -21,6 +22,16 @@ module.exports = {
                 });
                 req.userId = decode.id;
                 req.userValues = user.dataValues;
+                        
+                const getImg = await Image.findOne({
+                    attributes: ['id','image'],
+                    where: {
+                        user_id: decode.id
+                    }
+                });
+                if(getImg){
+                    req.userValues['imagem'] = getImg.image;
+                }
                 if(user.dataValues.type != "normal"){
                     return next();
                 }else{

@@ -11,7 +11,16 @@ body {
   text-align: left;
 }
 .dropdown-user:hover .usuario {
-  color: #565656 !important;
+  color: #000000 !important;
+}
+.avatar-perfil{
+  width: 100%;
+  text-align: center;
+  background: lightgray;
+}
+.avatar-perfil img{
+  max-width: 225px;
+  max-height: 225px;
 }
 span.usuario {
   font-size: 19px;
@@ -23,11 +32,12 @@ img.logo-png {
   max-width: 30px;
 }
 nav .active {
-  color: #565656 !important;
+  color: #000000 !important;
 }
 .user-logo{
-  max-width: 25px;
-  max-height: 25px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
 }
 .dropdown.dropdown-user {
   padding: 5px;
@@ -40,7 +50,7 @@ nav .active {
   display: inline-block;
 }
 nav a:hover{
-  color:#565656 !important;
+  color:#000000 !important;
 }
 
 .dropdown-content {
@@ -145,7 +155,7 @@ nav a:hover{
   height: 7px;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  background-color: #0066ff;
+  background-color: #ff9047;
   border-radius: 15px;
 }
 
@@ -177,6 +187,7 @@ nav a:hover{
 }
 .hero_area{
   margin-top:55px;
+  background-color: #f2f2f2;
 }
 /*header section*/
 .sub_page .hero_area {
@@ -188,7 +199,7 @@ nav a:hover{
 }
 
 .header_section {
-  background-color: #ff9047;
+  background-color: #0066ff;
   font-family: "Poppins", sans-serif;
   position: fixed;
   width: 100%;
@@ -303,7 +314,7 @@ a:focus {
 }
 
 .slider_section .detail-box h1 span {
-  color: #0066ff;
+  color: #ff9047;
 }
 
 .slider_section .slider_nav-box {
@@ -432,29 +443,18 @@ a:focus {
   background-color: #565656;
 }
 
-.service_section::before {
-  content: "";
-  width: 200px;
-  height: 175px;
-  position: absolute;
-  bottom: 95px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-  background-size: cover;
-  background-image: url(../images/worker.png);
-}
+
 
 .work_section {
-  background-color: #565656;
+  background-color: #f1f1f1;
 }
 
 .work_section .custom_heading-container h3 {
-  color: #ffffff;
+  color: #000000;
 }
 
 .work_section .custom_heading-container h3::before {
-  background-color: #ffffff;
+  background-color: #ff9047;
 }
 
 .work_section .work_container {

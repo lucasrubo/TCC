@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const { promisify } = require('util');
-var fs = require('fs');
+const fs = require('fs');
+const Jimp = require('jimp');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -68,37 +69,53 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
                 user_id: decode.id
             }
         });
-        const old_image = check_id.image;
+        if(!check_id){
+            var last_id = await Image.findAll({
+                attributes: ['id'],
+                order: [
+                    ['id', 'DESC'],
+                ]
+            });
+        }
+        const image_jimp = await Jimp.read('public/upload/'+req.file.filename);
+        // crop function having crop co-ordinates
+        // along with height and width
+        // image_jimp.crop(10, 10, 225, 225) .write('public/upload/'+req.file.filename);
+        var image_id = 0;
+        var old_image = "";
+        if(check_id){
+            image_id = check_id.id;
+            old_image = check_id.image;
+        }else{
+            image_id = parseInt(last_id.id + 1);
+        }
         await Image.upsert({
-            id: check_id.id,
+            id: image_id,
             image: req.file.filename,
             user_id: decode.id
         })
         .then(() => {
-            fs.unlink('public/upload/'+old_image, (err) => {
-                if (err) {
-                    console.error(err)
-                    return
-                }                  
-                //file removed
+            console.log(old_image+' Arquivo enviado')
+            if(old_image != ""){
+                fs.unlink('public/upload/'+old_image, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }                  
+                    //file removed
                 });
-            return res.json({
-                erro: false,
-                mensagem: "Update realizado com sucesso!"
-            });
+            }
         }).catch(() => {
+            console.log('Arquivo não enviado')
             fs.unlink('public/upload/'+req.file.filename, (err) => {
                 if (err) {
                     console.error(err)
                     return
                 }                  
                 //file removed
-                });
-            return res.status(400).json({
-                erro: true,
-                mensagem: "Erro: Update não realizado com sucesso!"
             });
         });
+        res.redirect('/usuario/perfil');
     }
 });
 app.post('/login', async (req, res) => {
