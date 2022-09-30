@@ -3,6 +3,12 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.func{
+  width:100%;
+}
+.func p {
+  max-width: 185px;
+}
 .botao-sair{
   border: 0;
   background: #f9f9f9;

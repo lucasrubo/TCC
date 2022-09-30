@@ -77,7 +77,7 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
                 ]
             });
         }
-        const image_jimp = await Jimp.read('public/upload/'+req.file.filename);
+        // const image_jimp = await Jimp.read('public/upload/'+req.file.filename);
         // crop function having crop co-ordinates
         // along with height and width
         // image_jimp.crop(10, 10, 225, 225) .write('public/upload/'+req.file.filename);
