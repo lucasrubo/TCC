@@ -1,0 +1,87 @@
+
+ <div id="full-tela" class="full-tela invisible">
+    <!-- Start login -->
+    <center id="centerLogin" class="center-model none">
+      <div id="loginModel" class="reveal-modal contact_section">        
+        <div class="custom_heading-container">
+          <h3 class=" ">
+            Login do Sistema
+          </h3>
+        </div>
+        <div class="container">
+          <div class="row">
+            <form id="login" action="/login" method="post">
+              <div class="col-md-8 mx-auto">
+                <div>
+                    <label><b>Username</b></label>
+                    <input type="text" name="login_username" id="login_username" placeholder="USERNAME">
+                </div>
+                <div>
+                    <label><b>Password</b></label>
+                    <input type="password" name="login_senha" id="login_senha" placeholder="SENHA">
+                </div>
+              </div>
+              <input type="submit" class="enviar" value="Enviar">
+            </form>
+          </div>
+        </div>
+        <a id="model-close" class="close-reveal-modal">&#215;</a>
+      </div>
+    </center>
+    <!-- end login -->
+    
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+    <div class="w3-center"><br>
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+        <img src="../upload/<%= userValues.imagem %>" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
+    </div>
+
+      <form class="w3-container" action="">
+        <div class="w3-section">
+          <label><b>Username</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="usrname" required>
+          <label><b>Password</b></label>
+          <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
+          <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Login</button>
+          <input class="w3-check w3-margin-top" type="checkbox" checked="checked"> Remember me
+        </div>
+      </form>
+
+      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+        <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+        <span class="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
+      </div>
+
+    </div>
+  </div>
+    <!-- Start usuario -->   
+    <center id="centeUser" class="center-model none">
+      <div id="userModel" class="w3-modal contact_section">        
+        <div class="custom_heading-container">
+          <h3 class=" ">
+            teste
+          </h3>
+        </div>
+        <div class="container">
+          <div class="row">
+            <form id="" action="" method="post">
+                <div class="col-md-8 mx-auto">
+                    <div>
+                        <label><b>Username</b></label>
+                        <input type="text" name="login_username" id="login_username" placeholder="USERNAME">
+                    </div>
+                    <div>
+                        <label><b>Password</b></label>
+                        <input type="password" name="login_senha" id="login_senha" placeholder="SENHA">
+                    </div>
+                </div>
+                <input type="submit" class="enviar" value="Enviar">
+            </form>
+          </div>
+        </div>
+        <a id="model-close" class="close-reveal-modal">&#215;</a>
+      </div>
+    </center>
+</div>
+<!-- end usuario -->
