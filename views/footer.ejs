@@ -126,42 +126,14 @@
       </div>
     </section>
     <!-- end info_section -->
-  <div id="full-tela" class="full-tela invisible">
-    <center class="center-login">
-      <div id="loginModel" class="reveal-modal contact_section">        
-        <div class="custom_heading-container">
-          <h3 class=" ">
-            Login do Sistema
-          </h3>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 mx-auto">
-              <form id="login" action="/login" method="post">
-                <div>
-                  <input type="text" name="login_username" id="login_username" placeholder="USERNAME">
-                </div>
-                <div>
-                  <input type="password" name="login_senha" id="login_senha" placeholder="SENHA">
-                </div>
-                <div class="d-flex justify-content-center ">
-                  <button>
-                    Enviar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <a id="login-close" class="close-reveal-modal">&#215;</a>
-      </div>
-    </center>
-  </div>
+  
+  <%- include('modals'); %>
 
   <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap.js"></script>
   <script type="text/javascript" src="/js/scripts.js"></script>
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
 </body>
 
 </html>

@@ -9,9 +9,10 @@
     </div>
     <div class="container layout_padding2-top">
       <div class="row">
-        <div class="col-md-12 mx-auto">
+        <div class="col-md-12 mx-auto" style='overflow: auto;'>
           
-            <table id="tabela" class="display" style="width:100%">
+    <a href="#" id="userL" onclick="document.getElementById('id01').style.display='block'">USER DETAIL</a>    
+            <table id="tabela" class="display" style="width:100%;">
                 <thead>
                     <tr>
                         <th>id</th>
@@ -23,7 +24,7 @@
                         <th>Atualizado</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="usuario">
                     <% for(var i = 0; lista_usuarios.length>i;i++){ %>
                     <tr>
                         <td><%= lista_usuarios[i].id %></td>

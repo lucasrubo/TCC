@@ -2,9 +2,14 @@ $(document).ready(function() {
     $("#login").click(function() {
         $("#navbarSupportedContent").removeClass('show');
         $("#full-tela").removeClass("invisible");
+        $("#centerLogin").removeClass("none");
     });
-
-    $("#login-close,#reveal-modal-bg").click(function() {
+    $("#userL").click(function() {
+        $("#navbarSupportedContent").removeClass('show');
+        $("#full-tela").removeClass("invisible");
+        $("#centeUser").removeClass("none");
+    });
+    $("#model-close,#reveal-modal-bg").click(function() {
         $("#full-tela").addClass("invisible");
     });
 
@@ -47,8 +52,10 @@ $(document).ready(function() {
         } ],
          "lengthMenu": [[ -1, 10, 25, 50, 100], [ "Todos",10, 25, 50, 100]]
         });
-    $('#tabela tbody').on('click', 'tr', function () {
-        var data = table.row(this).data();
-        alert('You clicked on ' + data[0] + "'s row");
-    });
 });
+    $('#tabela #usuario').on('click', 'tr', function () {
+        var data = table.row(this).data();
+        // alert('You clicked on ' + data);
+        $('#userL').click();
+        // data-reveal-id="loginModel" data-animation="fade"
+    });
