@@ -3,7 +3,15 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
-
+.row-n{
+  display: flex;
+    -ms-flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
 .none{
   display:none;
 }
@@ -16,6 +24,12 @@ body {
 .enviar{
   background:#565656 !important;
   color:white !important;
+}
+.w3-section{
+  padding: 10px 8rem;
+}
+.w3-modal{
+  padding-top: 65px;
 }
 .enviar:hover{
   background: #cfcfcf !important;

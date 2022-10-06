@@ -5,14 +5,16 @@ const Image = require('../models/Images');
 
 module.exports = {
     logado: async function (req, res, next){
-        const token = req.cookies.Authorization;
-        try{
-            if(!token){                  
-                console.log("Erro: Necessário realizar o login para acessar a página! Faltam o token B!");
-                req.userValues = '';                
-                res.redirect('/');
-                return next();  
-            }else{
+        var token = req.cookies.Authorization;  
+        jwt.verify(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", function(err, decoded) {
+            if (err) {
+                console.log(err);                
+                res.clearCookie('Authorization');
+                token = '';
+            }            
+          });
+        try{       
+            if(token){   
                 const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
                 const user = await User.findOne({
                     attributes: ['username','name', 'email','type'],
@@ -37,9 +39,15 @@ module.exports = {
                 }else{
                     res.redirect('/');
                 }
+            
+            }else{        
+                console.log("Erro: Necessário realizar o login para acessar a página! Faltam o token B!");
+                req.userValues = '';                
+                res.redirect('/');
+                return next();  
             }
         }catch(err){            
-            console.log("Erro: Necessário realizar o login para acessar a página! Token inválido!");
+            console.log("Erro: Necessário realizar o login para acessar a página! Token inválido!"+ err);
             res.redirect('/');
         }
     }

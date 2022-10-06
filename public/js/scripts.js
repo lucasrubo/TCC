@@ -1,18 +1,5 @@
 $(document).ready(function() {
-    $("#login").click(function() {
-        $("#navbarSupportedContent").removeClass('show');
-        $("#full-tela").removeClass("invisible");
-        $("#centerLogin").removeClass("none");
-    });
-    $("#userL").click(function() {
-        $("#navbarSupportedContent").removeClass('show');
-        $("#full-tela").removeClass("invisible");
-        $("#centeUser").removeClass("none");
-    });
-    $("#model-close,#reveal-modal-bg").click(function() {
-        $("#full-tela").addClass("invisible");
-    });
-
+    // Animação no Inicio 
     $(".link-direto").click(function(e) {
         var id = $(this).attr('href');
             menuHeight = $('nav').innerHeight();
@@ -22,6 +9,17 @@ $(document).ready(function() {
         }, 500);
     });
     
+    $("#login").click(function() {
+        $("#LoginModal").css('display','block');
+        $("#navbarSupportedContent").removeClass('show');
+        $("#full-tela").removeClass("invisible");
+    });
+    $("#closeModelx,#closeModelCancel").click(function() {
+        $("#full-tela").addClass("invisible");
+        $("#LoginModal").css('display','none');
+        $("#UsuarioModel").css('display','none');
+    });
+
     var table = $('#tabela').DataTable({
         "oLanguage": {
             "sEmptyTable":   "Não foi encontrado nenhum registro",
@@ -50,12 +48,16 @@ $(document).ready(function() {
               "targets": 'no-sort',
               "orderable": false,
         } ],
-         "lengthMenu": [[ -1, 10, 25, 50, 100], [ "Todos",10, 25, 50, 100]]
+         "lengthMenu": [[ -1, 10, 25, 50, 100], [ "Todos",10, 25, 50, 100]],
+         "order":[[0,"desc"]]
         });
-});
     $('#tabela #usuario').on('click', 'tr', function () {
         var data = table.row(this).data();
-        // alert('You clicked on ' + data);
-        $('#userL').click();
-        // data-reveal-id="loginModel" data-animation="fade"
-    });
+        // console.log(data);
+        $("#full-tela").removeClass("invisible");
+        $("#UsuarioModel").css('display','block');
+        $("#model_id").val(data[0])
+        $("#model_name").val(data[1])
+        $("#model_username").val(data[2]) 
+   });
+});

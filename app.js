@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const { promisify } = require('util');
@@ -122,10 +123,12 @@ app.post('/login', async (req, res) => {
     const user = await User.findOne({
         attributes: ['id', 'name', 'email', 'password'],
         where: {
-            username: req.body.login_username
+            [Op.or]: [
+                {username: req.body.login_username},
+                {email: req.body.login_username}
+            ]
         }
     });
-
     if(user === null){
         return res.status(400).json({
             erro: true,
@@ -139,11 +142,12 @@ app.post('/login', async (req, res) => {
             mensagem: "Erro: Usuário ou a senha incorreta! Senha incorreta!"
         });
     }
-
+    var Expira = 600; //10 min
+    if(req.body.manterLogado){
+        Expira = '7d';
+    }
     var token = jwt.sign({id: user.id}, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", {
-        //expiresIn: 600 //10 min
-        //expiresIn: 60 //1 min
-        expiresIn: '7d' // 7 dia
+        expiresIn: Expira 
     });
     res.cookie(`Authorization`,token);
     res.redirect('back');

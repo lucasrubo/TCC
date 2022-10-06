@@ -46,6 +46,12 @@
         margin-top: 25px;
     }
 
+    .w3-modal {
+        padding-top: 70px;
+    }
+    .w3-section {
+        padding: 10px 22px;
+    }
     .info_section .col-md-3 {
         text-align: center;
     }

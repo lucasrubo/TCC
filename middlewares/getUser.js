@@ -4,9 +4,17 @@ const User = require('../models/User');
 const Image = require('../models/Images');
 
 module.exports = {
-    getUser: async function (req, res, next){
-        if(req.cookies.Authorization){  
-            const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+    getUser: async function (req, res, next){        
+        var token = req.cookies.Authorization;
+        jwt.verify(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", function(err, decoded) {
+            if (err) {
+                console.log("Erro! "+err);
+                res.clearCookie('Authorization');
+                token = '';
+            }            
+          });
+        if(token){  
+            const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
             // console.log(decode);
             const user = await User.findOne({
                 attributes: ['username','name', 'email','type'],
