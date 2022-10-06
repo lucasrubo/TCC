@@ -3,6 +3,29 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.none{
+  display:none;
+}
+.center-model form{
+  width: 100%;
+}
+.center-model form div{
+  text-align: left;
+}
+.enviar{
+  background:#565656 !important;
+  color:white !important;
+}
+.enviar:hover{
+  background: #cfcfcf !important;
+  color: #000000 !important;
+}
+.func{
+  width:100%;
+}
+.func p {
+  max-width: 185px;
+}
 .row-n{
   display: flex;
     -ms-flex-wrap: wrap;

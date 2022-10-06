@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const { promisify } = require('util');
 const fs = require('fs');
-const Jimp = require('jimp');
+const sharp = require('sharp');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -78,10 +78,14 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
                 ]
             });
         }
+        var newfilepath= 'public/upload/'+req.file.filename;
+        var filepath= 'public/upload/antes_redimensionar/'+req.file.filename;
         // const image_jimp = await Jimp.read('public/upload/'+req.file.filename);
         // crop function having crop co-ordinates
         // along with height and width
         // image_jimp.crop(10, 10, 225, 225) .write('public/upload/'+req.file.filename);
+        
+
         var image_id = 0;
         var old_image = "";
         if(check_id){
@@ -96,6 +100,23 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
             user_id: decode.id
         })
         .then(() => {
+            sharp(filepath)
+            .resize({width:225})
+            .jpeg({ mozjpeg: true })
+            .toFile(`${newfilepath}`)
+            .then( data => { 
+                console.log("foi: ");
+                fs.unlink(filepath, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }                  
+                    //file removed
+                });
+            })
+            .catch( err => { 
+                console.log(err);
+            });
             console.log(old_image+' Arquivo enviado')
             if(old_image != ""){
                 fs.unlink('public/upload/'+old_image, (err) => {
