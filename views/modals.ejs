@@ -1,5 +1,11 @@
 
- <div id="full-tela" class="full-tela invisible">
+ <div id="full-tela" class="full-tela">
+  
+  <div class="load"> 
+    <img src="../images/paw.gif">
+    <!-- <i class="fa fa-cog fa-spin fa-5x fa-fw"></i>
+    <span class="sr-only">Loading...</span>  -->
+  </div>
     <!-- Start login -->    
   <div id="LoginModal" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:500px">
@@ -31,12 +37,11 @@
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
     <div class="w3-center"><br>
         <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
-        <img src="../upload/<%= userValues.imagem %>" alt="Avatar" style="height: 225px;
-        width: 225px;" class="w3-circle w3-margin-top">
+        <img id="AvatarUser" alt="Avatar" style="height: 225px;width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-circle w3-margin-top" src="../images/usuario-branco.png">
     </div>
 
-      <form class="w3-container" action="">
-        <input  disabled type="text" id="model_id" name="model_id" required>
+      <form class="w3-container" action="/sistema/att-usuario-post" method="post">
+        <input hidden readonly type="text" id="model_id" name="model_id" required>
         <div class="row-n">
           <div class="col-md-5 w3-margin-bottom">
             <label><b>Nome</b></label>
@@ -60,16 +65,16 @@
           </div>
           <div class="col-md-5 w3-margin-bottom">
             <label><b>Ult. Atualização</b></label>
-            <input class="w3-input w3-border" disabled type="date" placeholder="" id="model_att" name="model_att" required>
+            <input class="w3-input w3-border" readonly type="date" placeholder="" id="model_att" name="model_att" required>
           </div>
         </div>
+
+        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+          <button class="w3-button w3-green" type="submit">Salvar</button>
+          <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
+        </div>
+
       </form>
-
-      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-        <button class="w3-button w3-green" type="submit">Salvar</button>
-        <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
-      </div>
-
     </div>
   </div>
 <!-- end usuario -->

@@ -13,11 +13,13 @@ $(document).ready(function() {
         $("#LoginModal").css('display','block');
         $("#navbarSupportedContent").removeClass('show');
         $("#full-tela").removeClass("invisible");
+        $("html").css('overflow','hidden');
     });
     $("#closeModelx,#closeModelCancel").click(function() {
         $("#full-tela").addClass("invisible");
         $("#LoginModal").css('display','none');
         $("#UsuarioModel").css('display','none');
+        $("html").css('overflow','auto');
     });
 
     var table = $('#tabela').DataTable({
@@ -56,6 +58,8 @@ $(document).ready(function() {
         // console.log(data);
         $("#full-tela").removeClass("invisible");
         $("#UsuarioModel").css('display','block');
+        $("html").css('overflow','hidden');
+
         $("#model_id").val(data[0]);
         $("#model_name").val(data[1]);
         $("#model_username").val(data[2]);
@@ -73,7 +77,16 @@ $(document).ready(function() {
         var dayd = ("00" + d.getDate()).slice(-2);;
 
         var output = d.getFullYear() + '-' +monthd + '-' +dayd;
-        console.log(output);
-        $("#model_att_now").val(output);    
-   });
+        // console.log(output);
+        $("#model_att_now").val(output);  
+        if(data[7]){
+            $('#AvatarUser').attr("src",`../upload/${data[7]}`);
+        }else{
+            $('#AvatarUser').attr("src",`../images/usuario-branco.png`);
+        }
+          
+   });   
+   $('.load').hide();   
+   $("#full-tela").addClass("invisible");   
+   
 });

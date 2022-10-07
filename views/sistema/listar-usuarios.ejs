@@ -20,6 +20,7 @@
                         <th>Nível</th>
                         <th>Criado</th>
                         <th>Atualizado</th>
+                        <th hidden >Imagem</th>
                     </tr>
                 </thead>
                 <tbody id="usuario">
@@ -43,6 +44,9 @@
                                 let dataFormatada = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
                             %>
                             <%=  dataFormatada  %>
+                        </td>
+                        <td hidden>
+                            <%= lista_usuarios[i].imagem %>
                         </td>
                     </tr>
                     <% } %>

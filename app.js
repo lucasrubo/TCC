@@ -79,12 +79,7 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
             });
         }
         var newfilepath= 'public/upload/'+req.file.filename;
-        var filepath= 'public/upload/antes_redimensionar/'+req.file.filename;
-        // const image_jimp = await Jimp.read('public/upload/'+req.file.filename);
-        // crop function having crop co-ordinates
-        // along with height and width
-        // image_jimp.crop(10, 10, 225, 225) .write('public/upload/'+req.file.filename);
-        
+        var filepath= 'public/upload/antes_redimensionar/'+req.file.filename;      
 
         var image_id = 0;
         var old_image = "";
@@ -182,8 +177,8 @@ app.post('/logout', (req, res) => {
 // #! Relacionado Conta
 
 // # Sistema
-app.get('/sistema', async (req, res) => {    
-    res.redirect('back');
+app.get('/sistema', logado, async (req, res) => {    
+    res.render('sistema');
 });
 // ## usuários
 
@@ -220,10 +215,41 @@ app.post("/sistema/cadastrar-usuario-post", logado, async (req, res) => {
 // ###! Cadastrar
 
 // listar
-app.get('/sistema/listar-usuarios', logado, async (req, res) => {    
+app.get('/sistema/listar-usuarios', logado, async (req, res) => {   
     const user = await User.findAll();
-    //console.log(user.dataValues)
+    for(var i = 0; user.length>i;i++){
+        const getImage = await Image.findOne({
+            attributes: ['id','image'],
+            where: {
+                user_id: user[i].id
+            }
+        });        
+        if(getImage){
+            user[i]['imagem'] = getImage.image;
+        }
+    }
     res.render('listar-usuarios',{'userValues' : req.userValues,'lista_usuarios':user});      
+});
+app.post("/sistema/att-usuario-post", logado, async (req, res) => {    
+    if(req.userValues.type=='admin'){     
+        await User.update(
+            { name: req.body.model_name,
+            username: req.body.model_username,
+            email: req.body.model_email,
+            type: req.body.model_level,
+            updatedAt: req.body.model_att_now },
+            { where: { id: req.body.model_id } }
+          )
+        .then(() => {           
+            console.log('Atualizado')
+            res.redirect('/sistema/listar-usuarios');
+        }).catch((err) => {
+            console.log('Erro ao atualizar:'+ err)
+            res.redirect('/sistema/listar-usuarios');
+        });
+    }else{
+        res.redirect('../');
+    }
 });
 // ##! usuários
 // #! Sistema

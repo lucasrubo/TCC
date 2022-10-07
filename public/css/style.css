@@ -3,6 +3,9 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.load{
+  margin-top: 75px;
+}
 .none{
   display:none;
 }
@@ -52,7 +55,7 @@ body {
   padding: 10px 8rem;
 }
 .w3-modal{
-  padding-top: 65px;
+  padding-top: 15px;
 }
 .enviar:hover{
   background: #cfcfcf !important;
@@ -147,6 +150,8 @@ nav a:hover{
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 101;
+  background: #000000d1;
 }
 .invisible{  
   visibility: hidden;
@@ -270,7 +275,7 @@ nav a:hover{
   font-family: "Poppins", sans-serif;
   position: fixed;
   width: 100%;
-  z-index: 101;
+  z-index: 100;
   top: 0;
 }
 

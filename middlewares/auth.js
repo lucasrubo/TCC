@@ -8,8 +8,9 @@ module.exports = {
         var token = req.cookies.Authorization;  
         jwt.verify(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", function(err, decoded) {
             if (err) {
-                console.log(err);                
-                res.clearCookie('Authorization');
+                console.log(err);       
+                res.clearCookie('Authorization');                 
+                res.redirect('/');      
                 token = '';
             }            
           });
@@ -42,8 +43,7 @@ module.exports = {
             
             }else{        
                 console.log("Erro: Necessário realizar o login para acessar a página! Faltam o token B!");
-                req.userValues = '';                
-                res.redirect('/');
+                req.userValues = '';  
                 return next();  
             }
         }catch(err){            
