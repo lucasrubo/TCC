@@ -1,7 +1,7 @@
-<%- include('header'); %>
+<%- include('header', {titulo:'Início'}); %>
 <%- include('menu', {variant:'index'}); %>
 
-    <div class="hero_area">
+    <div id="inicio" class="hero_area">
         <!-- slider section -->
         <section class=" slider_section position-relative">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -52,15 +52,14 @@
                         <div class="detail-box">
                         <div>
                             <h1>
-                            Heustonn <br>
-                            Maintenance <br>
+                            Integrado<br>
+                            com App <br>
                             <span>
-                                Service
+                                GPS
                             </span>
                             </h1>
                             <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                            sed do eiusmod tempor incididunt ut labore
+                            Divulgue pets encontrados na rua e receba suas localizações via GPS.
                             </p>
                         </div>
                         </div>
@@ -76,7 +75,7 @@
                     <div class="col-md-6">
                         <div class="img-box">
                         <div>
-                            <img src="images/slider-img3.jpg" alt="" class="" />
+                            <img src="images/facebook-integration.jpg" alt="" class="" />
                         </div>
                         </div>
                     </div>
@@ -84,15 +83,14 @@
                         <div class="detail-box">
                         <div>
                             <h1>
-                            Gestão <br>
-                            Resgate <br>
+                            Integração <br>
+                            com o <br>
                             <span>
-                                Animal
+                                Facebook
                             </span>
                             </h1>
                             <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                            sed do eiusmod tempor incididunt ut labore
+                            Divulgue suas publicações de adoção, pedidos de doação no Facebook diretamente pelo nosso sistema.
                             </p>
                         </div>
                         </div>
@@ -107,10 +105,6 @@
         <div class="container">
             <div class="slider_nav-box">
             <div class="btn-box">
-                <a href="">
-                Read More
-                </a>
-                <hr>
             </div>
             <div class="custom_carousel-control">
                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -128,7 +122,7 @@
     <div class="bg">
 
     <!-- about section -->
-    <section class="about_section layout_padding">
+    <section id="quem-somos" class="about_section layout_padding">
         <div class="container">
         <div class="custom_heading-container">
             <h3 class=" ">
@@ -146,14 +140,6 @@
             magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
         </p>
         </div>
-        <div class="container">
-        <div class="btn-box">
-            <a href="">
-            Read More
-            </a>
-            <hr>
-        </div>
-        </div>
     </section>
 
 
@@ -161,99 +147,83 @@
 
     <!-- service section -->
 
-    <section class="service_section layout_padding-bottom">
+    <section id="servicos" class="service_section layout_padding-bottom">
         <div class="container">
         <div class="custom_heading-container">
             <h3 class=" ">
-            OUR SERVICES
+            TENHA CONTROLE TOTAL DA SUA ONG
             </h3>
         </div>
         <p class="">
-            ad minim veniam, quis nostrud exercitation ullamco
+            Oferecemos total controle para suas necessidades do dia-a-dia, como controle financeiro e registro da saúde dos animais.
         </p>
         <div class="service_container ">
             <div class="row">
             <div class="col-md-3">
                 <div class="box b-1">
                 <div class="img-box">
-                    <img src="images/s-1.jpg" alt="">
+                    <img src="images/pet-food.png" alt="">
                 </div>
                 <div class="detail-box">
+                    <center class="func">
                     <h6>
-                    Tab Services
+                    Estoque de alimentação
                     </h6>
                     <p>
-                    adipiscing elit, sed do eiusmod tempor incididunt
+                    Registre o quanto tem de alimento e o quanto irá faltar esse mês.
                     </p>
-                    <div class="btn-box">
-                    <a href="">
-                        Read More
-                    </a>
-                    <hr>
-                    </div>
+                    </center>
                 </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="box b-2">
+                <div class="box b-1">
                 <div class="img-box">
-                    <img src="images/s-2.jpg" alt="">
+                    <img src="images/pet-health.png" alt="">
                 </div>
                 <div class="detail-box">
-                    <h6>
-                    Pipe Water
-                    </h6>
-                    <p>
-                    adipiscing elit, sed do eiusmod tempor incididunt
-                    </p>
-                    <div class="btn-box">
-                    <a href="">
-                        Read More
-                    </a>
-                    <hr>
-                    </div>
+                    <center class="func">
+                        <h6>
+                        Saúde do animal
+                        </h6>
+                        <p>
+                        Registre o andamento da recuperação do animal, doenças e medicamentos necessários.
+                        </p>
+                    </center>
                 </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="box b-3">
+                <div class="box b-1">
                 <div class="img-box">
-                    <img src="images/s-3.jpg" alt="">
+                    <img src="images/vaccination.png" alt="">
                 </div>
                 <div class="detail-box">
-                    <h6>
-                    Washing Machine
-                    </h6>
-                    <p>
-                    adipiscing elit, sed do eiusmod tempor incididunt
-                    </p>
-                    <div class="btn-box">
-                    <a href="">
-                        Read More
-                    </a>
-                    <hr>
-                    </div>
+                    <center class="func">
+                        <h6>
+                        Vacinação
+                        </h6>
+                        <p>
+                        Registre as vacinas que foram aplicadas, as que faltam e as datas de cada aplicação.
+                        </p>
+                    </center>                    
                 </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="box b-4">
+                <div class="box b-1">
                 <div class="img-box">
-                    <img src="images/s-4.jpg" alt="">
+                    <img src="images/financeiro-icon.png" alt="">
                 </div>
                 <div class="detail-box">
-                    <h6>
-                    Hand Washing
-                    </h6>
-                    <p>
-                    adipiscing elit, sed do eiusmod tempor incididunt
-                    </p>
-                    <div class="btn-box">
-                    <a href="">
-                        Read More
-                    </a>
-                    <hr>
-                    </div>
+                    <center class="func">
+                        <h6>
+                        Financeiro
+                        </h6>
+                        <p>
+                        Tenha controle financeiro de sua ONG
+                        </p>
+                    </center>                    
                 </div>
                 </div>
             </div>
@@ -317,12 +287,7 @@
         </div>
         </div>
         <div class="container">
-        <div class="btn-box">
-            <a href="">
-            Read More
-            </a>
-            <hr>
-        </div>
+        
         </div>
     </section>
 
@@ -331,10 +296,10 @@
 
     <!-- contact section -->
 
-    <section class="contact_section layout_padding">
+    <section id="contato" class="contact_section layout_padding">
         <div class="custom_heading-container">
         <h3 class=" ">
-            Booking Online
+            Fale Conosco
         </h3>
         </div>
         <div class="container layout_padding2-top">
@@ -342,20 +307,19 @@
             <div class="col-md-6 mx-auto">
             <form action="">
                 <div>
-                <input type="text" placeholder="NAME">
+                <input type="text" placeholder="Nome">
                 </div>
                 <div>
-                <input type="email" placeholder="EMAIL">
+                <input type="email" placeholder="E-mail">
                 </div>
                 <div>
-                <input type="text" placeholder="PHONE NUMBER">
+                <input type="text" placeholder="Telefone">
                 </div>
                 <div>
                 <select name="" id="">
-                    <option value="" disabled selected>TYPE OF SERVICE</option>
-                    <option value="">Service 1</option>
-                    <option value="">Service 2</option>
-                    <option value="">Service 3</option>
+                    <option value="" disabled selected>Cargo</option>
+                    <option value="">ONG</option>
+                    <option value="">Voluntário</option>
                 </select>
                 </div>
                 <div>
@@ -363,7 +327,7 @@
                 </div>
                 <div class="d-flex justify-content-center ">
                 <button>
-                    SEND
+                    ENVIAR
                 </button>
                 </div>
             </form>
@@ -379,15 +343,14 @@
         <div class="container">
         <div class="custom_heading-container">
             <h3 class=" ">
-            What clients says
+            Time
             </h3>
         </div>
         <div class="layout_padding2-top">
             <div class="client_container">
             <div class="detail-box">
                 <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                Somos uma equipe determinada.<br>Fazemos softwares <strong>coringas</strong> para diversas necessidades.
                 </p>
             </div>
             <div class="client_id">
@@ -396,10 +359,10 @@
                 </div>
                 <div class="name">
                 <h5>
-                    tempor incididunt
+                    Os Presidentes®
                 </h5>
                 <h6>
-                    Owner
+                    Desenvolvedores
                 </h6>
                 </div>
             </div>
@@ -409,4 +372,4 @@
     </section>
     </div>
 
-<%- include('footer'); %>
+<%- include('footer',{variant:'index'}); %>

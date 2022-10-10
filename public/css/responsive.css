@@ -1,6 +1,20 @@
 @media (max-width: 1120px) {}
 
 @media (max-width: 992px) {
+    
+    span.usuario {
+        display: none;
+    }
+    .dropdown-user{
+        position: absolute !important;
+        right: -8px;
+        top: 9px;
+    }
+
+    .navbar-toggler{
+        margin-right: 25px !important;
+    }
+
     .custom_nav-container .nav_search-btn {
         display: none;
     }
@@ -32,6 +46,12 @@
         margin-top: 25px;
     }
 
+    .w3-modal {
+        padding-top: 70px;
+    }
+    .w3-section {
+        padding: 10px 22px;
+    }
     .info_section .col-md-3 {
         text-align: center;
     }

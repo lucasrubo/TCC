@@ -7,72 +7,71 @@
           <div class="col-md-3">
             <div class="info-logo">
               <h2>
-                Heustonn
+                [NOME DO SISTEMA]
               </h2>
               <p>
-                It is a long established fact that a reader will be distracted by the readable content of a page when
-                looking at its layout. The point of
+                Um software capaz de automatizar a gestão de sua ONG de forma eficiente e prática.
               </p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="info-nav">
               <h4>
-                Navigation
+                Navegação
               </h4>
               <ul>
                 <li>
-                  <a href="index.html">
-                    Home
+                  <a class='link-direto' <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=/#inicio" %><% } %>>
+                    Início
                   </a>
                 </li>
                 <li>
-                  <a href="about.html">
-                    About
+                  <a class='link-direto' <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=/#quem-somos" %><% } %>>
+                    Sobre
                   </a>
                 </li>
                 <li>
-                  <a href="service.html">
-                    Services
+                  <a class='link-direto' <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=/#servicos" %><% } %>>
+                    Serviços
                   </a>
                 </li>
                 <li>
-                  <a href="contact.html">
-                    Contact Us
+                  <a class='link-direto' <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>>
+                    Contato
                   </a>
                 </li>
+                <% if(!userValues){ %>
                 <li>
-                  <a href="#">
-                    Login
-                  </a>
+                  <a href="#" id="login_footer" >Login</a>     
                 </li>
+                <% } %>              
               </ul>
             </div>
           </div>
           <div class="col-md-3">
             <div class="info-contact">
               <h4>
-                Contact Info
+                Informações de Contato
               </h4>
               <div class="location">
                 <h6>
-                  Corporate Office Address:
+                  Endereço físico:
                 </h6>
                 <a href="">
-                  <img src="images/location.png" alt="">
+                  <img src="../images/location.png" alt="">
                   <span>
-                    Loram ipusm New York, NY 36524
+                    Av. Comendador Enzo Ferrari, 280 - Swift, Campinas - SP, 13045-770
                   </span>
                 </a>
               </div>
               <div class="call">
                 <h6>
-                  Customer Service:
+                  Suporte:
                 </h6>
                 <a href="">
-                  <img src="images/telephone.png" alt="">
+                  <img src="../images/telephone.png" alt="">
                   <span>
-                    ( +01 1234567890 )
+                    +55 (19) 99999-9999
                   </span>
                 </a>
               </div>
@@ -81,43 +80,37 @@
           <div class="col-md-3">
             <div class="discover">
               <h4>
-                Discover
+                Descobrir
               </h4>
               <ul>
                 <li>
                   <a href="">
-                    Help
+                    Ajuda
                   </a>
                 </li>
                 <li>
                   <a href="">
-                    How It Works
-
+                    Inscreva-se
                   </a>
                 </li>
                 <li>
-                  <a href="">
-                    subscribe
-                  </a>
-                </li>
-                <li>
-                  <a href="contact.html">
-                    Contact Us
+                  <a class='link-direto' <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>>
+                    Contato
                   </a>
                 </li>
               </ul>
               <div class="social-box">
                 <a href="">
-                  <img src="images/facebook.png" alt="">
+                  <img src="../images/facebook.png" alt="">
                 </a>
                 <a href="">
-                  <img src="images/twitter.png" alt="">
+                  <img src="../images/twitter.png" alt="">
                 </a>
                 <a href="">
-                  <img src="images/google-plus.png" alt="">
+                  <img src="../images/insta.png" alt="">
                 </a>
                 <a href="">
-                  <img src="images/linkedin.png" alt="">
+                  <img src="../images/linkedin.png" alt="">
                 </a>
               </div>
             </div>
@@ -126,50 +119,14 @@
       </div>
     </section>
     <!-- end info_section -->
-
- <!-- footer section -->
- <section class="container-fluid footer_section">
-    <p>
-      Copyright &copy; 2019 All Rights Reserved By
-      <a href="https://html.design/">Free Html Templates</a>
-    </p>
-  </section>
-  <!-- footer section -->
-  <div class="full-tela">
-    <center class="center-login">
-      <div id="loginModel" class="reveal-modal contact_section">        
-        <div class="custom_heading-container">
-          <h3 class=" ">
-            Login do Sistema
-          </h3>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 mx-auto">
-              <form action="/conta" method="post">
-                <div>
-                  <input type="email" name="login_email" id="login_email" placeholder="EMAIL">
-                </div>
-                <div>
-                  <input type="password" name="login_senha" id="login_senha" placeholder="SENHA">
-                </div>
-                <div class="d-flex justify-content-center ">
-                  <button>
-                    Enviar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <a class="close-reveal-modal">&#215;</a>
-      </div>
-    </center>
-  </div>
+  
+  <%- include('modals'); %>
 
   <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap.js"></script>
   <script type="text/javascript" src="/js/scripts.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
 </body>
 
 </html>

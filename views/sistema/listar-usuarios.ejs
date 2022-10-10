@@ -1,0 +1,61 @@
+<%- include('header', {titulo:'Lista de Usuários'}); %>
+<%- include('menu', {variant:'sistema'}); %>
+
+<section class="layout_padding">
+    <div class="custom_heading-container">
+      <h3 class=" ">
+        Lista de Usuários
+      </h3>
+    </div>
+    <div class="container layout_padding2-top">
+      <div class="row">
+        <div class="col-md-12 mx-auto" style='overflow: auto;'> 
+            <table id="tabela" class="display" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Nome</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Nível</th>
+                        <th>Criado</th>
+                        <th>Atualizado</th>
+                        <th hidden >Imagem</th>
+                    </tr>
+                </thead>
+                <tbody id="usuario">
+                    <% for(var i = 0; lista_usuarios.length>i;i++){ %>
+                    <tr>
+                        <td><%= lista_usuarios[i].id %></td>
+                        <td><%= lista_usuarios[i].name %></td>
+                        <td><%= lista_usuarios[i].username %></td>
+                        <td><%= lista_usuarios[i].email %></td>
+                        <td><%= lista_usuarios[i].type %></td>
+                        <td>
+                            <%
+                                let data_criada = lista_usuarios[i].createdAt;
+                                let dataFormatada_criada = ((data_criada.getDate() )) + "/" + ((data_criada.getMonth() + 1)) + "/" + data_criada.getFullYear(); 
+                            %>
+                            <%=  dataFormatada_criada  %>
+                        </td>
+                        <td>
+                            <%
+                                let data =lista_usuarios[i].updatedAt;
+                                let dataFormatada = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
+                            %>
+                            <%=  dataFormatada  %>
+                        </td>
+                        <td hidden>
+                            <%= lista_usuarios[i].imagem %>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  
+<%- include('footer',{variant:''}); %>
