@@ -1,45 +1,49 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
 
-const User = db.define('users', {
+const Dogs = db.define('dogs', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    type:{
+    nome:{
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    raça:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    latitute:{
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    longitude:{
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    user_id:{
         type: Sequelize.STRING,
         allowNull: false,
-    },
-    name: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    },
-    username: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: "1"
     },
     empresa: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "Normal",
+        defaultValue: "Normal"
+    },
+    ativo:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 });
 
 //Criar a tabela
-//User.sync();
+// Dogs.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// User.sync({ alter: true })
+// Dogs.sync({ alter: true })
 
-module.exports = User;
+module.exports = Dogs;

@@ -11,12 +11,13 @@ const jwt = require('jsonwebtoken');
 
 const User = require('./models/User');
 const Image = require('./models/Images');
+const Dogs = require('./models/Dogs');
 const db = require('./models/db');
 
-const path = require('path')
+const func = require('./models/functions');
+const path = require('path');
 
 const { logado } = require('./middlewares/auth');
-const func = require('./models/functions');
 const { getUser } = require('./middlewares/getUser');
 const uploadUser  = require('./middlewares/uploadImage');
 
@@ -67,7 +68,8 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
         const check_id = await Image.findOne({
             attributes: ['id','image'],
             where: {
-                user_id: decode.id
+                user_id: decode.id,
+                type: "perfil"
             }
         });
         if(!check_id){
@@ -92,7 +94,8 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
         await Image.upsert({
             id: image_id,
             image: req.file.filename,
-            user_id: decode.id
+            user_id: decode.id,
+            type: "perfil"
         })
         .then(() => {
             sharp(filepath)
@@ -178,10 +181,9 @@ app.post('/logout', (req, res) => {
 
 // # Sistema
 app.get('/sistema', logado, async (req, res) => {    
-    res.render('sistema');
+    res.render('sistema',{'userValues' : req.userValues});
 });
 // ## usuários
-
 // ### Cadastrar
 app.get('/sistema/cadastro-usuario', logado, (req, res) => {
     if(req.userValues.type == 'admin'){
@@ -221,7 +223,8 @@ app.get('/sistema/listar-usuarios', logado, async (req, res) => {
         const getImage = await Image.findOne({
             attributes: ['id','image'],
             where: {
-                user_id: user[i].id
+                user_id: user[i].id,
+                type: "perfil"
             }
         });        
         if(getImage){
@@ -252,6 +255,27 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
     }
 });
 // ##! usuários
+
+// ## Cachorros
+// listar
+app.get('/sistema/listar-cachorros', logado, async (req, res) => {   
+    const dog = await Dogs.findAll();
+    for(var i = 0; dog.length>i;i++){
+        const getImage = await Image.findOne({
+            attributes: ['id','image'],
+            where: {
+                user_id: dog[i].id,
+                type: "dog"
+            }
+        });        
+        if(getImage){
+            dog[i]['imagem'] = getImage.image;
+        }
+    }
+    res.render('listar-cachorros',{'userValues' : req.userValues,'lista':dog});      
+});
+// ##! Cachorros
+
 // #! Sistema
 
 app.listen(port,() => {
