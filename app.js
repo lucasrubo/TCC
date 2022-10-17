@@ -257,6 +257,28 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
 // ##! usuários
 
 // ## Cachorros
+
+// ### Cadastrar
+app.get('/sistema/cadastro-cachorro', logado, (req, res) => {
+    res.render('cadastro-cachorro',{'userValues' : req.userValues});  
+});
+app.post("/sistema/cadastro-cachorro-post", logado, async (req, res) => {  
+    // User.create({
+    //     type: req.body.type,
+    //     username: req.body.username,
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     password: senha_criptografada
+    // }).then(function(){
+    //     console.log("Usuário Cadastrado com sucesso");
+    //     res.redirect('/sistema/cadastro-usuario');
+    // }).catch(function(erro){
+    //     console.log("Erro: Usuário Não Cadastrado! " + erro);
+    //     res.redirect('/sistema/cadastro-usuario');
+    // }) 
+});
+// ###! Cadastrar
+
 // listar
 app.get('/sistema/listar-cachorros', logado, async (req, res) => {   
     const dog = await Dogs.findAll();

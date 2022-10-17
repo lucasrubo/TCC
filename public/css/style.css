@@ -4,7 +4,7 @@ body {
   background-color: #ffffff;
 }
 .load{
-  margin-top: 75px;
+  margin-top: 200px;
 }
 .none{
   display:none;
@@ -37,6 +37,7 @@ body {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
+  text-align: center;
 }
 .none{
   display:none;
