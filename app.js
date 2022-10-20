@@ -202,7 +202,8 @@ app.post("/sistema/cadastrar-usuario-post", logado, async (req, res) => {
             username: req.body.username,
             name: req.body.name,
             email: req.body.email,
-            password: senha_criptografada
+            password: senha_criptografada,
+            empresa: req.userValues.empresa
         }).then(function(){
             console.log("Usuário Cadastrado com sucesso");
             res.redirect('/sistema/cadastro-usuario');
@@ -218,7 +219,15 @@ app.post("/sistema/cadastrar-usuario-post", logado, async (req, res) => {
 
 // listar
 app.get('/sistema/listar-usuarios', logado, async (req, res) => {   
-    const user = await User.findAll();
+    if(req.userValues.empresa == 'dev'){        
+        var user = await User.findAll();
+    }else{
+        var user = await User.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
     for(var i = 0; user.length>i;i++){
         const getImage = await Image.findOne({
             attributes: ['id','image'],
@@ -281,7 +290,15 @@ app.post("/sistema/cadastro-cachorro-post", logado, async (req, res) => {
 
 // listar
 app.get('/sistema/listar-cachorros', logado, async (req, res) => {   
-    const dog = await Dogs.findAll();
+    if(req.userValues.empresa == 'dev'){        
+        var dog = await Dogs.findAll();
+    }else{
+        var dog = await Dogs.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
     for(var i = 0; dog.length>i;i++){
         const getImage = await Image.findOne({
             attributes: ['id','image'],
@@ -289,11 +306,21 @@ app.get('/sistema/listar-cachorros', logado, async (req, res) => {
                 user_id: dog[i].id,
                 type: "dog"
             }
+        });      
+        const getUser_dog = await User.findOne({
+            attributes: ['id','name','email'],
+            where: {
+                id: dog[i].id
+            }
         });        
         if(getImage){
             dog[i]['imagem'] = getImage.image;
+        }        
+        if(getUser_dog){
+            dog[i]['usuario'] = getUser_dog.name;
         }
     }
+    // console.log(dog)
     res.render('listar-cachorros',{'userValues' : req.userValues,'lista':dog});      
 });
 // ##! Cachorros

@@ -3,6 +3,14 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+#header-model{
+  height: 50px;
+}
+.box-teste .box-cell{
+  display : table-cell;   
+  vertical-align: middle;
+  padding: 0px 15px;
+}
 .load{
   margin-top: 200px;
 }

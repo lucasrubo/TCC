@@ -1,6 +1,5 @@
 <%- include('header', {titulo:'Lista de Cachorros'}); %>
 <%- include('menu', {variant:'sistema'}); %>
-
 <section class="layout_padding">
     <div class="custom_heading-container">
       <h3 class=" ">
@@ -20,6 +19,9 @@
                         <th>Atualizado</th>
                         <th hidden >Imagem</th>
                         <th>Empresa</th>
+                        <th hidden >Latidude</th>
+                        <th hidden >Longitude</th>
+                        <th >Usuário</th>
                     </tr>
                 </thead>
                 <tbody id="dogs">
@@ -42,10 +44,11 @@
                             %>
                             <%=  dataFormatada  %>
                         </td>
-                        <td hidden>
-                            <%= lista[i].imagem %>
-                        </td>
                         <td><%= lista[i].empresa %></td>
+                        <td hidden><%= lista[i].imagem %></td>
+                        <td hidden><%= lista[i].latitute %></td>
+                        <td hidden><%= lista[i].longitude %></td>
+                        <td><%= lista[i].usuario %></td>
                     </tr>
                     <% } %>
                 </tbody>
