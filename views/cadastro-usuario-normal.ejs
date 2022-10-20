@@ -1,0 +1,79 @@
+<%- include('header', {titulo:'Cadastrar-se'}); %>
+<%- include('menu', {variant:'sistema'}); %>
+<style>
+  .w3-margin-bottom{
+    text-align: left;
+  }
+</style>
+
+  <!-- contact section -->
+
+  <section class="contact_section layout_padding">
+    <div class="custom_heading-container">
+      <h3 class=" ">
+        Cadastrar-se
+      </h3>
+    </div>
+    <div class="container layout_padding2-top">
+      <div class="row">
+        <div class=" mx-auto">
+          <form action="/sistema/cadastrar-usuario-post" method="post">
+           
+            <div class="row-n">
+              <div class="col-md-12 w3-margin-bottom">
+                <label><b>Nome Completo</b></label>
+                <input class="w3-input w3-border" type="text" placeholder="" id="name" name="name">
+              </div>
+            </div>
+            <div class="row-n">
+              <div class="col-md-6 w3-margin-bottom">
+                <label><b>Usuário</b></label>
+                <input class="w3-input w3-border" type="text" placeholder="" id="username" name="username" required>
+              </div>
+              <div class="col-md-6 w3-margin-bottom">
+                <label><b>Senha</b></label>
+                <input class="w3-input w3-border" type="password" placeholder="" id="senha" name="senha" required>
+              </div>
+            </div>
+            <div class="row-n">
+              <div class="col-md-7 w3-margin-bottom">
+                <label><b>E-mail</b></label>
+                <input class="w3-input w3-border" type="email" placeholder="" id="email" name="email" required>
+              </div>
+              <div class="col-md-5 w3-margin-bottom">
+                <label><b>Data Nascimento</b></label>
+                <input class="w3-input w3-border" type="date" placeholder="" id="nascimento" name="nascimento" required>
+              </div>
+            </div>
+            <div class="row-n">
+              <div class="col-md-12 w3-margin-bottom">
+                <label><b>CPF/CPNJ</b></label>
+                <input class="w3-input w3-border" type="email" placeholder="" id="cpf" name="cpf" required>
+              </div>
+            </div>
+            <hr>
+            <div class="row-n">
+              <div class="col-md-12 w3-margin-bottom">
+                <label style="cursor:pointer;width: 100%;text-align: left;">
+                  <input required id="termos" name="termos" class="input-simples" type="checkbox"> Aceito os termos de uso de dados
+                </label>
+                <label style="cursor:pointer;width: 100%;    text-align: left;">
+                  <input checked id="newsletter" name="newsletter" class="input-simples" type="checkbox"> Aceito receber informações por e-mail
+                </label>
+              </div>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-center ">
+              <button>
+                Cadastrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- end contact section -->
+<%- include('footer',{variant:''}); %>
