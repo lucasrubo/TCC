@@ -21,6 +21,7 @@ const { logado } = require('./middlewares/auth');
 const { getUser } = require('./middlewares/getUser');
 const uploadUser  = require('./middlewares/uploadImage');
 
+const router = express.Router();
 const app = express();
 const port = 8080;
 
@@ -41,13 +42,10 @@ app.use(bodyParser.json())
 
 // index pages
 app.get('/', getUser, async (req, res) => {
-    if(req.userValues){
-        // console.log(req.userValues);
-        res.render('index',{'userValues' : req.userValues});
-    }else{
-        // console.log('foi');
-        res.render('index',{'userValues' : ''});
+    if(!req.userValues){
+        req.userValues = "";
     }
+    res.render('index',{'userValues' : req.userValues});
 });
 // index pages
 app.get('/mapa', getUser, async (req, res) => {
@@ -156,7 +154,8 @@ app.post('/login', async (req, res) => {
             [Op.or]: [
                 {username: req.body.login_username},
                 {email: req.body.login_username}
-            ]
+            ],
+            ativo: 1
         }
     });
     if(user === null){
@@ -196,6 +195,12 @@ app.get('/sistema', logado, async (req, res) => {
 });
 // ## usuários
 // ### Cadastrar
+app.get('/cadastro-usuario-normal', getUser, (req, res) => {
+    if(!req.userValues){
+        req.userValues = "";
+    }
+    res.render('cadastro-usuario-normal',{'userValues' : req.userValues}); 
+});
 app.get('/sistema/cadastro-usuario', logado, (req, res) => {
     if(req.userValues.type == 'admin'){
         // console.log(req.userValues);
@@ -256,11 +261,14 @@ app.get('/sistema/listar-usuarios', logado, async (req, res) => {
 app.post("/sistema/att-usuario-post", logado, async (req, res) => {    
     if(req.userValues.type=='admin'){     
         await User.update(
-            { name: req.body.model_name,
+            { 
+            name: req.body.model_name,
             username: req.body.model_username,
             email: req.body.model_email,
             type: req.body.model_level,
-            updatedAt: req.body.model_att_now },
+            updatedAt: req.body.model_att_now,
+            ativo: req.body.statusUsuario
+            },
             { where: { id: req.body.model_id } }
           )
         .then(() => {           

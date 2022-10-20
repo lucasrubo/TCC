@@ -22,6 +22,7 @@
                         <th>Atualizado</th>
                         <th hidden >Imagem</th>
                         <th>Empresa</th>
+                        <th>ativo</th>
                     </tr>
                 </thead>
                 <tbody id="usuario">
@@ -50,6 +51,7 @@
                             <%= lista_usuarios[i].imagem %>
                         </td>
                         <td><%= lista_usuarios[i].empresa %></td>
+                        <td><% if(lista_usuarios[i].ativo == 1){ %>Ativo<% }else{ %>Desativado<%} %></td>
                     </tr>
                     <% } %>
                 </tbody>

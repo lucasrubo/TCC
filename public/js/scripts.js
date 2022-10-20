@@ -67,6 +67,18 @@ $(document).ready(function() {
             $("#model_username").val(data[2]);
             $("#model_email").val(data[3]);
             $("#model_level").val(data[4]);
+            if(data[9] == "Desativado"){
+                var status = 0;
+                $("#statusUser").html('Desativado');
+                $("#statusUser").addClass("w3-red");
+                $("#statusUser").removeClass("w3-green");
+            }else{
+                var status = 1;
+                $("#statusUser").html('Ativado');
+                $("#statusUser").addClass("w3-green");
+                $("#statusUser").removeClass("w3-red");
+            }
+            $("#statusUsuario").val(status);
             
             let data_criada = data[5].split('/');
             var day = ("00" + data_criada[0]).slice(-2);
@@ -110,6 +122,20 @@ $(document).ready(function() {
         $('#mapa-cachorro').attr("src",`https://maps.google.com.br/maps?q=${data[7]},${data[8]}&output=embed&dg=oo`);   
                     
    });   
+
+    $('#statusUser').on('click', function () {
+        $(this).toggleClass("w3-green");
+        $(this).toggleClass("w3-red");
+        var valor = $(this).html();
+        if(valor == "Ativado"){
+            $(this).html('Desativado');
+            $("#statusUsuario").val(0);
+        }else{
+            $(this).html('Ativado');
+            $("#statusUsuario").val(1);
+        }
+    });   
+   
    $('.load').hide();   
    $("#full-tela").addClass("invisible");   
    

@@ -3,6 +3,9 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.input-simples{
+  width: auto !important;
+}
 #header-model{
   height: 50px;
 }

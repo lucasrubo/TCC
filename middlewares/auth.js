@@ -18,11 +18,16 @@ module.exports = {
             if(token){   
                 const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
                 const user = await User.findOne({
-                    attributes: ['username','name', 'email','type','empresa'],
+                    attributes: ['username','name', 'email','type','empresa','ativo'],
                     where: {
                         id: decode.id
                     }
                 });
+                if(user.dataValues.ativo == 0){
+                    res.clearCookie('Authorization');             
+                    res.redirect('/');      
+                    token = '';
+                }
                 req.userId = decode.id;
                 req.userValues = user.dataValues;
                         

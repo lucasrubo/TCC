@@ -34,6 +34,11 @@ const User = db.define('users', {
         type: Sequelize.STRING,
         allowNull: false,
         defaultValue: "Normal",
+    },
+    ativo:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 });
 
