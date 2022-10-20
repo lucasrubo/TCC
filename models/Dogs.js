@@ -16,7 +16,7 @@ const Dogs = db.define('dogs', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    latitute:{
+    latitude:{
         type: Sequelize.STRING,
         allowNull: true
     },

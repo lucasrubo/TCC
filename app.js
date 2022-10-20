@@ -49,6 +49,16 @@ app.get('/', getUser, async (req, res) => {
         res.render('index',{'userValues' : ''});
     }
 });
+// index pages
+app.get('/mapa', getUser, async (req, res) => {
+    if(req.userValues){
+        // console.log(req.userValues);
+        res.render('mapa',{'userValues' : req.userValues});
+    }else{
+        // console.log('foi');
+        res.render('mapa',{'userValues' : ''});
+    }
+});
 
 // # Relacionado Conta
 app.get('/usuario/perfil',getUser, async (req, res) => {
@@ -77,7 +87,8 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
                 attributes: ['id'],
                 order: [
                     ['id', 'DESC'],
-                ]
+                ],
+                limit: 1
             });
         }
         var newfilepath= 'public/upload/'+req.file.filename;
@@ -271,20 +282,73 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
 app.get('/sistema/cadastro-cachorro', logado, (req, res) => {
     res.render('cadastro-cachorro',{'userValues' : req.userValues});  
 });
-app.post("/sistema/cadastro-cachorro-post", logado, async (req, res) => {  
-    // User.create({
-    //     type: req.body.type,
-    //     username: req.body.username,
-    //     name: req.body.name,
-    //     email: req.body.email,
-    //     password: senha_criptografada
-    // }).then(function(){
-    //     console.log("Usuário Cadastrado com sucesso");
-    //     res.redirect('/sistema/cadastro-usuario');
-    // }).catch(function(erro){
-    //     console.log("Erro: Usuário Não Cadastrado! " + erro);
-    //     res.redirect('/sistema/cadastro-usuario');
-    // }) 
+app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), async (req, res) => { 
+    
+    if (req.file) { 
+        const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+        var id = decode.id; 
+        Dogs.create({
+            nome: req.body.name,
+            raça: req.body.raca,
+            latitude: req.body.latitude_form,
+            longitude: req.body.longitude_form,
+            user_id: id,
+            empresa: req.userValues.empresa
+        }).then(async function(){
+            console.log("Dog Cadastrado com sucesso");
+            var newfilepath= 'public/upload/'+req.file.filename;
+            var filepath= 'public/upload/antes_redimensionar/'+req.file.filename;  
+            const last_id_dog = await Dogs.findAll({
+                attributes: ['id'],
+                order: [
+                    ['id', 'DESC'],
+                ],
+                limit: 1
+            });    
+            
+            for(var i = 0; last_id_dog.length>i;i++){ 
+                var last_dog_id = last_id_dog[i].id;
+            }
+            
+            await Image.create({
+                image: req.file.filename,
+                user_id: last_dog_id,
+                type: "dog"
+            })
+            .then(() => {
+                sharp(filepath)
+                .resize({width:225})
+                .jpeg({ mozjpeg: true })
+                .toFile(`${newfilepath}`)
+                .then( data => { 
+                    console.log("foi: ");
+                    fs.unlink(filepath, (err) => {
+                        if (err) {
+                            console.error(err)
+                            return
+                        }                  
+                        //file removed
+                    });
+                })
+                .catch( err => { 
+                    console.log(err);
+                });
+            }).catch((err) => {
+                console.log('Arquivo não enviado'+err);
+                fs.unlink(filepath, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }                  
+                    //file removed
+                });
+            });
+            res.redirect('/sistema/cadastro-cachorro');
+        }).catch(function(erro){
+            console.log("Erro: Dog Não Cadastrado! " + erro);
+            res.redirect('/sistema/cadastro-cachorro');
+        }) 
+    }
 });
 // ###! Cadastrar
 
@@ -310,7 +374,7 @@ app.get('/sistema/listar-cachorros', logado, async (req, res) => {
         const getUser_dog = await User.findOne({
             attributes: ['id','name','email'],
             where: {
-                id: dog[i].id
+                id: dog[i].user_id
             }
         });        
         if(getImage){

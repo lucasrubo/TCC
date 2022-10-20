@@ -1,1 +1,5 @@
-[{"id":1, "image":"1664411799302_natsu.jpg", "user_id": "1","createdAt":"2022-09-26 12:01:09", "updatedAt":"2022-09-27 12:01:09"}]
+[{"id":1, "image":"1665060172621_WhatsApp Image 2021-11-30 at 9.07.21 AM.png", "user_id":"1", "createdAt":"2022-09-29 14:06:38", "updatedAt":"2022-10-06 12:42:52", "type":"perfil"},
+ {"id":2, "image":"1664460443784_WhatsApp Image 2022-07-20 at 00.07.38.jpeg", "user_id":"2", "createdAt":"2022-09-29 14:07:23", "updatedAt":"2022-09-29 14:07:23", "type":"perfil"},
+ {"id":3, "image":"385525ff9c7bed83762a84a09a5edee4.png", "user_id":"1", "createdAt":"2022-09-29 00:00:00", "updatedAt":"2022-09-29 00:00:00", "type":"dog"},
+ {"id":4, "image":"1666239154620_WhatsApp Image 2022-07-29 at 17.18.10.jpeg", "user_id":"15", "createdAt":"2022-10-20 04:12:34", "updatedAt":"2022-10-20 04:12:34", "type":"dog"},
+ {"id":5, "image":"1666241039796_WhatsApp Image 2022-07-20 at 00.07.40 (1).jpeg", "user_id":"33", "createdAt":"2022-10-20 04:43:59", "updatedAt":"2022-10-20 04:43:59", "type":"dog"}]

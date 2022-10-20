@@ -1,75 +1,15 @@
 <%- include('header', {titulo:'Cadastro de Cachorros'}); %>
 <%- include('menu', {variant:'sistema'}); %>
-<script type="text/javascript">
-    let map, infoWindow;
-    function getLocation(){
-        if(!navigator.geolocation)
-            return null;
-        navigator.geolocation.getCurrentPosition((pos)=>{
-            lat = document.getElementById("lat").innerText= pos.coords.latitude;
-            lon = document.getElementById("lon").innerText= pos.coords.longitude;
-            initMap();
-        });
-    }
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: -22.925792615630975, lng: -47.037313460961876 },
-            zoom: 15,
-            // 1: mundo
-            // 5: terra/continente
-            // 10: cidade
-            // 15: ruas
-            // 20: construções
-        });
-        
-        infoWindow = new google.maps.InfoWindow();
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
-
-                infoWindow.setPosition(pos);
-                infoWindow.setContent("Você esta aqui.");
-                infoWindow.open(map);
-                map.setCenter(pos);
-                },
-                () => {
-                handleLocationError(true, infoWindow, map.getCenter());
-                }
-            );
-            
-            document.getElementById("lat").value = pos.coords.latitude;
-            document.getElementById("lon").value = pos.coords.longitude;
-        } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-        }
-    }
-    getLocation();
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(
-        browserHasGeolocation
-        ? "Error: The Geolocation service failed."
-        : "Error: Your browser doesn't support geolocation."
-    );
-    infoWindow.open(map);
-}
-
-window.initMap = initMap;
-
-</script>
 <style>
     #map{
-        width: 600px;
+        width: 100%;
         height:400px;
+        max-width: 800px;
     }
 </style>
+
+<script type="text/javascript" src="../js/mapa-cadastro.js"></script>
 <section class="contact_section layout_padding">
     <div class="custom_heading-container">
       <h3 class=" ">
@@ -78,28 +18,25 @@ window.initMap = initMap;
     </div>
     <div class="container layout_padding2-top">
       <div class="row-n">
-        <form class="w3-container" action="/sistema/cadastrar-usuario-post" method="post">
+        <form class="w3-container" action="/sistema/cadastro-cachorro-post" method="post" style="width: 100%;" enctype="multipart/form-data">
             <div class="col-md-5 w3-margin-bottom" style="display: inline-block;max-width: 340px;">
                 <label><b>Nome do Cachorro:</b></label> <br>
                 <input name="name" id="name" type="text" placeholder="NOME">
             </div>
             <div class="col-md-5 w3-margin-bottom" style="display: inline-block;max-width: 240px;">
                 <label><b>Raça</b></label>
-                <input name="username" id="username" type="text" placeholder="RAÇA">
+                <input name="raca" id="raca" type="text" placeholder="RAÇA">
             </div>
-            <div class="col-md-5 w3-margin-bottom" style="display: inline-block;max-width: 240px;">
-                <label><b>Região</b></label>
-                <input name="email" id="email" type="text" placeholder="EMAIL" required>
-            </div>
-            <center>                
+            <center>    
+                <input id="searchInput" style="width: 24rem;" class="controls" type="text" placeholder="Enter a location">            
                 <div id="map"></div>
-                <input name="lat" id="lat" type="text">
-                <input name="lon" id="lon" type="text">
+                <input hidden readonly name="latitude_form" id="latitude_form" type="text">
+                <input hidden readonly name="longitude_form" id="longitude_form" type="text">
             </center>
             <br>
             <div class="w3-margin-bottom" style="display: inline-block;max-width: 240px;">
                 <label><b>Foto</b></label>
-                <input name="senha" id="senha" type="file" required>
+                <input name="foto" id="foto" type="file" accept="image/*" required>
             </div>
             <div class="d-flex justify-content-center ">
             <button>
