@@ -2,7 +2,7 @@
  <div id="full-tela" class="full-tela">
   
   <div class="load"> 
-    <img src="../images/paw.gif">
+    <img src="../images/Paw_1.gif">
     <!-- <i class="fa fa-cog fa-spin fa-5x fa-fw"></i>
     <span class="sr-only">Loading...</span>  -->
   </div>
@@ -26,13 +26,13 @@
 
       <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
         <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
-        <span class="w3-right w3-padding w3-hide-small">Esqueceu a<a href="#">Senha ?</a></span>
+        <span class="w3-right w3-padding w3-hide-small">Esqueceu a <a href="#">Senha ?</a></span>
       </div>
 
     </div>
   </div>
   <!-- end login -->
-    <!-- Start usuario -->  
+<!-- Start usuario -->  
   <div id="UsuarioModel" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
     <div class="w3-center"><br>
@@ -78,4 +78,42 @@
     </div>
   </div>
 <!-- end usuario -->
+
+<!-- Start dogs -->  
+  <div id="DogModel" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom box-teste" style="max-width:900px">
+      <div id="header-model" class="w3-center"><br>
+          <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+      </div>
+      <div class="box-cell">
+        <img id="AvatarDog" alt="Avatar" style="width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-margin-top" src="../images/usuario-branco.png">
+      </div>
+      <div class="box-cell">
+        <form class="w3-container" action="/sistema/att-usuario-post" method="post">
+          <input hidden readonly type="text" id="model_id" name="model_id" required>
+          <div class="row-n">
+            <div class="col-md-5 w3-margin-bottom">
+              <label><b>Nome</b></label>
+              <input class="w3-input w3-border" type="text" placeholder="" id="model_dogname" name="model_dogname">
+            </div>
+            <div class="col-md-5 w3-margin-bottom">
+              <label><b>Raça</b></label>
+              <input class="w3-input w3-border" type="text" placeholder="" id="model_raça" name="model_raça" required>
+            </div>
+            <div class="col-md-5 w3-margin-bottom">
+              <label><b>Usuário</b></label>
+              <input class="w3-input w3-border" type="text" placeholder="" id="model_doguser" name="model_doguser" required>
+            </div>
+          </div>
+          <iframe id="mapa-cachorro" width="100%" height="302" frameborder="0" scrolling="no" zoom="15" style="border:0;" marginheight="0" marginwidth="0" src="https://maps.google.com.br/maps?q=COORDENADA&output=embed&dg=oo"></iframe>
+          <div class="w3-container w3-border-top w3-padding-16 w3-light-grey" style="width: 100%;position: absolute;left: 0;">
+            <button class="w3-button w3-green" type="submit">Salvar</button>
+            <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+<!-- end dogs -->
 </div>

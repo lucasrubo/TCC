@@ -1,10 +1,9 @@
-<%- include('header', {titulo:'Lista de Usuários'}); %>
+<%- include('header', {titulo:'Lista de Cachorros'}); %>
 <%- include('menu', {variant:'sistema'}); %>
-
 <section class="layout_padding">
     <div class="custom_heading-container">
       <h3 class=" ">
-        Lista de Usuários
+        Lista de Cachorros
       </h3>
     </div>
     <div class="container layout_padding2-top">
@@ -15,41 +14,41 @@
                     <tr>
                         <th>id</th>
                         <th>Nome</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Nível</th>
+                        <th>Raça</th>
                         <th>Criado</th>
                         <th>Atualizado</th>
                         <th hidden >Imagem</th>
                         <th>Empresa</th>
+                        <th hidden >Latidude</th>
+                        <th hidden >Longitude</th>
+                        <th >Usuário</th>
                     </tr>
                 </thead>
-                <tbody id="usuario">
-                    <% for(var i = 0; lista_usuarios.length>i;i++){ %>
+                <tbody id="dogs">
+                    <% for(var i = 0; lista.length>i;i++){ %>
                     <tr>
-                        <td><%= lista_usuarios[i].id %></td>
-                        <td><%= lista_usuarios[i].name %></td>
-                        <td><%= lista_usuarios[i].username %></td>
-                        <td><%= lista_usuarios[i].email %></td>
-                        <td><%= lista_usuarios[i].type %></td>
+                        <td><%= lista[i].id %></td>
+                        <td><%= lista[i].nome %></td>
+                        <td><%= lista[i].raça %></td>
                         <td>
                             <%
-                                let data_criada = lista_usuarios[i].createdAt;
+                                let data_criada = lista[i].createdAt;
                                 let dataFormatada_criada = ((data_criada.getDate() )) + "/" + ((data_criada.getMonth() + 1)) + "/" + data_criada.getFullYear(); 
                             %>
                             <%=  dataFormatada_criada  %>
                         </td>
                         <td>
                             <%
-                                let data =lista_usuarios[i].updatedAt;
+                                let data =lista[i].updatedAt;
                                 let dataFormatada = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
                             %>
                             <%=  dataFormatada  %>
                         </td>
-                        <td hidden>
-                            <%= lista_usuarios[i].imagem %>
-                        </td>
-                        <td><%= lista_usuarios[i].empresa %></td>
+                        <td><%= lista[i].empresa %></td>
+                        <td hidden><%= lista[i].imagem %></td>
+                        <td hidden><%= lista[i].latitude %></td>
+                        <td hidden><%= lista[i].longitude %></td>
+                        <td><%= lista[i].usuario %></td>
                     </tr>
                     <% } %>
                 </tbody>

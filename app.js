@@ -11,12 +11,13 @@ const jwt = require('jsonwebtoken');
 
 const User = require('./models/User');
 const Image = require('./models/Images');
+const Dogs = require('./models/Dogs');
 const db = require('./models/db');
 
-const path = require('path')
+const func = require('./models/functions');
+const path = require('path');
 
 const { logado } = require('./middlewares/auth');
-const func = require('./models/functions');
 const { getUser } = require('./middlewares/getUser');
 const uploadUser  = require('./middlewares/uploadImage');
 
@@ -48,6 +49,16 @@ app.get('/', getUser, async (req, res) => {
         res.render('index',{'userValues' : ''});
     }
 });
+// index pages
+app.get('/mapa', getUser, async (req, res) => {
+    if(req.userValues){
+        // console.log(req.userValues);
+        res.render('mapa',{'userValues' : req.userValues});
+    }else{
+        // console.log('foi');
+        res.render('mapa',{'userValues' : ''});
+    }
+});
 
 // # Relacionado Conta
 app.get('/usuario/perfil',getUser, async (req, res) => {
@@ -67,7 +78,8 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
         const check_id = await Image.findOne({
             attributes: ['id','image'],
             where: {
-                user_id: decode.id
+                user_id: decode.id,
+                type: "perfil"
             }
         });
         if(!check_id){
@@ -75,7 +87,8 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
                 attributes: ['id'],
                 order: [
                     ['id', 'DESC'],
-                ]
+                ],
+                limit: 1
             });
         }
         var newfilepath= 'public/upload/'+req.file.filename;
@@ -92,7 +105,8 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
         await Image.upsert({
             id: image_id,
             image: req.file.filename,
-            user_id: decode.id
+            user_id: decode.id,
+            type: "perfil"
         })
         .then(() => {
             sharp(filepath)
@@ -178,10 +192,9 @@ app.post('/logout', (req, res) => {
 
 // # Sistema
 app.get('/sistema', logado, async (req, res) => {    
-    res.render('sistema');
+    res.render('sistema',{'userValues' : req.userValues});
 });
 // ## usuários
-
 // ### Cadastrar
 app.get('/sistema/cadastro-usuario', logado, (req, res) => {
     if(req.userValues.type == 'admin'){
@@ -200,7 +213,8 @@ app.post("/sistema/cadastrar-usuario-post", logado, async (req, res) => {
             username: req.body.username,
             name: req.body.name,
             email: req.body.email,
-            password: senha_criptografada
+            password: senha_criptografada,
+            empresa: req.userValues.empresa
         }).then(function(){
             console.log("Usuário Cadastrado com sucesso");
             res.redirect('/sistema/cadastro-usuario');
@@ -216,12 +230,21 @@ app.post("/sistema/cadastrar-usuario-post", logado, async (req, res) => {
 
 // listar
 app.get('/sistema/listar-usuarios', logado, async (req, res) => {   
-    const user = await User.findAll();
+    if(req.userValues.empresa == 'dev'){        
+        var user = await User.findAll();
+    }else{
+        var user = await User.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
     for(var i = 0; user.length>i;i++){
         const getImage = await Image.findOne({
             attributes: ['id','image'],
             where: {
-                user_id: user[i].id
+                user_id: user[i].id,
+                type: "perfil"
             }
         });        
         if(getImage){
@@ -252,6 +275,120 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
     }
 });
 // ##! usuários
+
+// ## Cachorros
+
+// ### Cadastrar
+app.get('/sistema/cadastro-cachorro', logado, (req, res) => {
+    res.render('cadastro-cachorro',{'userValues' : req.userValues});  
+});
+app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), async (req, res) => { 
+    
+    if (req.file) { 
+        const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+        var id = decode.id; 
+        Dogs.create({
+            nome: req.body.name,
+            raça: req.body.raca,
+            latitude: req.body.latitude_form,
+            longitude: req.body.longitude_form,
+            user_id: id,
+            empresa: req.userValues.empresa
+        }).then(async function(){
+            console.log("Dog Cadastrado com sucesso");
+            var newfilepath= 'public/upload/'+req.file.filename;
+            var filepath= 'public/upload/antes_redimensionar/'+req.file.filename;  
+            const last_id_dog = await Dogs.findAll({
+                attributes: ['id'],
+                order: [
+                    ['id', 'DESC'],
+                ],
+                limit: 1
+            });    
+            
+            for(var i = 0; last_id_dog.length>i;i++){ 
+                var last_dog_id = last_id_dog[i].id;
+            }
+            
+            await Image.create({
+                image: req.file.filename,
+                user_id: last_dog_id,
+                type: "dog"
+            })
+            .then(() => {
+                sharp(filepath)
+                .resize({width:225})
+                .jpeg({ mozjpeg: true })
+                .toFile(`${newfilepath}`)
+                .then( data => { 
+                    console.log("foi: ");
+                    fs.unlink(filepath, (err) => {
+                        if (err) {
+                            console.error(err)
+                            return
+                        }                  
+                        //file removed
+                    });
+                })
+                .catch( err => { 
+                    console.log(err);
+                });
+            }).catch((err) => {
+                console.log('Arquivo não enviado'+err);
+                fs.unlink(filepath, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }                  
+                    //file removed
+                });
+            });
+            res.redirect('/sistema/cadastro-cachorro');
+        }).catch(function(erro){
+            console.log("Erro: Dog Não Cadastrado! " + erro);
+            res.redirect('/sistema/cadastro-cachorro');
+        }) 
+    }
+});
+// ###! Cadastrar
+
+// listar
+app.get('/sistema/listar-cachorros', logado, async (req, res) => {   
+    if(req.userValues.empresa == 'dev'){        
+        var dog = await Dogs.findAll();
+    }else{
+        var dog = await Dogs.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
+    for(var i = 0; dog.length>i;i++){
+        const getImage = await Image.findOne({
+            attributes: ['id','image'],
+            where: {
+                user_id: dog[i].id,
+                type: "dog"
+            }
+        });      
+        const getUser_dog = await User.findOne({
+            attributes: ['id','name','email'],
+            where: {
+                id: dog[i].user_id
+            }
+        });        
+        if(getImage){
+            dog[i]['imagem'] = getImage.image;
+        }        
+        if(getUser_dog){
+            dog[i]['usuario'] = getUser_dog.name;
+        }
+    }
+    // console.log(dog)
+    res.render('listar-cachorros',{'userValues' : req.userValues,'lista':dog});      
+});
+// ##! Cachorros
+
 // #! Sistema
 
 app.listen(port,() => {

@@ -18,7 +18,7 @@ module.exports = {
             if(token){   
                 const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
                 const user = await User.findOne({
-                    attributes: ['username','name', 'email','type'],
+                    attributes: ['username','name', 'email','type','empresa'],
                     where: {
                         id: decode.id
                     }

@@ -18,36 +18,41 @@
             <ul class="navbar-nav  ">
               <% if(userValues.type != "normal" && userValues.type){ %>
               <li id="inicio-menu" class="nav-item dropdown">
-                <a class="nav-link link-direto <% if(variant == 'index'){ %><%= "active" %><% } %>" <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=/" %><% } %>>Início</a>                
+                <a class="nav-link link-direto <% if(variant == 'index'){ %><%= "active" %><% } %>" <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=../" %><% } %>>Início</a>                
                   <div class="dropdown-content">
-                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=/#quem-somos" %><% } %>> Sobre</a>
-                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=/#servicos" %><% } %>> Serviços</a>
-                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>> Contato</a>
+                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=../#quem-somos" %><% } %>> Sobre</a>
+                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=../#servicos" %><% } %>> Serviços</a>
+                    <a class="link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=../#contato" %><% } %>> Contato</a>
                   </div>
               </li>
               <li id="sistemas" class="nav-item dropdown">
-                <a class="nav-link link-direto <% if(variant == 'sistema'){ %><%= "active" %><% } %>">Sistemas</a>              
+                <a class="nav-link link-direto <% if(variant == 'sistema'){ %><%= "active" %><% } %>" href="../sistema">Sistemas</a>              
                 <div class="dropdown-content">
                   <% if(userValues.type=='admin'){ %>
                   <a href="/sistema/cadastro-usuario" class="link-direto" >Cadastro de Úsuario</a>
                   <% }  %>
                   <a href="/sistema/listar-usuarios" class="link-direto" >Lista de Úsuario</a>
+                  <a href="/sistema/cadastro-cachorro" class="link-direto" >Cadastro de Dogs</a>
+                  <a href="/sistema/listar-cachorros" class="link-direto" >Lista de Cachorros</a>
                 </div>
               </li>
               <% }else{  %>
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=/" %><% } %>>Início</a> 
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#inicio" %><% } else { %><%= "href=../" %><% } %>>Início</a> 
                 </li> 
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=/#quem-somos" %><% } %>> Sobre</a>
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#quem-somos" %><% } else { %><%= "href=../#quem-somos" %><% } %>> Sobre</a>
                 </li>
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=/#servicos" %><% } %>> Serviços</a>
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#servicos" %><% } else { %><%= "href=../#servicos" %><% } %>> Serviços</a>
                 </li>
                 <li id="inicio-menu" class="nav-item">
-                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=/#contato" %><% } %>> Contato</a>
+                  <a class="nav-link link-direto" <% if(variant == 'index'){ %><%= "href=#contato" %><% } else { %><%= "href=../#contato" %><% } %>> Contato</a>
                 </li>
                 <% } %>
+                <li id="inicio-menu" class="nav-item">
+                  <a class="nav-link link-direto <% if(variant == 'mapa'){ %><%= "active" %><% } %>" href="../mapa">Mapa</a> 
+                </li> 
             </ul>
           </div>
         </div>
@@ -65,8 +70,7 @@
           </a>                       
           <div class="dropdown-content" style="right:0;margin-top: 4px;">
             <% if(userValues){ %>
-            <a href="../usuario/perfil" class="link-direto">Perfil</a>
-            <a href="" class="link-direto">Configurações</a>   
+            <a href="../usuario/perfil" class="link-direto">Configurações</a>   
             <form method="post" action="../logout">
               <button type="submit" class="link-direto botao-sair">Sair</button>
             </form>         

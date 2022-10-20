@@ -45,7 +45,9 @@
         text-align: center;
         margin-top: 25px;
     }
-
+    .box-cell{
+        display: inherit !important;
+    }
     .w3-modal {
         padding-top: 70px;
     }
