@@ -44,6 +44,6 @@ const Dogs = db.define('dogs', {
 //Criar a tabela
 // Dogs.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// Dogs.sync({ alter: true })
+Dogs.sync({ alter: true })
 
 module.exports = Dogs;
