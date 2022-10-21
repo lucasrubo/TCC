@@ -1,4 +1,28 @@
-$(document).ready(function() {
+$(document).ready(function($) {
+    $("#cpfcnpj").keydown(function(){
+        try {
+            $("#cpfcnpj").unmask();
+        } catch (e) {}
+    
+        var tamanho = $("#cpfcnpj").val().length;
+    
+        if(tamanho < 11){
+            $("#cpfcnpj").mask("999.999.999-99");
+        } else {
+            $("#cpfcnpj").mask("99.999.999/9999-99");
+        }
+    
+        // ajustando foco
+        var elem = this;
+        setTimeout(function(){
+            // mudo a posição do seletor
+            elem.selectionStart = elem.selectionEnd = 10000;
+        }, 0);
+        // reaplico o valor para mudar o foco
+        var currentValue = $(this).val();
+        $(this).val('');
+        $(this).val(currentValue);
+    });
     // Animação no Inicio 
     $(".link-direto").click(function(e) {
         var id = $(this).attr('href');
@@ -80,7 +104,7 @@ $(document).ready(function() {
             }
             $("#statusUsuario").val(status);
             
-            let data_criada = data[5].split('/');
+            let data_criada = data[6].split('/');
             var day = ("00" + data_criada[0]).slice(-2);
             var month = ("00" + (data_criada[1])).slice(-2);
             let dataFormatada_criada = data_criada[2]+"-"+month+"-"+day; 

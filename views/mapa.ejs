@@ -11,7 +11,7 @@
     }
 </style>
 
-<script type="text/javascript">
+<script type="text/javascript">    
     let map, infoWindow;
     function initMap() {
         const styledMapType = new google.maps.StyledMapType(stylesArray);
@@ -73,7 +73,26 @@
             }
             
         });
-        
+        <% for(var i = 0; lista.length>i;i++){ %>
+                
+            pos = {
+                lat: <%=lista[i].latitude %>,
+                lng: <%=lista[i].longitude %>,
+            };   
+            // The marker, positioned at Uluru
+            marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                title: '<%=lista[i].id %>',
+                icon: '../images/patinha-map.png'
+            });   
+        <% }%>
+            marker.addListener("click", () => {
+                infowindow.open({
+                anchor: marker,
+                map,
+                });
+            }); 
 
         //Associate the styled map with the MapTypeId and set it to display.
         map.mapTypes.set("styled_map", styledMapType);

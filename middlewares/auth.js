@@ -18,7 +18,7 @@ module.exports = {
             if(token){   
                 const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
                 const user = await User.findOne({
-                    attributes: ['username','name', 'email','type','empresa','ativo'],
+                    attributes: ['username','name', 'email','type','empresa','cpf','data_nascimento','newsletter','ativo'],
                     where: {
                         id: decode.id
                     }
@@ -46,7 +46,19 @@ module.exports = {
                     res.redirect('/');
                 }
             
-            }else{        
+            }else{     
+                req.userValues = [{
+                    username: '',
+                    name: '',
+                    email: '',
+                    type: '',
+                    empresa: '',
+                    cpf: '',
+                    data_nascimento: '',
+                    newsletter: '',
+                    ativo: 0
+                  }];
+            
                 console.log("Erro: Necessário realizar o login para acessar a página! Faltam o token B!");
                 req.userValues = '';  
                 return next();  

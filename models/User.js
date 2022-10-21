@@ -26,6 +26,19 @@ const User = db.define('users', {
         allowNull: false,
         unique: true
     },
+    cpf: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    data_nascimento: {
+        type: Sequelize.DATEONLY,
+        allowNull: true
+    },
+    newsletter: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: "off",
+    },
     password: {
         type: Sequelize.STRING,
         allowNull: false,

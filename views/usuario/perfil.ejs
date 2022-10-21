@@ -1,5 +1,10 @@
 <%- include('header', {titulo:'Perfil'}); %>
 <%- include('menu', {variant:'perfil'}); %>
+<style>
+  .w3-margin-bottom{
+    text-align: left;
+  }
+</style>
 
 <section class="contact_section layout_padding">
     <div class="custom_heading-container">
@@ -21,6 +26,46 @@
                   <% } %>   
                 </div>
                 <input type="file" name="avatar" accept="image/*"/>
+                
+                <div class="row-n">
+                  <div class="col-md-12 w3-margin-bottom">
+                    <label><b>Nome Completo</b></label>
+                    <input class="w3-input w3-border" type="text" placeholder="" id="name" name="name" value="<%= userValues.name %>">
+                  </div>
+                </div>
+                <div class="row-n">
+                  <div class="col-md-6 w3-margin-bottom">
+                    <label><b>Usuário</b></label>
+                    <input disabled class="w3-input w3-border" type="text" placeholder="" id="username" name="username" value="<%= userValues.username %>" required>
+                  </div>
+                  <div class="col-md-6 w3-margin-bottom">
+                    <label><b>Nova Senha</b></label>
+                    <input class="w3-input w3-border" type="password" placeholder="" id="senha" name="senha" value="">
+                  </div>
+                </div>
+                <div class="row-n">
+                  <div class="col-md-7 w3-margin-bottom">
+                    <label><b>E-mail</b></label>
+                    <input class="w3-input w3-border" type="email" placeholder="" id="email" name="email" value="<%= userValues.email %>" required>
+                  </div>
+                  <div class="col-md-5 w3-margin-bottom">
+                    <label><b>Data Nascimento</b></label>
+                    <input class="w3-input w3-border" type="date" placeholder="" id="nascimento" name="nascimento" value="<%= userValues.data_nascimento %>">
+                  </div>
+                </div>
+                <div class="row-n">
+                  <div class="col-md-12 w3-margin-bottom">
+                    <label><b>CPF/CPNJ</b></label>
+                    <input class="w3-input w3-border" type="text" placeholder="" id="cpfcnpj" name="cpf" value="<%= userValues.cpf %>">
+                  </div>
+                </div>
+                <div class="row-n">
+                  <div class="col-md-12 w3-margin-bottom">
+                    <label style="cursor:pointer;width: 100%;    text-align: left;">
+                      <input <% if(userValues.newsletter !='off'){ %>checked <% } %> id="newsletter" name="newsletter" class="input-simples" type="checkbox"> Receber informações por e-mail
+                    </label>
+                  </div>
+                </div>
             </div>
             <div class="d-flex justify-content-center ">
               <button>

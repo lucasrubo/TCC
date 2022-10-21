@@ -35,12 +35,14 @@
 <!-- Start usuario -->  
   <div id="UsuarioModel" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-    <div class="w3-center"><br>
-        <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
-        <img id="AvatarUser" alt="Avatar" style="height: 225px;width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-circle w3-margin-top" src="../images/usuario-branco.png">
-    </div>
-
       <form class="w3-container" action="/sistema/att-usuario-post" method="post">
+        <div class="w3-center"><br>
+            <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+            <img id="AvatarUser" alt="Avatar" style="height: 225px;width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-circle w3-margin-top" src="../images/usuario-branco.png">
+        </div>
+        <div class="w3-center"><br>
+            <span id="statusUser" class="w3-button w3-green" >Ativado</span>
+        </div>
         <input hidden readonly type="text" id="model_id" name="model_id" required>
         <div class="row-n">
           <div class="col-md-5 w3-margin-bottom">
@@ -73,7 +75,6 @@
           <button class="w3-button w3-green" type="submit">Salvar</button>
           <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
           <input  hidden readonly id="statusUsuario" name="statusUsuario" type="text">
-          <span id="statusUser" class="w3-button w3-green" style="position: absolute;right: 0;margin-right: 20px;">Ativado</span>
         </div>
 
       </form>

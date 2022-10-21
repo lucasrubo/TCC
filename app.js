@@ -6,6 +6,9 @@ const { promisify } = require('util');
 const fs = require('fs');
 const sharp = require('sharp');
 
+const https = require('https');
+const cors = require('cors');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -21,25 +24,43 @@ const { logado } = require('./middlewares/auth');
 const { getUser } = require('./middlewares/getUser');
 const uploadUser  = require('./middlewares/uploadImage');
 
-const router = express.Router();
 const app = express();
-const port = 8080;
+const port = 8081;
+
+let date_ob = new Date();
+
+// current date
+// adjust 0 before single digit date
+let date = ("0" + date_ob.getDate()).slice(-2);
+
+// current month
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+// current year
+let year = date_ob.getFullYear();
+
+// current hours
+let hours = date_ob.getHours();
+
+// current minutes
+let minutes = date_ob.getMinutes();
+
+// current seconds
+let seconds = date_ob.getSeconds();
 
 // let’s you use the cookieParser in your application
 app.use(cookieParser());
-
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+//parse application/json
+app.use(bodyParser.json())
+app.use(cors());
 
 app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 app.set('views', [  path.join(__dirname, './views'),
                     path.join(__dirname, './views/sistema/'),
                     path.join(__dirname, './views/usuario/')]);
-
-app.use(bodyParser.urlencoded({ extended: false }))
-//parse application/json
-app.use(bodyParser.json())
-
 // index pages
 app.get('/', getUser, async (req, res) => {
     if(!req.userValues){
@@ -49,13 +70,33 @@ app.get('/', getUser, async (req, res) => {
 });
 // index pages
 app.get('/mapa', getUser, async (req, res) => {
-    if(req.userValues){
-        // console.log(req.userValues);
-        res.render('mapa',{'userValues' : req.userValues});
-    }else{
-        // console.log('foi');
-        res.render('mapa',{'userValues' : ''});
+    if(!req.userValues){
+        req.userValues = "";
     }
+    
+    var dog = await Dogs.findAll();
+    for(var i = 0; dog.length>i;i++){
+        const getImage = await Image.findOne({
+            attributes: ['id','image'],
+            where: {
+                user_id: dog[i].id,
+                type: "dog"
+            }
+        });      
+        const getUser_dog = await User.findOne({
+            attributes: ['id','name','email'],
+            where: {
+                id: dog[i].user_id
+            }
+        });        
+        if(getImage){
+            dog[i]['imagem'] = getImage.image;
+        }        
+        if(getUser_dog){
+            dog[i]['usuario'] = getUser_dog.name;
+        }
+    }
+    res.render('mapa',{'userValues' : req.userValues,'lista':dog});      
 });
 
 // # Relacionado Conta
@@ -69,9 +110,13 @@ app.get('/usuario/perfil',getUser, async (req, res) => {
     }
 });
 app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) => {   
+    var nascimento = req.body.nascimento;
+    if(!nascimento){
+        nascimento = null;
+    }
+    var decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
     if (req.file) {
         //console.log(req.file);
-        const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
         
         const check_id = await Image.findOne({
             attributes: ['id','image'],
@@ -144,8 +189,42 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
                 //file removed
             });
         });
-        res.redirect('/usuario/perfil');
+    }    
+    var newsletter_s = req.body.newsletter;
+    if(!newsletter_s){
+        newsletter_s = "off";
     }
+    await User.update(
+        { 
+        name: req.body.name,
+        email: req.body.email,
+        cpf: req.body.cpf,
+        data_nascimento: nascimento,
+        newsletter: newsletter_s,        
+        updatedAt: year + "-" + month + "-" + date
+        },
+        { where: { id: decode.id } }
+      )
+    .then(() => {           
+        console.log('Atualizado')
+    }).catch((err) => {
+        console.log('Erro ao atualizar:'+ err)
+    });
+    if(req.body.senha){
+        const senha_criptografada = await func.generatePassword(req.body.senha);
+        await User.update(
+            { 
+            password: senha_criptografada,
+            },
+            { where: { id: decode.id } }
+          )
+        .then(() => {           
+            console.log('Atualizado')
+        }).catch((err) => {
+            console.log('Erro ao atualizar:'+ err)
+        });
+    }
+    res.redirect('/usuario/perfil');
 });
 app.post('/login', async (req, res) => {
     const user = await User.findOne({
@@ -210,26 +289,49 @@ app.get('/sistema/cadastro-usuario', logado, (req, res) => {
         res.redirect('/');
     }    
 });
-app.post("/sistema/cadastrar-usuario-post", logado, async (req, res) => {    
-    if(req.userValues.type=='admin'){
-        const senha_criptografada = await func.generatePassword(req.body.senha)
-        User.create({
-            type: req.body.type,
-            username: req.body.username,
-            name: req.body.name,
-            email: req.body.email,
-            password: senha_criptografada,
-            empresa: req.userValues.empresa
-        }).then(function(){
-            console.log("Usuário Cadastrado com sucesso");
-            res.redirect('/sistema/cadastro-usuario');
-        }).catch(function(erro){
-            console.log("Erro: Usuário Não Cadastrado! " + erro);
-            res.redirect('/sistema/cadastro-usuario');
-        }) 
-    }else{
-        res.redirect('../');
+app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {    
+    const senha_criptografada = await func.generatePassword(req.body.senha);
+    var empresa_post = req.userValues.empresa;
+    var user_type = req.userValues.type;
+    var nascimento = req.body.nascimento;
+    var name_p = req.body.name;
+    var cpf_p = req.body.cpf;
+    var newsletter_p = req.body.newsletter;
+    if(!empresa_post){
+        empresa_post = "normal";
     }
+    if(!user_type){
+        user_type = "normal";
+    }
+    if(!nascimento){
+        nascimento = null;
+    }
+    if(!name_p){
+        name_p = null;
+    }
+    if(!cpf_p){
+        cpf_p = null;
+    }
+    if(!newsletter_p){
+        newsletter_p = "off";
+    }
+    User.create({
+        type: user_type,
+        username: req.body.username,
+        name: name_p,
+        email: req.body.email,
+        password: senha_criptografada,
+        empresa: empresa_post,
+        data_nascimento: nascimento,
+        cpf: cpf_p,
+        newsletter: newsletter_p,
+        ativo: 0
+    }).then(function(){
+        console.log("Usuário Cadastrado com sucesso");
+    }).catch(function(erro){
+        console.log("Erro: Usuário Não Cadastrado! " + erro);
+    });
+    res.redirect('/');
 });
 // ###! Cadastrar
 
@@ -402,3 +504,7 @@ app.get('/sistema/listar-cachorros', logado, async (req, res) => {
 app.listen(port,() => {
     console.log(`Servidor rodando na porta ${port}`);
 });
+https.createServer({
+    cert: fs.readFileSync('ssl/code.crt'),
+    key: fs.readFileSync('ssl/code.key'),
+}, app).listen(8080, () => console.log("Rodando em https"));
