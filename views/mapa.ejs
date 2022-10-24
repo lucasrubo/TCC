@@ -1,7 +1,7 @@
 <%- include('header', {titulo:'Mapa'}); %>
 <%- include('menu', {variant:'mapa'}); %>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly&libraries=places" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly&libraries=places,visualization" defer></script>
 <script type="text/javascript" src="../js/estilo-map.js"></script>
 <style>
     #map{
@@ -12,9 +12,11 @@
 </style>
 
 <script type="text/javascript">    
-    let map, infoWindow;
+    var map, infoWindow,marker,markerCluster,heatmap;
+    var markers = [];
+    var _points = [];
     function initMap() {
-        const styledMapType = new google.maps.StyledMapType(stylesArray);
+        var styledMapType = new google.maps.StyledMapType(stylesArray);
         map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: -22.925792615630975, lng: -47.037313460961876 },
             zoom: 15,
@@ -34,7 +36,7 @@
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.bindTo('bounds', map);
 
-        var infowindow = new google.maps.InfoWindow();
+        var infoWindow = new google.maps.InfoWindow();
         
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -73,8 +75,17 @@
             }
             
         });
-        <% for(var i = 0; lista.length>i;i++){ %>
-                
+
+
+        //Associate the styled map with the MapTypeId and set it to display.
+        map.mapTypes.set("styled_map", styledMapType);
+        map.setMapTypeId("styled_map");
+        habilitarMarkers();
+        
+    }
+    function habilitarMarkers(){
+        clearMarkers();
+        <% for(var i = 0; lista.length>i;i++){ %>                
             pos = {
                 lat: <%=lista[i].latitude %>,
                 lng: <%=lista[i].longitude %>,
@@ -86,19 +97,34 @@
                 title: '<%=lista[i].id %>',
                 icon: '../images/patinha-map.png'
             });   
+            markers.push(marker);
         <% }%>
-            marker.addListener("click", () => {
-                infowindow.open({
-                anchor: marker,
-                map,
-                });
-            }); 
-
-        //Associate the styled map with the MapTypeId and set it to display.
-        map.mapTypes.set("styled_map", styledMapType);
-        map.setMapTypeId("styled_map");
+        markerCluster = new markerClusterer.MarkerClusterer({ map, markers });
     }
-    
+    function habilitarHeatmap(){
+        clearMarkers();
+        <% for(var i = 0; lista.length>i;i++){ %>   
+            _points.push(new google.maps.LatLng(<%=lista[i].latitude %>, <%=lista[i].longitude %>));
+        <% }%> 
+        
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: _points
+        });
+        heatmap.setMap(map);
+    }
+    function clearMarkers(){        
+        $.each(markers,function(key,marker){
+            marker.setMap(null);
+        });
+        markers = [];
+        if(!$.isEmptyObject(markerCluster)){
+            markerCluster.setMap(null);
+        }
+        if(_points != ''){
+            heatmap.setMap(null);
+        }
+        _points = [];
+    }
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(
@@ -110,15 +136,23 @@
 
 window.initMap = initMap;
 
+$('a[role="img"]').click(function(){
+    alert("a")
+});
 </script>
 
         
 <section class="contact_section layout_padding">
     <center style="width: 100%;height: 100%;">    
-        <input id="searchInput" style="width: 24rem;" class="controls" type="text" placeholder="Enter a location">            
+        <div style="position:absolute;top:55px;width:100%;height:45px;background-color: rgba(255, 255, 255, 0.24);">
+            <input style='width:auto' type="radio" name="grupo1" checked onclick="habilitarMarkers();">Marcadores
+            <input style='width:auto' type="radio" name="grupo1" onclick="habilitarHeatmap();">Concentração
+        </div>
+        <input id="searchInput" style="width: 70%;max-width: 450px;" class="controls" type="text" placeholder="Enter a location">            
         <div id="map"></div>
     </center>
 </section>
+<script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>` 
 
 
 <%- include('footer',{variant:''}); %>
