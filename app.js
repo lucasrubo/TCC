@@ -72,30 +72,29 @@ app.get('/', getUser, async (req, res) => {
 app.get('/mapa', getUser, async (req, res) => {
     if(!req.userValues){
         req.userValues = "";
-    }
-    
+    }    
     var dog = await Dogs.findAll();
-    for(var i = 0; dog.length>i;i++){
-        const getImage = await Image.findOne({
-            attributes: ['id','image'],
-            where: {
-                user_id: dog[i].id,
-                type: "dog"
+        for(var i = 0; dog.length>i;i++){
+            const getImage = await Image.findOne({
+                attributes: ['id','image'],
+                where: {
+                    user_id: dog[i].id,
+                    type: "dog"
+                }
+            });      
+            const getUser_dog = await User.findOne({
+                attributes: ['id','name','email'],
+                where: {
+                    id: dog[i].user_id
+                }
+            });        
+            if(getImage){
+                dog[i]['imagem'] = getImage.image;
+            }        
+            if(getUser_dog){
+                dog[i]['usuario'] = getUser_dog.name;
             }
-        });      
-        const getUser_dog = await User.findOne({
-            attributes: ['id','name','email'],
-            where: {
-                id: dog[i].user_id
-            }
-        });        
-        if(getImage){
-            dog[i]['imagem'] = getImage.image;
-        }        
-        if(getUser_dog){
-            dog[i]['usuario'] = getUser_dog.name;
-        }
-    }
+        }    
     res.render('mapa',{'userValues' : req.userValues,'lista':dog});      
 });
 
@@ -260,7 +259,7 @@ app.post('/login', async (req, res) => {
     res.cookie(`Authorization`,token);
     res.redirect('back');
 });
-app.post('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
     //show the saved cookies
     res.clearCookie('Authorization');
     res.redirect('/');

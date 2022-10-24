@@ -71,7 +71,7 @@
           <div class="dropdown-content" style="right:0;margin-top: 4px;">
             <% if(userValues.username){ %>
             <a href="../usuario/perfil" class="link-direto">Configurações</a>   
-            <form method="post" action="../logout">
+            <form method="GET" action="../logout">
               <button type="submit" class="link-direto botao-sair">Sair</button>
             </form>         
             <% }else{ %>      
