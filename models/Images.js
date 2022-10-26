@@ -25,6 +25,6 @@ const Image = db.define('images', {
 //Criar a tabela
 //Image.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-Image.sync({ alter: true })
+// Image.sync({ alter: true })
 
 module.exports = Image;

@@ -1,7 +1,6 @@
 <%- include('header', {titulo:'Mapa'}); %>
 <%- include('menu', {variant:'mapa'}); %>
 
-<script type="text/javascript" src="../js/estilo-map.js"></script>
 <style>
     #map{
         height: 48rem;
@@ -57,7 +56,7 @@
             handleLocationError(false, infoWindow, map.getCenter());
         }
         autocomplete.addListener('place_changed', function() {
-            infowindow.close();
+            infoWindow.close();
             var place = autocomplete.getPlace();
             if (!place.geometry) {
                 window.alert("Autocomplete's returned place contains no geometry");
