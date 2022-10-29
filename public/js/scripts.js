@@ -42,8 +42,7 @@ $(document).ready(function($) {
     $("#closeModelx,#closeModelCancel").click(function() {
         $("#full-tela").addClass("invisible");
         $("#LoginModal").css('display','none');
-        $("#UsuarioModel").css('display','none');
-        $("#DogModel").css('display','none');
+        $("#Model").css('display','none');
         $("html").css('overflow','auto');
     });
 
@@ -83,7 +82,7 @@ $(document).ready(function($) {
             var data = table.row(this).data();
             // console.log(data);
             $("#full-tela").removeClass("invisible");
-            $("#UsuarioModel").css('display','block');
+            $("#Model").css('display','block');
             $("html").css('overflow','hidden');
     
             $("#model_id").val(data[0]);
@@ -129,7 +128,7 @@ $(document).ready(function($) {
         var data = table.row(this).data();
         // console.log(data);
         $("#full-tela").removeClass("invisible");
-        $("#DogModel").css('display','block');
+        $("#Model").css('display','block');
         $("html").css('overflow','hidden');   
         $("#model_dogname").val(data[1]);
         $("#model_raça").val(data[2]);
@@ -162,5 +161,13 @@ $(document).ready(function($) {
    
    $('.load').hide();   
    $("#full-tela").addClass("invisible");   
-   
+   var erro_atual = ((window.location.href).split('?'))[1].replaceAll('-',' ');
+
+   if(erro_atual){
+        conteudo = '<div class="w3-container erro-model">'+erro_atual+'</div>';
+        $("#full-tela").removeClass("invisible");
+        $("#Model").css('display','block');
+        $("html").css('overflow','hidden');   
+        $("#conteudoModel").html(conteudo);
+   }
 });

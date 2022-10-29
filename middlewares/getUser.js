@@ -24,7 +24,7 @@ module.exports = {
             });
             if(user.dataValues.ativo == 0){
                 res.clearCookie('Authorization');             
-                res.redirect('/');      
+                res.redirect('/?Usuário-não-ativado');
                 token = '';
             }
             if(user === null){

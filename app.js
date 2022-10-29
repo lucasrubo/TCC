@@ -15,6 +15,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/User');
 const Image = require('./models/Images');
 const Dogs = require('./models/Dogs');
+const Empresas = require('./models/Empresas');
 const db = require('./models/db');
 
 const func = require('./models/functions');
@@ -25,7 +26,7 @@ const { getUser } = require('./middlewares/getUser');
 const uploadUser  = require('./middlewares/uploadImage');
 
 const app = express();
-const port = 8081;
+const port = 8080;
 
 let date_ob = new Date();
 
@@ -100,12 +101,12 @@ app.get('/mapa', getUser, async (req, res) => {
 
 // # Relacionado Conta
 app.get('/usuario/perfil',getUser, async (req, res) => {
-    if(req.userValues){
-        // console.log(req.userValues);
+    if(req.userValues.username){
+        console.log(req.userValues);
         res.render('perfil',{'userValues' : req.userValues});
     }else{
         // console.log('foi');
-        res.redirect('/')
+        res.redirect('/?Precisa-estar-logado');
     }
 });
 app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) => {   
@@ -500,10 +501,7 @@ app.get('/sistema/listar-cachorros', logado, async (req, res) => {
 
 // #! Sistema
 
-app.listen(port,() => {
-    console.log(`Servidor rodando na porta ${port}`);
-});
 https.createServer({
     cert: fs.readFileSync('ssl/code.crt'),
     key: fs.readFileSync('ssl/code.key'),
-}, app).listen(8080, () => console.log("Rodando em https"));
+}, app).listen(port, () => console.log("Rodando em https"));

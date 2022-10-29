@@ -9,8 +9,8 @@ module.exports = {
         jwt.verify(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", function(err, decoded) {
             if (err) {
                 console.log(err);       
-                res.clearCookie('Authorization');                 
-                res.redirect('/');      
+                res.clearCookie('Authorization');        
+                res.redirect('/?Token-expirado');
                 token = '';
             }            
           });
@@ -24,8 +24,8 @@ module.exports = {
                     }
                 });
                 if(user.dataValues.ativo == 0){
-                    res.clearCookie('Authorization');             
-                    res.redirect('/');      
+                    res.clearCookie('Authorization');         
+                    res.redirect('/?Usuário-não-ativado');
                     token = '';
                 }
                 req.userId = decode.id;
@@ -43,7 +43,7 @@ module.exports = {
                 if(user.dataValues.type != "normal"){
                     return next();
                 }else{
-                    res.redirect('/');
+                    res.redirect('/?Usuário-sem-permissão');
                 }
             
             }else{     
@@ -65,7 +65,8 @@ module.exports = {
             }
         }catch(err){            
             console.log("Erro: Necessário realizar o login para acessar a página! Token inválido!"+ err);
-            res.redirect('/');
+                 
+            res.redirect('/?Precisa-estar-logado');
         }
     }
 }

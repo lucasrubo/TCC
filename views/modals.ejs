@@ -32,91 +32,20 @@
     </div>
   </div>
   <!-- end login -->
-<!-- Start usuario -->  
-  <div id="UsuarioModel" class="w3-modal">
-    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-      <form class="w3-container" action="/sistema/att-usuario-post" method="post">
-        <div class="w3-center"><br>
-            <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
-            <img id="AvatarUser" alt="Avatar" style="height: 225px;width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-circle w3-margin-top" src="../images/usuario-branco.png">
-        </div>
-        <div class="w3-center"><br>
-            <span id="statusUser" class="w3-button w3-green" >Ativado</span>
-        </div>
-        <input hidden readonly type="text" id="model_id" name="model_id" required>
-        <div class="row-n">
-          <div class="col-md-5 w3-margin-bottom">
-            <label><b>Nome</b></label>
-            <input class="w3-input w3-border" type="text" placeholder="" id="model_name" name="model_name">
-          </div>
-          <div class="col-md-5 w3-margin-bottom">
-            <label><b>Usuário</b></label>
-            <input class="w3-input w3-border" type="text" placeholder="" id="model_username" name="model_username" required>
-          </div>
-          <div class="col-md-5 w3-margin-bottom">
-            <label><b>E-mail</b></label>
-            <input class="w3-input w3-border" type="email" placeholder="" id="model_email" name="model_email" required>
-          </div>
-          <div class="col-md-5 w3-margin-bottom">
-            <label><b>Nível</b></label>
-            <input class="w3-input w3-border" type="text" placeholder="" id="model_level" name="model_level" required>
-          </div>
-          <div class="col-md-5 w3-margin-bottom">
-            <label><b>Atualizar</b></label>
-            <input class="w3-input w3-border" type="date" placeholder="" id="model_att_now" name="model_att_now" required>
-          </div>
-          <div class="col-md-5 w3-margin-bottom">
-            <label><b>Ult. Atualização</b></label>
-            <input class="w3-input w3-border" readonly type="date" placeholder="" id="model_att" name="model_att" required>
-          </div>
-        </div>
 
-        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-          <button class="w3-button w3-green" type="submit">Salvar</button>
-          <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
-          <input  hidden readonly id="statusUsuario" name="statusUsuario" type="text">
-        </div>
-
-      </form>
-    </div>
-  </div>
-<!-- end usuario -->
-
-<!-- Start dogs -->  
-  <div id="DogModel" class="w3-modal">
+<!-- Start Model -->  
+  <div id="Model" class="w3-modal" >
     <div class="w3-modal-content w3-card-4 w3-animate-zoom box-teste" style="max-width:900px">
       <div id="header-model" class="w3-center"><br>
           <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
       </div>
-      <div class="box-cell">
-        <img id="AvatarDog" alt="Avatar" style="width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-margin-top" src="../images/usuario-branco.png">
-      </div>
-      <div class="box-cell">
-        <form class="w3-container" action="/sistema/att-usuario-post" method="post">
-          <input hidden readonly type="text" id="model_id" name="model_id" required>
-          <div class="row-n">
-            <div class="col-md-5 w3-margin-bottom">
-              <label><b>Nome</b></label>
-              <input class="w3-input w3-border" type="text" placeholder="" id="model_dogname" name="model_dogname">
-            </div>
-            <div class="col-md-5 w3-margin-bottom">
-              <label><b>Raça</b></label>
-              <input class="w3-input w3-border" type="text" placeholder="" id="model_raça" name="model_raça" required>
-            </div>
-            <div class="col-md-5 w3-margin-bottom">
-              <label><b>Usuário</b></label>
-              <input class="w3-input w3-border" type="text" placeholder="" id="model_doguser" name="model_doguser" required>
-            </div>
-          </div>
-          <iframe id="mapa-cachorro" width="100%" height="302" frameborder="0" scrolling="no" zoom="15" style="border:0;" marginheight="0" marginwidth="0" src="https://maps.google.com.br/maps?q=COORDENADA&output=embed&dg=oo"></iframe>
-          <div class="w3-container w3-border-top w3-padding-16 w3-light-grey" style="width: 100%;position: absolute;left: 0;">
-            <button class="w3-button w3-green" type="submit">Salvar</button>
-            <button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button>
-          </div>
+      <div id="conteudoModel">
 
-        </form>
       </div>
     </div>
   </div>
-<!-- end dogs -->
+<!-- end Model -->
 </div>
+<script type="text/javascript">  
+  $("#conteudoModel").html(conteudo);
+</script>

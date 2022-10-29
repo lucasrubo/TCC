@@ -3,6 +3,19 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.erro-model{
+    /* height: 300px; */
+    vertical-align: middle;
+    margin-top: 16%;
+    padding-bottom: 17%;
+    font-size: 50px;
+    color: red;
+    /* font-style: revert; */
+    /* font-weight: 300; */
+}
+.w3-green{
+  margin-right: 10px;
+}
 .input-simples{
   width: auto !important;
 }
