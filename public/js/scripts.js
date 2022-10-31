@@ -124,7 +124,7 @@ $(document).ready(function($) {
               
     });
 
-    $('#tabela #dogs').on('click', 'tr', function () {
+    $('#tabela #dogs').on('click', 'td#editar', function (e) {
         var data = table.row(this).data();
         // console.log(data);
         $("#full-tela").removeClass("invisible");
@@ -134,9 +134,22 @@ $(document).ready(function($) {
         $("#model_raça").val(data[2]);
         $("#model_doguser").val(data[9]);
     
+        console.log(data[10]);
+        if(data[10] == "Desativado"){
+            var status = 0;
+            $("#statusUser").html('Desativado');
+            $("#statusUser").addClass("w3-red");
+            $("#statusUser").removeClass("w3-green");
+        }else{
+            var status = 1;
+            $("#statusUser").html('Ativado');
+            $("#statusUser").addClass("w3-green");
+            $("#statusUser").removeClass("w3-red");
+        }
+        $("#statusUsuario").val(status);
         
         
-        console.log(data[6]);
+        // console.log(data[6]);
         if(data[6]){
             $('#AvatarDog').attr("src",`../upload/${data[6]}`);
         }else{
@@ -161,13 +174,22 @@ $(document).ready(function($) {
    
    $('.load').hide();   
    $("#full-tela").addClass("invisible");   
-   var erro_atual = ((window.location.href).split('?'))[1].replaceAll('-',' ');
 
-   if(erro_atual){
-        conteudo = '<div class="w3-container erro-model">'+erro_atual+'</div>';
+    if((window.location.href).split('msg=')[1]){
+        var msg_atual = ((window.location.href).split('msg='))[1].replaceAll('-',' ');
+    }
+   if(msg_atual){
+        conteudo = '<div id="msgModel" class="w3-container model-msg">'+msg_atual+'</div>';
         $("#full-tela").removeClass("invisible");
         $("#Model").css('display','block');
         $("html").css('overflow','hidden');   
         $("#conteudoModel").html(conteudo);
+        if(msg_atual.includes('Erro:')){
+             $("#msgModel").addClass("erro-model");   
+        }else{
+            $("#msgModel").addClass("sucess-model");   
+        }
+        $("#ModelInicio").css('width','550px');   
+        
    }
 });

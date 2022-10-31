@@ -460,12 +460,12 @@ a:focus {
 
       &.b-1,
       &.b-3 {
-        animation: odd-box-animate 2s infinite;
+        animation: odd-box-animate 4s infinite;
       }
 
       &.b-2,
       &.b-4 {
-        animation: even-box-animate 2s infinite;
+        animation: even-box-animate 4s infinite;
       }
 
     }

@@ -20,9 +20,9 @@
                 <label>Avatar:</label>                
                 <div class="avatar-perfil">             
                   <% if(userValues.imagem){ %>
-                  <img class="user" src="../upload/<%= userValues.imagem %>">
+                  <img class="user" src="../upload/<%= userValues.imagem %>" onerror="this.src='../images/usuario-branco.png'">
                   <% }else{ %>      
-                  <img src="../images/usuario-branco.png" alt="" class="user" />  
+                  <img src="../images/usuario-branco.png" alt="" class="user" onerror="this.src='../images/usuario-branco.png'" />  
                   <% } %>   
                 </div>
                 <input type="file" name="avatar" accept="image/*"/>

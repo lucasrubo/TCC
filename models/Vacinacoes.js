@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
+const Dogs = require('./Dogs');
+const User = require('./User');
 
 const Vacinacoes = db.define('vacinacoes', {
     id: {
@@ -12,18 +14,9 @@ const Vacinacoes = db.define('vacinacoes', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    dog_id:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
     data_vacina: {
         type: Sequelize.DATEONLY,
         allowNull: true
-    },
-    user_id:{
-        type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: "1"
     },
     empresa: {
         type: Sequelize.STRING,
@@ -32,6 +25,20 @@ const Vacinacoes = db.define('vacinacoes', {
     }
 });
 
+Vacinacoes.belongsTo(User,{
+    constraint: true,
+    foreignKey: 'user_id'
+});
+Vacinacoes.belongsTo(Dogs,{
+    constraint: true,
+    foreignKey: 'dog_id'
+});
+User.hasMany(Vacinacoes,{
+    foreignKey: 'user_id'
+});
+Dogs.hasMany(Vacinacoes,{
+    foreignKey: 'dog_id'
+});
 //Criar a tabela
 // Vacinacoes.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração

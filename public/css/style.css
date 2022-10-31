@@ -3,15 +3,43 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+div#ModelInicio {
+  box-shadow: 0px 0px 5px #ffffff91;
+}
+.name{
+  width: 275px;
+  margin:-35px 10px 0px 10px;
+}
+#editar{
+  text-align: center;
+  background: #e1e1e1;
+  cursor: pointer;
+}
+#editar:hover{
+  background:#1241eb85;
+}
+#vacinas{
+  text-align: center;
+  background: #d1d1d1;
+  cursor: pointer;
+}
+#vacinas:hover{
+  background:#24eb1285;
+}
 .erro-model{
-    /* height: 300px; */
+    color: red;
+}
+.sucess-model{
+    color: green;
+}
+.col-md-5{
+  text-align: left;
+}
+.model-msg{
     vertical-align: middle;
-    margin-top: 16%;
+    margin-top: 10%;
     padding-bottom: 17%;
     font-size: 50px;
-    color: red;
-    /* font-style: revert; */
-    /* font-weight: 300; */
 }
 .w3-green{
   margin-right: 10px;
@@ -20,7 +48,10 @@ body {
   width: auto !important;
 }
 #header-model{
-  height: 50px;
+  height: 53px;
+  border-bottom: 1px solid #cccccc;
+  background: #f1f1f1;
+  margin-bottom: 10px;
 }
 .box-teste .box-cell{
   display : table-cell;   
@@ -98,6 +129,7 @@ body {
   padding: 5px 5px;
   width: 100%;
   text-align: left;
+  color:black;
 }
 .botao-sair:hover{
   background: #dc3545;

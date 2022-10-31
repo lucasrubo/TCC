@@ -62,9 +62,9 @@
           <a class="navbar-user">
             <span>
               <% if(userValues.imagem){ %>
-              <img class="user-logo" src="../upload/<%= userValues.imagem %>">
+              <img class="user-logo" src="../upload/<%= userValues.imagem %>" onerror="this.src='../images/usuario-branco.png'">
               <% }else{ %>      
-              <img src="../images/usuario-branco.png" alt="" class="user-logo" />  
+              <img src="../images/usuario-branco.png" alt="" class="user-logo" onerror="this.src='../images/usuario-branco.png'" />  
               <% } %>            
             </span>
           </a>                       

@@ -2,7 +2,7 @@
 <%- include('menu', {variant:'sistema'}); %>
 
 <script type="text/javascript">  
-    conteudo = '<div class="box-cell"><img id="AvatarDog" alt="Avatar" style="width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-margin-top" src="../images/usuario-branco.png"></div><div class="box-cell"><form class="w3-container" action="/sistema/att-usuario-post" method="post"><input hidden readonly type="text" id="model_id" name="model_id" required><div class="row-n"><div class="col-md-5 w3-margin-bottom"><label><b>Nome</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_dogname" name="model_dogname"></div><div class="col-md-5 w3-margin-bottom"><label><b>Raça</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_raça" name="model_raça" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Usuário</b></label><input readonly class="w3-input w3-border" type="text" placeholder="" id="model_doguser" name="model_doguser" required></div></div><iframe id="mapa-cachorro" width="100%" height="302" frameborder="0" scrolling="no" zoom="15" style="border:0;" marginheight="0" marginwidth="0" src="https://maps.google.com.br/maps?q=COORDENADA&output=embed&dg=oo"></iframe><div class="w3-container w3-border-top w3-padding-16 w3-light-grey" style="width: 100%;position: absolute;left: 0;"><button class="w3-button w3-green" type="submit">Salvar</button><button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button></div></form></div>';
+    conteudo = '<form class="w3-container" action="/sistema/att-usuario-post" method="post"><div class="box-cell"><span id="statusUser" class="w3-button w3-green w3-margin-top" >Ativado</span><img id="AvatarDog" alt="Avatar" style="width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-margin-top" src="../images/usuario-branco.png"></div><div class="box-cell"><input hidden readonly type="text" id="model_id" name="model_id" required><div class="row-n"><div class="col-md-5 w3-margin-bottom"><label><b>Nome</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_dogname" name="model_dogname"></div><div class="col-md-5 w3-margin-bottom"><label><b>Raça</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_raça" name="model_raça" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Usuário</b></label><input readonly class="w3-input w3-border" type="text" placeholder="" id="model_doguser" name="model_doguser" required></div></div><iframe id="mapa-cachorro" width="100%" height="302" frameborder="0" scrolling="no" zoom="15" style="border:0;" marginheight="0" marginwidth="0" src="https://maps.google.com.br/maps?q=COORDENADA&output=embed&dg=oo"></iframe><div class="w3-container w3-border-top w3-padding-16 w3-light-grey" style="width: 100%;position: absolute;left: 0;"><button class="w3-button w3-green" type="submit">Salvar</button><button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button></div><input  hidden readonly id="statusUsuario" name="statusUsuario" type="text"></div></form>';
 </script>
 <section class="layout_padding">
     <div class="custom_heading-container">
@@ -26,6 +26,9 @@
                         <th hidden >Latidude</th>
                         <th hidden >Longitude</th>
                         <th >Usuário que criou</th>
+                        <th >Status</th>
+                        <th class="no-sort" >Ações</th>
+                        <th class="no-sort"></th>
                     </tr>
                 </thead>
                 <tbody id="dogs">
@@ -53,6 +56,9 @@
                         <td hidden><%= lista[i].latitude %></td>
                         <td hidden><%= lista[i].longitude %></td>
                         <td><%= lista[i].usuario %></td>
+                        <td><% if(lista[i].ativo == 1){ %>Ativo<% }else{ %>Desativado<%} %></td>
+                        <td id="editar"><b>Editar</b></td>
+                        <td id="vacinas"><b>Vacinas</b></td>
                     </tr>
                     <% } %>
                 </tbody>

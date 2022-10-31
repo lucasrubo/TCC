@@ -11,12 +11,17 @@ const cors = require('cors');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
+// Banco de dados
 const User = require('./models/User');
 const Image = require('./models/Images');
 const Dogs = require('./models/Dogs');
 const Empresas = require('./models/Empresas');
+const Vacinas = require('./models/Vacinas');
+const Vacinacoes = require('./models/Vacinacoes');
 const db = require('./models/db');
+// db.sync({ alter: true,force:true});
 
 const func = require('./models/functions');
 const path = require('path');
@@ -29,23 +34,17 @@ const app = express();
 const port = 8080;
 
 let date_ob = new Date();
-
 // current date
 // adjust 0 before single digit date
 let date = ("0" + date_ob.getDate()).slice(-2);
-
 // current month
 let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-
 // current year
 let year = date_ob.getFullYear();
-
 // current hours
 let hours = date_ob.getHours();
-
 // current minutes
 let minutes = date_ob.getMinutes();
-
 // current seconds
 let seconds = date_ob.getSeconds();
 
@@ -69,12 +68,51 @@ app.get('/', getUser, async (req, res) => {
     }
     res.render('index',{'userValues' : req.userValues});
 });
+app.post('/email-contato', async (req, res) => {    
+    var name_p = req.body.name;
+    var email_p = req.body.email;
+    var tel_p = req.body.tel;
+    var tipo_p = req.body.tipo;
+    var msg_p = req.body.msg;
+
+    var titulo = "Contato: "+name_p;
+    var mensagem = "<b>Nome:</b> "+name_p+"<br><b>E-mail:</b> "+email_p+"<br><b>Telefone:</b> "+tel_p+"<br><b>Tipo de contato:</b> "+tipo_p+"<br><b>Mensagem:</b> "+msg_p;
+
+    var transport = nodemailer.createTransport({
+        host: "smtp.mailtrap.io",
+        port: 2525,
+        auth: {
+          user: "1551d051b21b35",
+          pass: "35a1d7d2beba9e"
+        }
+      });
+      var message = {
+        from: "norelpay@tcc.com.br",
+        to: "flvvw.2019@gmail.com",
+        subject: titulo,
+        text: msg_p,
+        html: mensagem
+      };
+      transport.sendMail(message,function (err){
+        if(err){
+            res.redirect('/?msg=Erro:-Erro-ao-enviar');
+            return false;
+        }
+        res.redirect('/?msg=Enviado-com-Sucesso');
+        return true;
+      });
+});
 // index pages
 app.get('/mapa', getUser, async (req, res) => {
     if(!req.userValues){
         req.userValues = "";
     }    
-    var dog = await Dogs.findAll();
+    var dog = await Dogs.findAll({            
+        where: {
+            ativo: 1
+        }
+    });
+    if(dog){
         for(var i = 0; dog.length>i;i++){
             const getImage = await Image.findOne({
                 attributes: ['id','image'],
@@ -96,17 +134,18 @@ app.get('/mapa', getUser, async (req, res) => {
                 dog[i]['usuario'] = getUser_dog.name;
             }
         }    
+    }
     res.render('mapa',{'userValues' : req.userValues,'lista':dog});      
 });
 
 // # Relacionado Conta
 app.get('/usuario/perfil',getUser, async (req, res) => {
     if(req.userValues.username){
-        console.log(req.userValues);
+        // console.log(req.userValues);
         res.render('perfil',{'userValues' : req.userValues});
     }else{
         // console.log('foi');
-        res.redirect('/?Precisa-estar-logado');
+        res.redirect('/?msg=Erro:-Precisa-estar-logado');
     }
 });
 app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) => {   
@@ -157,7 +196,6 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
             .jpeg({ mozjpeg: true })
             .toFile(`${newfilepath}`)
             .then( data => { 
-                console.log("foi: ");
                 fs.unlink(filepath, (err) => {
                     if (err) {
                         console.error(err)
@@ -224,7 +262,7 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
             console.log('Erro ao atualizar:'+ err)
         });
     }
-    res.redirect('/usuario/perfil');
+    res.redirect('/usuario/perfil?msg=Atualizado-com-Sucesso');
 });
 app.post('/login', async (req, res) => {
     const user = await User.findOne({
@@ -238,17 +276,12 @@ app.post('/login', async (req, res) => {
         }
     });
     if(user === null){
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro: Usuário ou a senha incorreta! Nenhum usuário com este e-mail"
-        });
-    }
-    
+        res.redirect('/?msg=Erro:-Usuario-ou-a-senha-incorretas-!Usuario-inexistente');
+        return false;
+    }    
     if(!(await bcrypt.compare(req.body.login_senha, user.password))){
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro: Usuário ou a senha incorreta! Senha incorreta!"
-        });
+        res.redirect('/?msg=Erro:-Usuario-ou-a-senha-incorretas');
+        return false;
     }
     var Expira = 600; //10 min
     if(req.body.manterLogado){
@@ -258,12 +291,13 @@ app.post('/login', async (req, res) => {
         expiresIn: Expira 
     });
     res.cookie(`Authorization`,token);
-    res.redirect('back');
+    res.redirect('/?msg=Logado-com-Sucesso');
+    return true;
 });
 app.get('/logout', (req, res) => {
     //show the saved cookies
     res.clearCookie('Authorization');
-    res.redirect('/');
+    res.redirect('/?msg=Deslogado-com-Sucesso');
     res.end();
 });
 // #! Relacionado Conta
@@ -286,7 +320,7 @@ app.get('/sistema/cadastro-usuario', logado, (req, res) => {
         res.render('cadastro-usuario',{'userValues' : req.userValues});
     }else{
         console.log('Você não tem acesso');
-        res.redirect('/');
+        res.redirect('/?msg=Erro:-Acesso-Negado');
     }    
 });
 app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {    
@@ -331,7 +365,11 @@ app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {
     }).catch(function(erro){
         console.log("Erro: Usuário Não Cadastrado! " + erro);
     });
-    res.redirect('/');
+    if(!empresa_post){
+        res.redirect('/?msg=Cadastrado-com-Sucesso...-Aguarde-a-Aprovação');
+    }else{
+        res.redirect('/sistema/cadastro-usuario?msg=Cadastrado-com-Sucesso');
+    }
 });
 // ###! Cadastrar
 
@@ -496,6 +534,30 @@ app.get('/sistema/listar-cachorros', logado, async (req, res) => {
     }
     // console.log(dog)
     res.render('listar-cachorros',{'userValues' : req.userValues,'lista':dog});      
+});
+app.post("/sistema/att-cachorro-post", logado, async (req, res) => {    
+    if(req.userValues.type=='admin'){     
+        await User.update(
+            { 
+            name: req.body.model_name,
+            username: req.body.model_username,
+            email: req.body.model_email,
+            type: req.body.model_level,
+            updatedAt: req.body.model_att_now,
+            ativo: req.body.statusUsuario
+            },
+            { where: { id: req.body.model_id } }
+          )
+        .then(() => {           
+            console.log('Atualizado')
+            res.redirect('/sistema/listar-usuarios');
+        }).catch((err) => {
+            console.log('Erro ao atualizar:'+ err)
+            res.redirect('/sistema/listar-usuarios');
+        });
+    }else{
+        res.redirect('../');
+    }
 });
 // ##! Cachorros
 

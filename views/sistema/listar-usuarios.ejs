@@ -26,12 +26,12 @@
                         <th>Atualizado</th>
                         <th hidden >Imagem</th>
                         <th>Empresa</th>
-                        <th>ativo</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="usuario">
                     <% for(var i = 0; lista_usuarios.length>i;i++){ %>
-                    <tr>
+                    <tr style="cursor:pointer;">
                         <td><%= lista_usuarios[i].id %></td>
                         <td><%= lista_usuarios[i].name %></td>
                         <td><%= lista_usuarios[i].username %></td>

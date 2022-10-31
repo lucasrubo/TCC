@@ -6,14 +6,14 @@ const Image = require('../models/Images');
 module.exports = {
     getUser: async function (req, res, next){        
         var token = req.cookies.Authorization;
-        jwt.verify(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", function(err, decoded) {
-            if (err) {
-                console.log("Erro! "+err);
-                res.clearCookie('Authorization');
-                token = '';
-            }            
-          });
         if(token){  
+            jwt.verify(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3", function(err, decoded) {
+                if (err) {
+                    console.log("Erro! "+err);
+                    res.clearCookie('Authorization');
+                    token = '';
+                }            
+            });
             const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
             // console.log(decode);
             const user = await User.findOne({
@@ -23,8 +23,8 @@ module.exports = {
                 }
             });
             if(user.dataValues.ativo == 0){
-                res.clearCookie('Authorization');             
-                res.redirect('/?Usuário-não-ativado');
+                res.clearCookie('Authorization');            
+                res.redirect('/?msg=msg=Usuario-precisar-estar-ativado');
                 token = '';
             }
             if(user === null){

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
+const User = require('./User');
 
 const Image = db.define('images', {
     id: {
@@ -11,10 +12,6 @@ const Image = db.define('images', {
     image: {
         type: Sequelize.STRING
     },
-    user_id:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
     type:{
         type: Sequelize.STRING,
         allowNull: false,
@@ -22,9 +19,16 @@ const Image = db.define('images', {
     }
 });
 
+Image.belongsTo(User,{
+    constraint: true,
+    foreignKey: 'user_id'
+});
+User.hasMany(Image,{
+    foreignKey: 'user_id'
+});
 //Criar a tabela
 //Image.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// Image.sync({ alter: true })
+// Image.sync({ alter: true ,force:true})
 
 module.exports = Image;

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
+const User = require('./User');
 
 const Dogs = db.define('dogs', {
     id: {
@@ -24,11 +25,6 @@ const Dogs = db.define('dogs', {
         type: Sequelize.STRING,
         allowNull: true
     },
-    user_id:{
-        type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: "1"
-    },
     empresa: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -41,9 +37,16 @@ const Dogs = db.define('dogs', {
     }
 });
 
+Dogs.belongsTo(User,{
+    constraint: true,
+    foreignKey: 'user_id'
+});
+User.hasMany(Dogs,{
+    foreignKey: 'user_id'
+});
 //Criar a tabela
 // Dogs.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// Dogs.sync({ alter: true })
+// Dogs.sync({ alter: true})
 
 module.exports = Dogs;
