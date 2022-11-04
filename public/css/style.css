@@ -3,9 +3,6 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
-div#ModelInicio {
-  box-shadow: 0px 0px 5px #ffffff91;
-}
 .name{
   width: 275px;
   margin:-35px 10px 0px 10px;
@@ -29,6 +26,9 @@ div#ModelInicio {
 .erro-model{
     color: red;
 }
+.sem-fundo{
+  background-color: rgb(0 0 0 / 0%);
+}
 .sucess-model{
     color: green;
 }
@@ -37,9 +37,8 @@ div#ModelInicio {
 }
 .model-msg{
     vertical-align: middle;
-    margin-top: 10%;
-    padding-bottom: 17%;
-    font-size: 50px;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
 .w3-green{
   margin-right: 10px;
@@ -59,7 +58,9 @@ div#ModelInicio {
   padding: 0px 15px;
 }
 .load{
-  margin-top: 200px;
+  background: #00000087;
+  height: 100%;
+  width: 100%;
 }
 .none{
   display:none;
@@ -91,7 +92,7 @@ div#ModelInicio {
     margin-left: -15px;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
+  /* justify-content: center; */
   text-align: center;
 }
 .none{
@@ -213,9 +214,9 @@ nav a:hover{
   top: 0;
   left: 0;
   z-index: 101;
-  background: #000000d1;
 }
 .load img {
+  margin-top: 200px;
   width: 300px;
 }
 .invisible{  

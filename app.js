@@ -413,13 +413,30 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
           )
         .then(() => {           
             console.log('Atualizado')
-            res.redirect('/sistema/listar-usuarios');
+            res.redirect('/sistema/listar-usuarios?msg=Atualizado-com-Sucesso');
         }).catch((err) => {
             console.log('Erro ao atualizar:'+ err)
-            res.redirect('/sistema/listar-usuarios');
+            res.redirect('/sistema/listar-usuarios?msg=Erro:-Problema-ao-Atualizar');
         });
     }else{
         res.redirect('../');
+    }
+});
+app.post('/sistema/deletar-usuarios', logado, async (req, res) => {   
+    if(req.userValues.empresa == 'dev'){     
+        if(req.body.id_delete != ''){   
+            var count = await User.destroy({ where: { id: req.body.id_delete } })
+            .then(() => {           
+                console.log('Deletado');
+                console.log(`deleted row(s): ${count}`);
+                res.redirect('/sistema/listar-usuarios?msg=Deletado-com-sucesso');    
+                return true;
+            }).catch((err) => {
+                console.log('Erro ao deletar:'+ err);
+                res.redirect('/sistema/listar-usuarios?msg=Erro:-Problema-ao-Deletetar');  
+                return false;  
+            });
+        }
     }
 });
 // ##! usuários
@@ -433,6 +450,7 @@ app.get('/sistema/cadastro-cachorro', logado, (req, res) => {
 app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), async (req, res) => { 
     
     if (req.file) { 
+        var msg_erro="";
         const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
         var id = decode.id; 
         Dogs.create({
@@ -444,6 +462,7 @@ app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), a
             empresa: req.userValues.empresa
         }).then(async function(){
             console.log("Dog Cadastrado com sucesso");
+            msg_erro = "?msg=Cadastrado-com-sucesso";
             var newfilepath= 'public/upload/'+req.file.filename;
             var filepath= 'public/upload/antes_redimensionar/'+req.file.filename;  
             const last_id_dog = await Dogs.findAll({
@@ -462,8 +481,7 @@ app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), a
                 image: req.file.filename,
                 user_id: last_dog_id,
                 type: "dog"
-            })
-            .then(() => {
+            }).then(() => {
                 sharp(filepath)
                 .resize({width:225})
                 .jpeg({ mozjpeg: true })
@@ -472,8 +490,7 @@ app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), a
                     console.log("foi: ");
                     fs.unlink(filepath, (err) => {
                         if (err) {
-                            console.error(err)
-                            return
+                            console.log(err);
                         }                  
                         //file removed
                     });
@@ -482,20 +499,27 @@ app.post("/sistema/cadastro-cachorro-post", logado, uploadUser.single('foto'), a
                     console.log(err);
                 });
             }).catch((err) => {
-                console.log('Arquivo não enviado'+err);
+                console.log('Arquivo não enviado '+err);
+                msg_erro = "?msg=Erro:-"+err;
                 fs.unlink(filepath, (err) => {
                     if (err) {
-                        console.error(err)
-                        return
+                        console.log(err);
                     }                  
                     //file removed
                 });
+                // var msg_erro = err.replaceAll(' ','-');
+                res.redirect("/sistema/cadastro-cachorro"+msg_erro);
+                return;
             });
-            res.redirect('/sistema/cadastro-cachorro');
+            res.redirect("/sistema/cadastro-cachorro"+msg_erro);
+            return;
         }).catch(function(erro){
             console.log("Erro: Dog Não Cadastrado! " + erro);
-            res.redirect('/sistema/cadastro-cachorro');
-        }) 
+            msg_erro = "?msg=Erro:-"+erro;
+            // var msg_erro = erro.replaceAll(' ','-');
+            res.redirect("/sistema/cadastro-cachorro"+msg_erro);
+            return;
+        });
     }
 });
 // ###! Cadastrar

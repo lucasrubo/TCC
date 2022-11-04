@@ -59,8 +59,11 @@ module.exports = {
                     ativo: 0
                   }];
             
+                console.log(err);            
+                token = '';
                 console.log("Erro: Necessário realizar o login para acessar a página! Faltam o token B!");
-                req.userValues = '';  
+                res.clearCookie('Authorization');   
+                res.redirect('/?msg=Erro:-Precisa-estar-Logado');
                 return next();  
             }
         }catch(err){            

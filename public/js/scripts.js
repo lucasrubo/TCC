@@ -84,13 +84,14 @@ $(document).ready(function($) {
             $("#full-tela").removeClass("invisible");
             $("#Model").css('display','block');
             $("html").css('overflow','hidden');
-    
+            
+            $("#id_delete").val(data[0]);
             $("#model_id").val(data[0]);
-            $("#model_name").val(data[1]);
-            $("#model_username").val(data[2]);
-            $("#model_email").val(data[3]);
-            $("#model_level").val(data[4]);
-            if(data[9] == "Desativado"){
+            $("#model_name").val(data[2]);
+            $("#model_username").val(data[3]);
+            $("#model_email").val(data[4]);
+            $("#model_level").val(data[5]);
+            if(data[10] == "Desativado"){
                 var status = 0;
                 $("#statusUser").html('Desativado');
                 $("#statusUser").addClass("w3-red");
@@ -103,7 +104,7 @@ $(document).ready(function($) {
             }
             $("#statusUsuario").val(status);
             
-            let data_criada = data[6].split('/');
+            let data_criada = data[7].split('/');
             var day = ("00" + data_criada[0]).slice(-2);
             var month = ("00" + (data_criada[1])).slice(-2);
             let dataFormatada_criada = data_criada[2]+"-"+month+"-"+day; 
@@ -116,26 +117,27 @@ $(document).ready(function($) {
             var output = d.getFullYear() + '-' +monthd + '-' +dayd;
             // console.log(output);
             $("#model_att_now").val(output);  
-            if(data[7]){
-                $('#AvatarUser').attr("src",`../upload/${data[7]}`);
+            if(data[8]){
+                $('#AvatarUser').attr("src",`../upload/${data[8]}`);
             }else{
                 $('#AvatarUser').attr("src",`../images/usuario-branco.png`);
             }
               
     });
-
+    
     $('#tabela #dogs').on('click', 'td#editar', function (e) {
         var data = table.row(this).data();
         // console.log(data);
         $("#full-tela").removeClass("invisible");
         $("#Model").css('display','block');
         $("html").css('overflow','hidden');   
-        $("#model_dogname").val(data[1]);
-        $("#model_raça").val(data[2]);
-        $("#model_doguser").val(data[9]);
+        
+        $("#model_id").val(data[0]);
+        $("#id_delete").val(data[0]);
+        $("#model_dogname").val(data[2]);
+        $("#model_raça").val(data[3]);
     
-        console.log(data[10]);
-        if(data[10] == "Desativado"){
+        if(data[11] == "Desativado"){
             var status = 0;
             $("#statusUser").html('Desativado');
             $("#statusUser").addClass("w3-red");
@@ -155,7 +157,7 @@ $(document).ready(function($) {
         }else{
             $('#AvatarDog').attr("src",`../images/usuario-branco.png`);
         }
-        $('#mapa-cachorro').attr("src",`https://maps.google.com.br/maps?q=${data[7]},${data[8]}&output=embed&dg=oo`);   
+        $('#mapa-cachorro').attr("src",`https://maps.google.com.br/maps?q=${data[8]},${data[9]}&output=embed&dg=oo`);   
                     
    });   
 
@@ -177,19 +179,50 @@ $(document).ready(function($) {
 
     if((window.location.href).split('msg=')[1]){
         var msg_atual = ((window.location.href).split('msg='))[1].replaceAll('-',' ');
+        //check for Navigation Timing API support
+         if (window.performance) {
+             console.info("window.performance works fine on this browser");
+         }
+         console.info(performance.navigation.type);
+         if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+             console.info( "This page is reloaded" );        
+             if((window.location.href).split('msg=')[1]){
+                 var url = window.location.href;
+                 var msg_atual = (url.split('msg='))[1].replaceAll('-',' ');
+                 location.href = (document.referrer).split('msg=')[0];
+             }
+         } else {
+             console.info( "This page is not reloaded");
+         }
     }
    if(msg_atual){
         conteudo = '<div id="msgModel" class="w3-container model-msg">'+msg_atual+'</div>';
         $("#full-tela").removeClass("invisible");
-        $("#Model").css('display','block');
-        $("html").css('overflow','hidden');   
+        $("#Model").addClass('sem-fundo'); 
+        $("#Model").css('display','block'); 
+        $("#Model").css('padding-top','60px'); 
+        $("#full-tela").css("pointer-events" ,"none");
+        $("#header-model").css("display" ,"none");
+        
+
         $("#conteudoModel").html(conteudo);
         if(msg_atual.includes('Erro:')){
              $("#msgModel").addClass("erro-model");   
         }else{
             $("#msgModel").addClass("sucess-model");   
         }
-        $("#ModelInicio").css('width','550px');   
-        
+        $("#ModelInicio").css('width','max-content');   
+
+        setTimeout(function(){            
+            $("#Model").removeClass('sem-fundo'); 
+            $("#Model").css('padding-top',''); 
+            $("#full-tela").addClass("invisible");
+            $("#LoginModal").css('display','none');
+            $("#Model").css('display','none');
+            $("html").css('overflow','auto');
+            $("#ModelInicio").css('width','auto');  
+            $("#full-tela").css("pointer-events" ,"auto");
+            $("#header-model").css("display" ,"block");
+        },3000);
    }
 });
