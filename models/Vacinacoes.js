@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
-const Dogs = require('./Dogs');
+const Animal = require('./Animais');
 const User = require('./User');
 
 const Vacinacoes = db.define('vacinacoes', {
@@ -29,15 +29,15 @@ Vacinacoes.belongsTo(User,{
     constraint: true,
     foreignKey: 'user_id'
 });
-Vacinacoes.belongsTo(Dogs,{
+Vacinacoes.belongsTo(Animal,{
     constraint: true,
-    foreignKey: 'dog_id'
+    foreignKey: 'animal_id'
 });
 User.hasMany(Vacinacoes,{
     foreignKey: 'user_id'
 });
-Dogs.hasMany(Vacinacoes,{
-    foreignKey: 'dog_id'
+Animal.hasMany(Vacinacoes,{
+    foreignKey: 'animal_id'
 });
 //Criar a tabela
 // Vacinacoes.sync();

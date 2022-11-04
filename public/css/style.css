@@ -35,6 +35,21 @@ body {
 .col-md-5{
   text-align: left;
 }
+.col-md-6{
+  text-align: left;
+}
+.col-md-7{
+  text-align: left;
+}
+.col-md-10{
+  text-align: left;
+}
+.radioanimal{
+  width:100%;
+}
+.radioanimal input{
+  margin-left: 20px !important;
+}
 .model-msg{
     vertical-align: middle;
     padding-top: 5%;

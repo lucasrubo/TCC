@@ -33,19 +33,27 @@
   </div>
   <!-- end login -->
 
-<!-- Start Model -->  
+<!-- Start Models -->  
+  <div id="ModelNotificacao" class="w3-modal" style="z-index:1;">
+    <div id="ModelNotificacaoInicio" class="w3-modal-content w3-card-4 w3-animate-zoom box-teste" style="max-width:900px;width:max-content">
+      <div id="conteudoModelNotificacao" class="model-base">
+      </div>
+    </div>
+  </div>
   <div id="Model" class="w3-modal">
     <div id="ModelInicio" class="w3-modal-content w3-card-4 w3-animate-zoom box-teste" style="max-width:900px">
       <div id="header-model" class="w3-center"><br>
           <span id="closeModelx" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
       </div>
       <div id="conteudoModel" class="model-base">
-
+      </div>
+      <div id="conteudoModelCadastro" class="model-base" style="display:none">
       </div>
     </div>
   </div>
-<!-- end Model -->
+<!-- end Models -->
 </div>
 <script type="text/javascript">  
   $("#conteudoModel").html(conteudo);
+  $("#conteudoModelCadastro").html(conteudoCadastro);
 </script>

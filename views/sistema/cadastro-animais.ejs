@@ -1,0 +1,84 @@
+<%- include('header', {titulo:'Cadastro de Animais'}); %>
+<%- include('menu', {variant:'sistema'}); %>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly&libraries=places" defer></script>
+<script type="text/javascript" src="../js/estilo-map.js"></script>
+<style>
+    #map{
+        width: 100%;
+        height:400px;
+        max-width: 800px;
+    }
+</style>
+
+<script type="text/javascript" src="../js/mapa-cadastro.js"></script>
+<section class="contact_section layout_padding">
+    <div class="custom_heading-container">
+      <h3 class=" ">
+        Cadastro de Animais
+      </h3>
+    </div>
+    <div class="container layout_padding2-top">
+      <div class="row-n">
+        <form class="w3-container" action="/sistema/cadastro-animais-post" method="post" style="width: 100%;" enctype="multipart/form-data">
+            <div class="col-md-5 w3-margin-bottom" style="display: inline-block;max-width: 340px;">
+                <label><b>Nome do Cachorro:</b></label> <br>
+                <input name="name" id="name" type="text" placeholder="NOME">
+            </div>
+            <div class="col-md-5 w3-margin-bottom" style="display: inline-block;max-width: 240px;">
+                <label><b>Raça</b></label>
+                <input name="raca" id="raca" type="text" placeholder="RAÇA">
+            </div>
+            <div class="col-md-6 w3-margin-bottom" style="display: inline-block;">
+                <label><b>Tipo de animal</b></label>
+                <div class="radioanimal">
+                    <input onClick="habilitacao()" name="animalTipo" id="Cachorro" value="Cachorro" type="radio" style="width:auto"><label for="Cachorro">Cachorro</label>
+                    <input onClick="habilitacao()" name="animalTipo" id="Gato" value="Gato" type="radio" style="width:auto"><label for="Gato">Gato</label>
+                    <input onClick="habilitacao()" name="animalTipo" id="Silvestre" value="Silvestre" type="radio" style="width:auto"><label for="Silvestre">Silvestre</label>
+                    <input onClick="habilitacao()" name="animalTipo" id="Outro" value="Outro" type="radio" style="width:auto"><label for="Outro">Outro</label>
+                </div>
+                <input name="OutroSubmit" id="OutroSubmit" type="text" placeholder="Digite aqui" style="display:none">
+                
+            </div>
+            <div class="col-md-6 w3-margin-bottom" style="display: inline-block;">
+                <label><b>Obs</b></label>
+                <textarea id="obs_dog" name="obs_dog" style="width:100%;height:120px;
+                border: 0;
+                padding: 15px 12px;
+                background-color: #f2f2f2;
+                outline: none;
+                margin: 10px 0;"></textarea>
+            </div>
+            <br>
+            <div class="w3-margin-bottom" style="display: inline-block;max-width: 240px;">
+                <label><b>Foto</b></label>
+                <input name="foto" id="foto" type="file" accept="image/*" required>
+            </div>
+            <center>    
+                <input id="searchInput" style="width: 24rem;" class="controls" type="text" placeholder="Enter a location">            
+                <div id="map"></div>
+                <input hidden readonly name="latitude_form" id="latitude_form" type="text">
+                <input hidden readonly name="longitude_form" id="longitude_form" type="text">
+            </center>
+            <div class="d-flex justify-content-center ">
+            <button>
+                Cadastrar
+            </button>
+            </div>
+        </form>        
+      </div>
+    </div>
+</section>
+
+<script>    
+    function habilitacao(){        
+      if(document.getElementById('Outro').checked == true){
+        $("#OutroSubmit").css('display','block');
+      }
+      if(document.getElementById('Outro').checked == false){
+        $("#OutroSubmit").css('display','none');
+        $("#OutroSubmit").val('');
+      }
+    }
+</script>
+<%- include('footer',{variant:''}); %>

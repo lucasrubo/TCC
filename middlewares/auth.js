@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const User = require('../models/User');
-const Image = require('../models/Images');
+const Image_perfil = require('../models/Image_perfil');
 
 module.exports = {
     logado: async function (req, res, next){
@@ -31,7 +31,7 @@ module.exports = {
                 req.userId = decode.id;
                 req.userValues = user.dataValues;
                         
-                const getImg = await Image.findOne({
+                const getImg = await Image_perfil.findOne({
                     attributes: ['id','image'],
                     where: {
                         user_id: decode.id

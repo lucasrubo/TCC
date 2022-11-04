@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
-const User = require('./User');
+const Dogs = require('./Animais');
 
-const Image = db.define('images', {
+const Image_animais = db.define('images_animais', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -11,24 +11,19 @@ const Image = db.define('images', {
     },
     image: {
         type: Sequelize.STRING
-    },
-    type:{
-        type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: "dog"
     }
 });
 
-Image.belongsTo(User,{
+Image_animais.belongsTo(Dogs,{
     constraint: true,
-    foreignKey: 'user_id'
+    foreignKey: 'animal_id'
 });
-User.hasMany(Image,{
-    foreignKey: 'user_id'
+Dogs.hasMany(Image_animais,{
+    foreignKey: 'animal_id'
 });
 //Criar a tabela
-//Image.sync();
+//Image_animais.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// Image.sync({ alter: true ,force:true})
+// Image_animais.sync({ alter: true ,force:true})
 
-module.exports = Image;
+module.exports = Image_animais;

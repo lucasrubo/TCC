@@ -1,4 +1,11 @@
 $(document).ready(function($) {
+    var timer = 0;
+    var d = new Date();
+
+    var monthd = ("00" + d.getMonth()).slice(-2);
+    var dayd = ("00" + d.getDate()).slice(-2);;
+
+    var output = d.getFullYear() + '-' +monthd + '-' +dayd;
     $("#cpfcnpj").keydown(function(){
         try {
             $("#cpfcnpj").unmask();
@@ -34,16 +41,25 @@ $(document).ready(function($) {
     });
     
     $("#login,#login_footer").click(function() {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        $("#ModelNotificacao").css('display','none'); 
         $("#LoginModal").css('display','block');
         $("#navbarSupportedContent").removeClass('show');
         $("#full-tela").removeClass("invisible");
         $("html").css('overflow','hidden');
+        $("#full-tela").css("pointer-events" ,"auto");
+        $("#full-tela").css("z-index" ,"101");
     });
+    
     $("#closeModelx,#closeModelCancel").click(function() {
         $("#full-tela").addClass("invisible");
         $("#LoginModal").css('display','none');
         $("#Model").css('display','none');
         $("html").css('overflow','auto');
+        $("#full-tela").css("pointer-events" ,"none");
     });
 
     var table = $('#tabela').DataTable({
@@ -79,14 +95,23 @@ $(document).ready(function($) {
     });
 
     $('#tabela #usuario').on('click', 'tr', function () {
+            if (timer) {
+                clearTimeout(timer);
+                timer = 0;
+            }
+            $("#conteudoModelCadastro").css('display','none'); 
+            $("#conteudoModel").css('display','block'); 
+            $("#ModelNotificacao").css('display','none'); 
+            $("#full-tela").css("pointer-events" ,"auto");
+            $("#full-tela").css("z-index" ,"101");
             var data = table.row(this).data();
             // console.log(data);
             $("#full-tela").removeClass("invisible");
             $("#Model").css('display','block');
             $("html").css('overflow','hidden');
             
-            $("#id_delete").val(data[0]);
-            $("#model_id").val(data[0]);
+            $("#id_delete").val(data[1]);
+            $("#model_id").val(data[1]);
             $("#model_name").val(data[2]);
             $("#model_username").val(data[3]);
             $("#model_email").val(data[4]);
@@ -109,12 +134,6 @@ $(document).ready(function($) {
             var month = ("00" + (data_criada[1])).slice(-2);
             let dataFormatada_criada = data_criada[2]+"-"+month+"-"+day; 
             $("#model_att").val(dataFormatada_criada);    
-            var d = new Date();
-    
-            var monthd = ("00" + d.getMonth()).slice(-2);
-            var dayd = ("00" + d.getDate()).slice(-2);;
-    
-            var output = d.getFullYear() + '-' +monthd + '-' +dayd;
             // console.log(output);
             $("#model_att_now").val(output);  
             if(data[8]){
@@ -123,20 +142,59 @@ $(document).ready(function($) {
                 $('#AvatarUser').attr("src",`../images/usuario-branco.png`);
             }
               
+        // $("#conteudoModel").html(conteudo);
     });
     
-    $('#tabela #dogs').on('click', 'td#editar', function (e) {
+    $("#cadastroUsuario").click(function() {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        $("#conteudoModelCadastro").css('display','block'); 
+        $("#conteudoModel").css('display','none'); 
+        $("#ModelNotificacao").css('display','none'); 
+        $("#full-tela").css("pointer-events" ,"auto");
+        $("#full-tela").css("z-index" ,"101");
+        $("#navbarSupportedContent").removeClass('show');
+        $("#full-tela").removeClass("invisible");
+        $("#Model").css('display','block');
+        $("html").css('overflow','hidden');
+        $("#conteudoModelCadastro").html(conteudoCadastro);
+    });
+    
+    $('#tabela #animais').on('click', 'td#editar', function (e) {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        $("#ModelNotificacao").css('display','none'); 
+        $("#full-tela").css("pointer-events" ,"auto");
+        $("#full-tela").css("z-index" ,"101");
         var data = table.row(this).data();
         // console.log(data);
         $("#full-tela").removeClass("invisible");
         $("#Model").css('display','block');
         $("html").css('overflow','hidden');   
         
-        $("#model_id").val(data[0]);
-        $("#id_delete").val(data[0]);
+        $("#model_id").val(data[1]);
+        $("#id_delete").val(data[1]);
         $("#model_dogname").val(data[2]);
         $("#model_raça").val(data[3]);
-    
+        var obs = data[5].replace('<textarea readonly="" style="border: 0px;resize: none;">','');
+        obs = obs.replace('</textarea>','');
+        $("#obs_dog").val(obs);
+        $("#model_att_now").val(output);  
+        if($("#"+data[4]).length){
+            $("animalTipo").prop('checked',false);
+            $("#"+data[4]).prop('checked',true);
+            $("#OutroSubmit").css('display','none');
+            $("#OutroSubmit").val('');
+        }else{
+            $("#Outro").prop('checked',true);
+            $("#OutroSubmit").css('display','block');
+            $("#OutroSubmit").val(data[4]);
+        }
+
         if(data[11] == "Desativado"){
             var status = 0;
             $("#statusUser").html('Desativado');
@@ -151,9 +209,9 @@ $(document).ready(function($) {
         $("#statusUsuario").val(status);
         
         
-        // console.log(data[6]);
-        if(data[6]){
-            $('#AvatarDog').attr("src",`../upload/${data[6]}`);
+        // console.log(data[7]);
+        if(data[7]){
+            $('#AvatarDog').attr("src",`../upload/${data[7]}`);
         }else{
             $('#AvatarDog').attr("src",`../images/usuario-branco.png`);
         }
@@ -185,12 +243,8 @@ $(document).ready(function($) {
          }
          console.info(performance.navigation.type);
          if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-             console.info( "This page is reloaded" );        
-             if((window.location.href).split('msg=')[1]){
-                 var url = window.location.href;
-                 var msg_atual = (url.split('msg='))[1].replaceAll('-',' ');
-                 location.href = (document.referrer).split('msg=')[0];
-             }
+            console.info( "This page is reloaded" );        
+            location.href = (document.referrer).split('msg=')[0];
          } else {
              console.info( "This page is not reloaded");
          }
@@ -198,31 +252,28 @@ $(document).ready(function($) {
    if(msg_atual){
         conteudo = '<div id="msgModel" class="w3-container model-msg">'+msg_atual+'</div>';
         $("#full-tela").removeClass("invisible");
-        $("#Model").addClass('sem-fundo'); 
-        $("#Model").css('display','block'); 
-        $("#Model").css('padding-top','60px'); 
+        $("#ModelNotificacao").addClass('sem-fundo'); 
+        $("#ModelNotificacao").css('display','block'); 
+        $("#ModelNotificacao").css('padding-top','60px'); 
         $("#full-tela").css("pointer-events" ,"none");
-        $("#header-model").css("display" ,"none");
+        $("#full-tela").css("z-index" ,"1");
         
 
-        $("#conteudoModel").html(conteudo);
+        $("#conteudoModelNotificacao").html(conteudo);
         if(msg_atual.includes('Erro:')){
              $("#msgModel").addClass("erro-model");   
         }else{
             $("#msgModel").addClass("sucess-model");   
         }
-        $("#ModelInicio").css('width','max-content');   
 
-        setTimeout(function(){            
-            $("#Model").removeClass('sem-fundo'); 
-            $("#Model").css('padding-top',''); 
+        timer = setTimeout(function(){            
+            $("#ModelNotificacao").removeClass('sem-fundo'); 
+            $("#ModelNotificacao").css('padding-top',''); 
             $("#full-tela").addClass("invisible");
-            $("#LoginModal").css('display','none');
-            $("#Model").css('display','none');
-            $("html").css('overflow','auto');
-            $("#ModelInicio").css('width','auto');  
+            $("#ModelNotificacao").css('display','none');
+            $("#ModelNotificacaoInicio").css('width','auto');  
             $("#full-tela").css("pointer-events" ,"auto");
-            $("#header-model").css("display" ,"block");
+            $("#full-tela").css("z-index" ,"101");
         },3000);
    }
 });

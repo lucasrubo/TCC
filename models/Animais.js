@@ -15,7 +15,11 @@ const Dogs = db.define('dogs', {
     },
     raça:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
+    },
+    obs:{
+        type: Sequelize.TEXT,
+        allowNull: true
     },
     latitude:{
         type: Sequelize.STRING,
@@ -34,6 +38,10 @@ const Dogs = db.define('dogs', {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
+    },
+    tipo:{
+        type: Sequelize.STRING,
+        allowNull: false
     }
 });
 
