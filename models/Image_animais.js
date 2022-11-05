@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
-const Dogs = require('./Animais');
+const Animais = require('./Animais');
 
 const Image_animais = db.define('images_animais', {
     id: {
@@ -14,11 +14,11 @@ const Image_animais = db.define('images_animais', {
     }
 });
 
-Image_animais.belongsTo(Dogs,{
+Image_animais.belongsTo(Animais,{
     constraint: true,
     foreignKey: 'animal_id'
 });
-Dogs.hasMany(Image_animais,{
+Animais.hasMany(Image_animais,{
     foreignKey: 'animal_id'
 });
 //Criar a tabela

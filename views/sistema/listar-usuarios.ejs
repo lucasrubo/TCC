@@ -15,40 +15,29 @@
     </style>
 <% } %>
 <script type="text/javascript">  
-    conteudo = '<form method="post" action="/sistema/deletar-usuarios" class="delete-form" onsubmit="return confirm(\'Tem certeza que gostaria de deletar este usuário?\');"><input hidden id="id_delete" name="id_delete" type="text" readonly><button class="w3-button w3-red" type="submit">Deletar</button></form><form class="w3-container" action="/sistema/att-usuario-post" method="post"><div class="w3-center"><img id="AvatarUser" alt="Avatar" style="height: 225px;width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-circle " src="../images/usuario-branco.png"><br>        <span id="statusUser" class="w3-button w3-green w3-margin-top" >Ativado</span></div><br><input hidden readonly type="text" id="model_id" name="model_id" required><div class="row-n" style="justify-content: center;"><div class="col-md-5 w3-margin-bottom"><label><b>Nome</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_name" name="model_name"></div><div class="col-md-5 w3-margin-bottom"><label><b>Usuário</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_username" name="model_username" required></div><div class="col-md-5 w3-margin-bottom"><label><b>E-mail</b></label><input class="w3-input w3-border" type="email" placeholder="" id="model_email" name="model_email" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Nível</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_level" name="model_level" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Atualizar</b></label><input class="w3-input w3-border" type="date" placeholder="" id="model_att_now" name="model_att_now" required></div></div><div class="w3-container w3-border-top w3-padding-16 w3-light-grey"><button class="w3-button w3-green" type="submit">Salvar</button><button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button><input  hidden readonly id="statusUsuario" name="statusUsuario" type="text"></div></form>';
+    conteudo = '<form method="post" action="/sistema/deletar-usuarios" class="delete-form" onsubmit="return confirm(\'Tem certeza que gostaria de deletar este usuário?\');"><input hidden id="id_delete" name="id_delete" type="text" readonly><button class="w3-button w3-red" type="submit">Deletar</button></form><form action="/sistema/att-usuario-post" method="post"><div class="w3-center"><img id="AvatarUser" alt="Avatar" style="height: 225px;width: 225px;background: lightgray;border: 1px solid lightgray;" class="w3-circle " src="../images/usuario-branco.png"><br><span id="statusUser" class="w3-button w3-green w3-margin-top" >Ativado</span></div><br><input hidden readonly type="text" id="model_id" name="model_id" required><div class="row-n" style="justify-content: center;"><div class="col-md-5 w3-margin-bottom"><label><b>Nome</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_name" name="model_name"></div><div class="col-md-5 w3-margin-bottom"><label><b>Usuário</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_username" name="model_username" required></div><div class="col-md-5 w3-margin-bottom"><label><b>E-mail</b></label><input class="w3-input w3-border" type="email" placeholder="" id="model_email" name="model_email" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Nível</b></label><input class="w3-input w3-border" type="text" placeholder="" id="model_level" name="model_level" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Atualizar</b></label><input class="w3-input w3-border" type="date" placeholder="" id="model_att_now" name="model_att_now" required></div></div><div class="w3-container w3-border-top w3-padding-16 w3-light-grey"><button class="w3-button w3-green" type="submit">Salvar</button><button id="closeModelCancel" type="button" class="w3-button w3-red">Cancelar</button><input  hidden readonly id="statusUsuario" name="statusUsuario" type="text"></div></form>';
     
-    conteudoCadastro = '<form action="/sistema/cadastrar-usuario-post" method="post"><input hidden name="retornarLista" value="1"><div class="row"><div class="col-md-6 mx-auto"><div class="row-n"><div class="col-md-6 w3-margin-bottom"><label><b>Usuário</b></label><input class="w3-input w3-border" type="text" placeholder="" id="username" name="username" required></div><div class="col-md-6 w3-margin-bottom"><label><b>Senha</b></label><input class="w3-input w3-border" type="password" placeholder="" id="senha" name="senha" required></div></div><div class="row-n"><div class="col-md-7 w3-margin-bottom"><label><b>E-mail</b></label><input class="w3-input w3-border" type="email" placeholder="" id="email" name="email" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Tipo de usuário</b></label><select class="w3-input w3-border" name="type" id="type" required><option value="" disabled selected>Tipo de Usuário</option><option value="admin">admin</option><option value="normal">normal</option><option value="sistema">sistema</option></select></div></div></div></div><div class="w3-container w3-border-top w3-padding-16 w3-light-grey"><button class="w3-button w3-green" type="submit">Salvar</button></div></form>';
+    conteudoCadastro = '<form action="/sistema/cadastrar-usuario-post" method="post"><input hidden name="retornarLista" value="1"><div class="row"><div class="col-md-12 mx-auto"><div class="row-n" style="justify-content: center;"><div class="col-md-6 w3-margin-bottom"><label><b>Usuário</b></label><input class="w3-input w3-border" type="text" placeholder="" id="username" name="username" required></div><div class="col-md-6 w3-margin-bottom"><label><b>Senha</b></label><input class="w3-input w3-border" type="password" placeholder="" id="senha" name="senha" required></div></div><div class="row-n"><div class="col-md-7 w3-margin-bottom"><label><b>E-mail</b></label><input class="w3-input w3-border" type="email" placeholder="" id="email" name="email" required></div><div class="col-md-5 w3-margin-bottom"><label><b>Tipo de usuário</b></label><select class="w3-input w3-border" name="type" id="type" required><option value="" disabled selected>Tipo de Usuário</option><option value="normal">normal</option><option value="sistema">sistema</option></select></div></div></div></div><div class="w3-container w3-border-top w3-padding-16 w3-light-grey"><button class="w3-button w3-green" type="submit">Salvar</button></div></form>';
 </script>
 
 <section class="layout_padding">
     <div class="custom_heading-container">
       <h3 class=" ">
-        Lista de Usuários
+        Usuários
       </h3>
     </div>
     <div class="container layout_padding2-top">
       <div class="row">
-        <div>
-            <button type="button" id="cadastroUsuario" style="border: 0;vertical-align: middle;padding: 9px;">
-            <div style="
-                    font-size: 17px;
-                    background: #7a7a7a;
-                    color: white;
-                    height: 25px;
-                    width: 25px;
-                    vertical-align: middle;
-                    text-align: center;
-                    display: inline-block;
-                    border-radius: 100%;
-                ">+</div>
-                <div style="
-                font-size: 17px;
-                height: 25px;
-                vertical-align: middle;
-                text-align: center;
-                display: inline-block;
-            ">Novo</div>
+        <div style="padding: 10px;">
+            <button type="button" id="cadastroModel" style="border: 0;vertical-align: middle;padding: 9px;">
+                <div class="button-mais">+</div>
+                <div class="button-text">Novo</div>
             </button>
+            
+        <% if(userValues.type == 'admin'){ %>
+            <br><br>
+            <a href="/sistema/cadastro-usuario">Cadatro de Usuário para Admin</a>
+        <% } %>    
         </div>
       </div>
 

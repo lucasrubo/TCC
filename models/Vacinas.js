@@ -9,13 +9,9 @@ const Vacinas = db.define('vacinas', {
         allowNull: false,
         primaryKey: true
     },
-    Nome:{
+    nome:{
         type: Sequelize.STRING,
         allowNull: false
-    },
-    data_compra: {
-        type: Sequelize.DATEONLY,
-        allowNull: true
     },
     estoque: {
         type: Sequelize.INTEGER,
@@ -38,6 +34,6 @@ User.hasMany(Vacinas,{
 //Criar a tabela
 // Vacinas.sync();
 //Verificar se há alguma diferença na tabela, realiza a alteração
-// Vacinas.sync({ alter: true })
+// Vacinas.sync({ alter: true ,force:true})
 
 module.exports = Vacinas;

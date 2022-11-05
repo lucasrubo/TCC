@@ -41,11 +41,20 @@ body {
 .col-md-7{
   text-align: left;
 }
+.col-md-3{
+  text-align: left;
+}
 .col-md-10{
+  text-align: left;
+}
+.col-md-11{
   text-align: left;
 }
 .radioanimal{
   width:100%;
+}
+.radioanimal div{
+  display:inline-block;
 }
 .radioanimal input{
   margin-left: 20px !important;
@@ -90,6 +99,24 @@ body {
   background:#565656 !important;
   color:white !important;
 }
+.button-text{  
+  font-size: 17px;
+  height: 25px;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+}
+.button-mais{  
+  font-size: 17px;
+  background: #7a7a7a;
+  color: white;
+  height: 25px;
+  width: 25px;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 100%;
+}
 .enviar:hover{
   background: #cfcfcf !important;
   color: #000000 !important;
@@ -109,6 +136,27 @@ body {
   flex-direction: row;
   /* justify-content: center; */
   text-align: center;
+  padding: 10px;
+}
+.menu-simples {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  height: 45px;
+}
+.menu-simples a{
+  display: inline-block;
+  background: lightgray;
+  padding: 10px;
+  border: 1px solid #ababab;
+}
+.menu-simples a:hover{
+  background: gray;
+  color:white;
+  padding: 12px;
+}
+.row{
+  padding: 10px;
 }
 .none{
   display:none;

@@ -22,7 +22,7 @@ const Empresas = require('./models/Empresas');
 const Vacinas = require('./models/Vacinas');
 const Vacinacoes = require('./models/Vacinacoes');
 const db = require('./models/db');
-// db.sync({ alter: true});
+// db.sync({ alter: true,force:true});
 
 const func = require('./models/functions');
 const path = require('path');
@@ -322,7 +322,7 @@ app.get('/sistema/cadastro-usuario', logado, (req, res) => {
     }    
 });
 app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {    
-    var msg_notif = "";
+    
     const senha_criptografada = await func.generatePassword(req.body.senha);
     var empresa_post = req.userValues.empresa;
     var user_type = req.userValues.type;
@@ -364,7 +364,7 @@ app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {
     }).catch(function(erro){
         console.log("Erro: Usuário Não Cadastrado! " + erro);
         if(req.body.retornarLista == 1){
-            res.redirect('/sistema/listar-usuarios?msg=Erro:-Nao-Cadastrado!');
+            res.redirect('/sistema/usuarios?msg=Erro:-Nao-Cadastrado!');
             return;
         }else{
             res.redirect('/sistema/cadastro-usuario?msg=Erro:-Nao-Cadastrado!');
@@ -376,7 +376,7 @@ app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {
         return;
     }else{
         if(req.body.retornarLista == 1){
-            res.redirect('/sistema/listar-usuarios?msg=Cadastrado-com-sucesso');
+            res.redirect('/sistema/usuarios?msg=Cadastrado-com-sucesso');
             return;
         }else{
             res.redirect('/sistema/cadastro-usuario?msg=Cadastrado-com-sucesso');
@@ -387,7 +387,7 @@ app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {
 // ###! Cadastrar
 
 // listar
-app.get('/sistema/listar-usuarios', logado, async (req, res) => {   
+app.get('/sistema/usuarios', logado, async (req, res) => {   
     if(req.userValues.empresa == 'dev'){        
         var user = await User.findAll();
     }else{
@@ -423,10 +423,10 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
           )
         .then(() => {           
             console.log('Atualizado')
-            res.redirect('/sistema/listar-usuarios?msg=Atualizado-com-Sucesso');
+            res.redirect('/sistema/usuarios?msg=Atualizado-com-Sucesso');
         }).catch((err) => {
             console.log('Erro ao atualizar:'+ err)
-            res.redirect('/sistema/listar-usuarios?msg=Erro:-Problema-ao-Atualizar');
+            res.redirect('/sistema/usuarios?msg=Erro:-Problema-ao-Atualizar');
         });
     }else{
         res.redirect('../');
@@ -454,6 +454,50 @@ app.post('/sistema/deletar-usuarios', logado, async (req, res) => {
     }
 });
 // ##! usuários
+
+// ## vacinas
+// listar
+app.get('/sistema/vacinas', logado, async (req, res) => {   
+    if(req.userValues.empresa == 'dev'){        
+        var vacinas = await Vacinas.findAll();
+    }else{
+        var vacinas = await Vacinas.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
+    res.render('listar-vacinas',{'userValues' : req.userValues,'lista':vacinas});      
+});
+app.post("/sistema/cadastrar-vacina-post",logado, async (req, res) => {        
+    var nome_post = req.body.nome;
+    var estoque_post = req.body.estoque;
+    var empresa_user = req.userValues.empresa;
+    var user_id_v = req.userValues.id;
+    if(!empresa_user){
+        empresa_user = "normal";
+    }
+    if(!estoque_post){
+        estoque_post = 0;
+    }
+    Vacinas.create({
+        nome:nome_post,
+        empresa: empresa_user,
+        estoque: estoque_post,
+        user_id: user_id_v,
+
+    }).then(function(){
+        console.log("Cadastrado com sucesso");
+        res.redirect('/sistema/vacinas?msg=Cadastrado-com-sucesso');
+        return;
+    }).catch(function(erro){
+        console.log("Erro: Não Cadastrado! " + erro);
+        res.redirect('/sistema/vacinas?msg=Erro:-Nao-Cadastrado!');
+        return;
+    });
+    
+});
+// ##! vacinas
 
 // ## animais
 
@@ -544,11 +588,17 @@ app.post("/sistema/cadastro-animais-post", logado, uploadUser.single('foto'), as
 // ###! Cadastrar
 
 // listar
-app.get('/sistema/listar-animais', logado, async (req, res) => {   
+app.get('/sistema/animais', logado, async (req, res) => {   
     if(req.userValues.empresa == 'dev'){        
         var animal = await Animais.findAll();
+        var vacinas = await Vacinas.findAll();
     }else{
         var animal = await Animais.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+        var vacinas = await Vacinas.findAll({            
             where: {
                 empresa: req.userValues.empresa
             }
@@ -566,16 +616,24 @@ app.get('/sistema/listar-animais', logado, async (req, res) => {
             where: {
                 id: animal[i].user_id
             }
-        });        
+        });   
+        const getVacinacoes = await Vacinacoes.findAll({            
+            where: {
+                animal_id: animal[i].id
+            }
+        });     
         if(getImage){
             animal[i]['imagem'] = getImage.image;
         }        
         if(getUser_animal){
             animal[i]['usuario'] = getUser_animal.name;
         }
+        if(getVacinacoes){
+            animal[i]['vacinacoes'] = getVacinacoes;
+        }
     }
     // console.log(animal)
-    res.render('listar-animais',{'userValues' : req.userValues,'lista':animal});      
+    res.render('listar-animais',{'userValues' : req.userValues,'lista':animal,'lista_vacina':vacinas});      
 });
 app.post("/sistema/att-animais-post", logado, async (req, res) => { 
         var tipo_form = req.body.animalTipo;
@@ -594,10 +652,10 @@ app.post("/sistema/att-animais-post", logado, async (req, res) => {
           )
         .then(() => {           
             console.log('Atualizado')
-            res.redirect('/sistema/listar-animais?msg=Atualizado-com-Sucesso');
+            res.redirect('/sistema/animais?msg=Atualizado-com-Sucesso');
         }).catch((err) => {
             console.log('Erro ao atualizar:'+ err)
-            res.redirect('/sistema/listar-animais?msg=Erro:-Problema-ao-Atualizar');
+            res.redirect('/sistema/animais?msg=Erro:-Problema-ao-Atualizar');
         });
 });
 app.post('/sistema/deletar-animais', logado, async (req, res) => {   
@@ -607,11 +665,11 @@ app.post('/sistema/deletar-animais', logado, async (req, res) => {
             .then(() => {           
                 console.log('Deletado');
                 console.log(`deleted row(s): ${count}`);
-                res.redirect('/sistema/listar-animais?msg=Deletado-com-sucesso');    
+                res.redirect('/sistema/animais?msg=Deletado-com-sucesso');    
                 return true;
             }).catch((err) => {
                 console.log('Erro ao deletar:'+ err);
-                res.redirect('/sistema/listar-animais?msg=Erro:-Problema-ao-Deletetar');  
+                res.redirect('/sistema/animais?msg=Erro:-Problema-ao-Deletetar');  
                 return false;  
             });
         }

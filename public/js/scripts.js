@@ -95,61 +95,85 @@ $(document).ready(function($) {
     });
 
     $('#tabela #usuario').on('click', 'tr', function () {
-            if (timer) {
-                clearTimeout(timer);
-                timer = 0;
-            }
-            $("#conteudoModelCadastro").css('display','none'); 
-            $("#conteudoModel").css('display','block'); 
-            $("#ModelNotificacao").css('display','none'); 
-            $("#full-tela").css("pointer-events" ,"auto");
-            $("#full-tela").css("z-index" ,"101");
-            var data = table.row(this).data();
-            // console.log(data);
-            $("#full-tela").removeClass("invisible");
-            $("#Model").css('display','block');
-            $("html").css('overflow','hidden');
-            
-            $("#id_delete").val(data[1]);
-            $("#model_id").val(data[1]);
-            $("#model_name").val(data[2]);
-            $("#model_username").val(data[3]);
-            $("#model_email").val(data[4]);
-            $("#model_level").val(data[5]);
-            if(data[10] == "Desativado"){
-                var status = 0;
-                $("#statusUser").html('Desativado');
-                $("#statusUser").addClass("w3-red");
-                $("#statusUser").removeClass("w3-green");
-            }else{
-                var status = 1;
-                $("#statusUser").html('Ativado');
-                $("#statusUser").addClass("w3-green");
-                $("#statusUser").removeClass("w3-red");
-            }
-            $("#statusUsuario").val(status);
-            
-            let data_criada = data[7].split('/');
-            var day = ("00" + data_criada[0]).slice(-2);
-            var month = ("00" + (data_criada[1])).slice(-2);
-            let dataFormatada_criada = data_criada[2]+"-"+month+"-"+day; 
-            $("#model_att").val(dataFormatada_criada);    
-            // console.log(output);
-            $("#model_att_now").val(output);  
-            if(data[8]){
-                $('#AvatarUser').attr("src",`../upload/${data[8]}`);
-            }else{
-                $('#AvatarUser').attr("src",`../images/usuario-branco.png`);
-            }
-              
-        // $("#conteudoModel").html(conteudo);
-    });
-    
-    $("#cadastroUsuario").click(function() {
         if (timer) {
             clearTimeout(timer);
             timer = 0;
         }
+        $("#conteudoModelCadastro").css('display','none'); 
+        $("#conteudoModel").css('display','block'); 
+        $("#ModelNotificacao").css('display','none'); 
+        $("#full-tela").css("pointer-events" ,"auto");
+        $("#full-tela").css("z-index" ,"101");
+        var data = table.row(this).data();
+        // console.log(data);
+        $("#full-tela").removeClass("invisible");
+        $("#Model").css('display','block');
+        $("html").css('overflow','hidden');
+        
+        $("#id_delete").val(data[1]);
+        $("#model_id").val(data[1]);
+        $("#model_name").val(data[2]);
+        $("#model_username").val(data[3]);
+        $("#model_email").val(data[4]);
+        $("#model_level").val(data[5]);
+        if(data[10] == "Desativado"){
+            var status = 0;
+            $("#statusUser").html('Desativado');
+            $("#statusUser").addClass("w3-red");
+            $("#statusUser").removeClass("w3-green");
+        }else{
+            var status = 1;
+            $("#statusUser").html('Ativado');
+            $("#statusUser").addClass("w3-green");
+            $("#statusUser").removeClass("w3-red");
+        }
+        $("#statusUsuario").val(status);
+        
+        let data_criada = data[7].split('/');
+        var day = ("00" + data_criada[0]).slice(-2);
+        var month = ("00" + (data_criada[1])).slice(-2);
+        let dataFormatada_criada = data_criada[2]+"-"+month+"-"+day; 
+        $("#model_att").val(dataFormatada_criada);    
+        // console.log(output);
+        $("#model_att_now").val(output);  
+        if(data[8]){
+            $('#AvatarUser').attr("src",`../upload/${data[8]}`);
+        }else{
+            $('#AvatarUser').attr("src",`../images/usuario-branco.png`);
+        }
+          
+    // $("#conteudoModel").html(conteudo);
+});
+$('#tabela #vacina').on('click', 'tr', function () {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        $("#conteudoModelCadastro").css('display','none'); 
+        $("#conteudoModel").css('display','block'); 
+        $("#ModelNotificacao").css('display','none'); 
+        $("#full-tela").css("pointer-events" ,"auto");
+        $("#full-tela").css("z-index" ,"101");
+        var data = table.row(this).data();
+        // console.log(data);
+        $("#full-tela").removeClass("invisible");
+        $("#Model").css('display','block');
+        $("html").css('overflow','hidden');
+        
+        $("#id_delete").val(data[1]);
+        $("#model_id").val(data[1]);
+        $("#model_name").val(data[2]);
+        $("#model_estoque").val(data[3]);
+        $("#model_att_now").val(output);  
+          
+});
+    
+    $("#cadastroModel").click(function() {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        $("#model_att_now").val(output);  
         $("#conteudoModelCadastro").css('display','block'); 
         $("#conteudoModel").css('display','none'); 
         $("#ModelNotificacao").css('display','none'); 
