@@ -52,9 +52,9 @@ let seconds = date_ob.getSeconds();
 // let’s you use the cookieParser in your application
 app.use(cookieParser());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 //parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(cors());
 
 app.use(express.static('./public'));
@@ -68,6 +68,39 @@ app.get('/', getUser, async (req, res) => {
         req.userValues = "";
     }
     res.render('index',{'userValues' : req.userValues});
+});
+app.get('/mapa', getUser, async (req, res) => {
+    if(!req.userValues){
+        req.userValues = "";
+    }    
+    var animal = await Animais.findAll({            
+        where: {
+            ativo: 1
+        }
+    });
+    if(animal){
+        for(var i = 0; animal.length>i;i++){
+            const getImage = await Image_animais.findOne({
+                attributes: ['id','image'],
+                where: {
+                    animal_id: animal[i].id
+                }
+            });      
+            const getUser_animal = await User.findOne({
+                attributes: ['id','name','email'],
+                where: {
+                    id: animal[i].user_id
+                }
+            });        
+            if(getImage){
+                animal[i]['imagem'] = getImage.image;
+            }        
+            if(getUser_animal){
+                animal[i]['usuario'] = getUser_animal.name;
+            }
+        }    
+    }
+    res.render('mapa',{'userValues' : req.userValues,'lista':animal});      
 });
 app.post('/email-contato', async (req, res) => {    
     var name_p = req.body.name;
@@ -102,40 +135,6 @@ app.post('/email-contato', async (req, res) => {
         res.redirect('/?msg=Enviado-com-Sucesso');
         return true;
       });
-});
-// index pages
-app.get('/mapa', getUser, async (req, res) => {
-    if(!req.userValues){
-        req.userValues = "";
-    }    
-    var animal = await Animais.findAll({            
-        where: {
-            ativo: 1
-        }
-    });
-    if(animal){
-        for(var i = 0; animal.length>i;i++){
-            const getImage = await Image_animais.findOne({
-                attributes: ['id','image'],
-                where: {
-                    animal_id: animal[i].id
-                }
-            });      
-            const getUser_animal = await User.findOne({
-                attributes: ['id','name','email'],
-                where: {
-                    id: animal[i].user_id
-                }
-            });        
-            if(getImage){
-                animal[i]['imagem'] = getImage.image;
-            }        
-            if(getUser_animal){
-                animal[i]['usuario'] = getUser_animal.name;
-            }
-        }    
-    }
-    res.render('mapa',{'userValues' : req.userValues,'lista':animal});      
 });
 
 // # Relacionado Conta
@@ -322,7 +321,6 @@ app.get('/sistema/cadastro-usuario', logado, (req, res) => {
     }    
 });
 app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {    
-    
     const senha_criptografada = await func.generatePassword(req.body.senha);
     var empresa_post = req.userValues.empresa;
     var user_type = req.userValues.type;
@@ -330,7 +328,9 @@ app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {
     var name_p = req.body.name;
     var cpf_p = req.body.cpf;
     var newsletter_p = req.body.newsletter;
-    if(!empresa_post){
+    if(req.body.empresa){
+        empresa_post = req.body.empresa;
+    }else if(!empresa_post){
         empresa_post = "normal";
     }
     if(!user_type){
@@ -441,16 +441,16 @@ app.post('/sistema/deletar-usuarios', logado, async (req, res) => {
                 User.destroy({ where: { id: req.body.id_delete }});         
                 console.log('Deletado');
                 console.log(`deleted row(s): ${count}`);
-                res.redirect('/sistema/listar-usuarios?msg=Deletado-com-sucesso');    
+                res.redirect('/sistema/usuarios?msg=Deletado-com-sucesso');    
                 return true;
             }).catch((err) => {
                 console.log('Erro ao deletar:'+ err);
-                res.redirect('/sistema/listar-usuarios?msg=Erro:-Problema-ao-Deletar');  
+                res.redirect('/sistema/usuarios?msg=Erro:-Problema-ao-Deletar');  
                 return false;  
             });
         }
     }else{
-        res.redirect('/sistema/listar-usuarios?msg=Erro:-Sem-permissao');  
+        res.redirect('/sistema/usuarios?msg=Erro:-Sem-permissao');  
     }
 });
 // ##! usuários
@@ -678,6 +678,11 @@ app.post('/sistema/deletar-animais', logado, async (req, res) => {
 // ##! animais
 
 // #! Sistema
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*',function(req, res){
+    res.redirect('/?msg=Erro:-404-Pagina-nao-encontrada');  
+});
 
 https.createServer({
     cert: fs.readFileSync('ssl/code.crt'),
