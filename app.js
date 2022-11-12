@@ -18,7 +18,6 @@ const User = require('./models/User');
 const Image_perfil = require('./models/Image_perfil');
 const Image_animais = require('./models/Image_animais');
 const Animais = require('./models/Animais');
-const Empresas = require('./models/Empresas');
 const Vacinas = require('./models/Vacinas');
 const Vacinacoes = require('./models/Vacinacoes');
 const db = require('./models/db');
