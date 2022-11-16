@@ -143,30 +143,30 @@ $(document).ready(function($) {
         }
           
     // $("#conteudoModel").html(conteudo);
-});
-$('#tabela #vacina').on('click', 'tr', function () {
-        if (timer) {
-            clearTimeout(timer);
-            timer = 0;
-        }
-        $("#conteudoModelCadastro").css('display','none'); 
-        $("#conteudoModel").css('display','block'); 
-        $("#ModelNotificacao").css('display','none'); 
-        $("#full-tela").css("pointer-events" ,"auto");
-        $("#full-tela").css("z-index" ,"101");
-        var data = table.row(this).data();
-        // console.log(data);
-        $("#full-tela").removeClass("invisible");
-        $("#Model").css('display','block');
-        $("html").css('overflow','hidden');
-        
-        $("#id_delete").val(data[1]);
-        $("#model_id").val(data[1]);
-        $("#model_name").val(data[2]);
-        $("#model_estoque").val(data[3]);
-        $("#model_att_now").val(output);  
-          
-});
+    });
+    $('#tabela #vacina').on('click', 'tr', function () {
+            if (timer) {
+                clearTimeout(timer);
+                timer = 0;
+            }
+            $("#conteudoModelCadastro").css('display','none'); 
+            $("#conteudoModel").css('display','block'); 
+            $("#ModelNotificacao").css('display','none'); 
+            $("#full-tela").css("pointer-events" ,"auto");
+            $("#full-tela").css("z-index" ,"101");
+            var data = table.row(this).data();
+            // console.log(data);
+            $("#full-tela").removeClass("invisible");
+            $("#Model").css('display','block');
+            $("html").css('overflow','hidden');
+            
+            $("#id_delete").val(data[1]);
+            $("#model_id").val(data[1]);
+            $("#model_name").val(data[2]);
+            $("#model_estoque").val(data[3]);
+            $("#model_att_now").val(output);  
+            
+    });
     
     $("#cadastroModel").click(function() {
         if (timer) {
@@ -241,7 +241,7 @@ $('#tabela #vacina').on('click', 'tr', function () {
         }
         $('#mapa-cachorro').attr("src",`https://maps.google.com.br/maps?q=${data[8]},${data[9]}&output=embed&dg=oo`);   
                     
-   });   
+    });   
 
     $('#statusUser').on('click', function () {
         $(this).toggleClass("w3-green");
@@ -256,8 +256,8 @@ $('#tabela #vacina').on('click', 'tr', function () {
         }
     });   
    
-   $('.load').hide();   
-   $("#full-tela").addClass("invisible");   
+    $('.load').hide();   
+    $("#full-tela").addClass("invisible");   
 
     if((window.location.href).split('msg=')[1]){
         var msg_atual = ((window.location.href).split('msg='))[1].replaceAll('-',' ');
@@ -273,31 +273,31 @@ $('#tabela #vacina').on('click', 'tr', function () {
              console.info( "This page is not reloaded");
          }
     }
-   if(msg_atual){
-        conteudo = '<div id="msgModel" class="w3-container model-msg">'+msg_atual+'</div>';
-        $("#full-tela").removeClass("invisible");
-        $("#ModelNotificacao").addClass('sem-fundo'); 
-        $("#ModelNotificacao").css('display','block'); 
-        $("#ModelNotificacao").css('padding-top','60px'); 
-        $("#full-tela").css("pointer-events" ,"none");
-        $("#full-tela").css("z-index" ,"1");
-        
+    if(msg_atual){
+            conteudo = '<div id="msgModel" class="w3-container model-msg">'+msg_atual+'</div>';
+            $("#full-tela").removeClass("invisible");
+            $("#ModelNotificacao").addClass('sem-fundo'); 
+            $("#ModelNotificacao").css('display','block'); 
+            $("#ModelNotificacao").css('padding-top','60px'); 
+            $("#full-tela").css("pointer-events" ,"none");
+            $("#full-tela").css("z-index" ,"1");
+            
 
-        $("#conteudoModelNotificacao").html(conteudo);
-        if(msg_atual.includes('Erro:')){
-             $("#msgModel").addClass("erro-model");   
-        }else{
-            $("#msgModel").addClass("sucess-model");   
-        }
+            $("#conteudoModelNotificacao").html(conteudo);
+            if(msg_atual.includes('Erro:')){
+                $("#msgModel").addClass("erro-model");   
+            }else{
+                $("#msgModel").addClass("sucess-model");   
+            }
 
-        timer = setTimeout(function(){            
-            $("#ModelNotificacao").removeClass('sem-fundo'); 
-            $("#ModelNotificacao").css('padding-top',''); 
-            $("#full-tela").addClass("invisible");
-            $("#ModelNotificacao").css('display','none');
-            $("#ModelNotificacaoInicio").css('width','auto');  
-            $("#full-tela").css("pointer-events" ,"auto");
-            $("#full-tela").css("z-index" ,"101");
-        },3000);
-   }
+            timer = setTimeout(function(){            
+                $("#ModelNotificacao").removeClass('sem-fundo'); 
+                $("#ModelNotificacao").css('padding-top',''); 
+                $("#full-tela").addClass("invisible");
+                $("#ModelNotificacao").css('display','none');
+                $("#ModelNotificacaoInicio").css('width','auto');  
+                $("#full-tela").css("pointer-events" ,"auto");
+                $("#full-tela").css("z-index" ,"101");
+            },3000);
+    }
 });

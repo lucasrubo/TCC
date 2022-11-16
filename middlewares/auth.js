@@ -14,6 +14,7 @@ module.exports = {
                         res.clearCookie('Authorization');        
                         res.redirect('/?msg=Token-expirado');
                         token = '';
+                        return false;
                     }            
                 });
                 const decode = await promisify(jwt.verify)(token, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
@@ -27,6 +28,7 @@ module.exports = {
                     res.clearCookie('Authorization');         
                     res.redirect('/?msg=Usuario-precisar-estar-ativado');
                     token = '';
+                    return false;
                 }
                 req.userId = decode.id;
                 req.userValues = user.dataValues;
@@ -70,6 +72,7 @@ module.exports = {
             console.log("Erro: Necessário realizar o login para acessar a página! Token inválido!"+ err);
                  
             res.redirect('/?msg=Precisa-estar-logado');
+            return false;
         }
     }
 }
