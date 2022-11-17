@@ -300,4 +300,21 @@ $(document).ready(function($) {
                 $("#full-tela").css("z-index" ,"101");
             },3000);
     }
+    var vacinas_input_post = "";
+    $(".checkbox").change(function() {
+        var vacina_antes = $("#vacinas_input").val();
+        // verifica se ele está no estado checked
+        if(this.checked) {
+            console.log("checked");
+            //usando append para incluir o input no
+            vacinas_input_post += this.id + "-";
+        }else{          
+            console.log("unchecked");
+            $("#vacinas_input").val('');
+            vacinas_input_post = vacina_antes.replace(this.id+"-",'');
+        }
+        $("#vacinas_input").val(vacinas_input_post);
+        console.log(vacinas_input_post);
+    });
+
 });

@@ -5,15 +5,15 @@
     #map{
         height: 48rem;
         max-width: 100%;
-        margin-top: -30px;
     }
     #tabela-mapa td {
         padding: 10px 10px;
         text-align: left;
+        max-width: 170px;
         
     }
     .borda-baixo{
-        border-bottom: 1px solid #ffb87b;
+        border-bottom: 1px solid #7b85ff;
     }
 </style>
 
@@ -118,12 +118,54 @@
                 $("#full-tela").css("z-index" ,"101");
                 // console.log(data);
                 $("#full-tela").removeClass("invisible");
-                $("#header-model").css("border-bottom" ,"1px solid rgb(247 210 178)");
-                $("#header-model").css("background" ,"#fbf6d6");
                 $("#header-model").css("margin-bottom" ,"0px");
                 $("#Model").css('display','block');
                 $("html").css('overflow','hidden');
-                $("#conteudoModel").html('<div class="w3-container" style="background:#fff9cf;width: 40rem;height:max-content;border-radius: 10px;box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);padding: 10px 15px;"><table border="1" id="tabela-mapa" style="width: 100%;height:100%;border-color: #ffb87b;"><tr  style="border-top: 1px solid #fff9cf;"><td rowspan="3" style="height: 13rem;width: 10rem;border-left: 1px solid #fff9cf;"><img id="AvatarDog" alt="Avatar" style="width: 10rem;max-height: 13rem;" class="w3-margin-top" src="../upload/<%=lista[i].imagem %>"></td><td colspan="3"  style="border-right: 1px solid #fff9cf;"><b>Nome: </b><span><%=lista[i].nome %></span></td></tr><tr><td colspan="2"><b>Raça: </b><span><%=lista[i].raça %></span></td><td style="border-right: 1px solid #fff9cf;"><b>Espécie: </b><span><%=lista[i].tipo %></span></td></tr><tr><td colspan="2"><b>Obs: </b></td><td  style="border-right: 1px solid #fff9cf;"><b>Vacinas: </b></td></tr><tr  style="border-right: 1px solid #fff9cf;border-left: 1px solid #fff9cf;border-bottom: 1px solid #fff9cf;"><td colspan="4"><b>Achado:</b><br><iframe id="mapa-cachorro" width="100%" height="302" frameborder="0" scrolling="no" zoom="15" style="border:0;" marginheight="0" marginwidth="0" src="https://maps.google.com.br/maps?q=<%=lista[i].latitude%>,<%=lista[i].longitude%>&output=embed&dg=oo"></iframe></td></tr></table></div>');
+                $("#conteudoModel").html(
+                    "<div class='w3-container' style='background:white;width: 40rem;height:max-content;border-radius: 10px;box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);padding: 10px 15px;'>"+
+                        "<table border='1' id='tabela-mapa' style='width: 100%;height:100%;border-color: #7b85ff;'>"+
+                            "<tr  style='border-top: 1px solid white;'>"+
+                                "<td rowspan='3' style='height: 13rem;width: 10rem;border-left: 1px solid white;'>"+
+                                    "<img id='AvatarDog' alt='Avatar' style='width: 10rem;max-height: 13rem;' class='w3-margin-top' src='../upload/<%=lista[i].imagem %>'>"+
+                                "</td>"+
+                                "<td colspan='3'  style='border-right: 1px solid white;'>"+
+                                    "<b>Nome: </b><span><%=lista[i].nome %></span>"+
+                                "</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td colspan='2'>"+
+                                    "<b>Raça: </b><span><%=lista[i].raça %></span>"+
+                                "</td>"+
+                                "<td style='border-right: 1px solid white;'>"+
+                                    "<b>Espécie: </b><span><%=lista[i].tipo %></span>"+
+                                "</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td colspan='2'>"+
+                                    "<b>Obs: </b><span>"+`<%= lista[i].obs %>`+"</span>"+
+                                "</td>"+
+                                "<td  style='border-right: 1px solid white;'>"+
+                                    "<b>Vacinas: </b>"+
+                                    <% 
+                                    var lista_vacina= lista[i].vacinacoes;
+                                    for(var a = 0; lista_vacina.length > a;a++){ 
+                                    %>   
+                                        "<%= lista_vacina[a] %>"+
+                                    <% 
+                                    } 
+                                    %>   
+                                    
+                                "</td>"+
+                            "</tr>"+
+                            "<tr  style='border-right: 1px solid white;border-left: 1px solid white;border-bottom: 1px solid white;'>"+
+                                "<td colspan='4'>"+
+                                    "<b>Achado:</b><br>"+
+                                    "<iframe id='mapa-cachorro' width='100%' height='302' frameborder='0' scrolling='no' zoom='15' style='border:0;' marginheight='0' marginwidth='0' src='https://maps.google.com.br/maps?q=<%=lista[i].latitude%>,<%=lista[i].longitude%>&output=embed&dg=oo'></iframe>"+
+                                "</td>"+
+                            "</tr>"+
+                        "</table>"+
+                    "</div>"
+                );
             });
         <% }%>
         markerCluster = new markerClusterer.MarkerClusterer({ map, markers });
@@ -165,9 +207,9 @@ window.initMap = initMap;
 </script>
 
         
-<section class="contact_section layout_padding">
+<section class="contact_section">
     <center style="width: 100%;height: 100%;"> 
-        <div style="position:absolute;top:55px;width:100%;height:45px;background-color: rgba(255, 255, 255, 0.24);">
+        <div style="width:100%;height:45px;background-color: rgba(255, 255, 255, 0.24);">
             <input style='width:auto' type="radio" name="grupo1" checked onclick="habilitarMarkers();">Marcadores
             <input style='width:auto' type="radio" name="grupo1" onclick="habilitarHeatmap();">Concentração
         </div>

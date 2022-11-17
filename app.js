@@ -29,6 +29,7 @@ const path = require('path');
 const { logado } = require('./middlewares/auth');
 const { getUser } = require('./middlewares/getUser');
 const uploadUser  = require('./middlewares/uploadImage');
+const { exit } = require('process');
 
 const app = express();
 const port = 8080;
@@ -90,18 +91,30 @@ app.get('/mapa', getUser, async (req, res) => {
                 where: {
                     id: animal[i].user_id
                 }
-            });        
+            });   
+            const getVacinacoes = await Vacinacoes.findAll({            
+                where: {
+                    animal_id: animal[i].id
+                }
+            });     
             if(getImage){
                 animal[i]['imagem'] = getImage.image;
             }        
             if(getUser_animal){
                 animal[i]['usuario'] = getUser_animal.name;
             }
+            if(getVacinacoes){
+                for(var a = 0; getVacinacoes.length>a;a++){
+                    // console.log(getVacinacoes[a].dataValues);
+                    // console.log("-----------------------------------------");
+                    animal[i]['vacinacoes'] += (getVacinacoes[a].dataValues);
+                }
+            }
         }    
     }
     res.render('mapa',{'userValues' : req.userValues,'lista':animal});      
 });
-app.post('/email-contato', async (req, res) => {    
+app.post('/email-contato', async (req, res) => {
     var name_p = req.body.name;
     var email_p = req.body.email;
     var tel_p = req.body.tel;
@@ -472,7 +485,8 @@ app.post("/sistema/cadastrar-vacina-post",logado, async (req, res) => {
     var nome_post = req.body.nome;
     var estoque_post = req.body.estoque;
     var empresa_user = req.userValues.empresa;
-    var user_id_v = req.userValues.id;
+    const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+    var id = decode.id; 
     if(!empresa_user){
         empresa_user = "normal";
     }
@@ -483,8 +497,7 @@ app.post("/sistema/cadastrar-vacina-post",logado, async (req, res) => {
         nome:nome_post,
         empresa: empresa_user,
         estoque: estoque_post,
-        user_id: user_id_v,
-
+        user_id: id
     }).then(function(){
         console.log("Cadastrado com sucesso");
         res.redirect('/sistema/vacinas?msg=Cadastrado-com-sucesso');
@@ -590,7 +603,13 @@ app.post("/sistema/cadastro-animais-post", logado, uploadUser.single('foto'), as
 app.get('/sistema/animais', logado, async (req, res) => {   
     if(req.userValues.empresa == 'dev'){        
         var animal = await Animais.findAll();
-        var vacinas = await Vacinas.findAll();
+        var vacinas = await Vacinas.findAll({          
+            where: {
+                estoque: {
+                    [Op.gt] : 0
+                }     
+            }
+        });
     }else{
         var animal = await Animais.findAll({            
             where: {
@@ -599,7 +618,10 @@ app.get('/sistema/animais', logado, async (req, res) => {
         });
         var vacinas = await Vacinas.findAll({            
             where: {
-                empresa: req.userValues.empresa
+                empresa: req.userValues.empresa,
+                [Op.gt]: {
+                    estoque : 1
+                }     
             }
         });
     }
@@ -636,6 +658,8 @@ app.get('/sistema/animais', logado, async (req, res) => {
 });
 app.post("/sistema/att-animais-post", logado, async (req, res) => { 
         var tipo_form = req.body.animalTipo;
+        const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+        var id = decode.id; 
         if(tipo_form == "Outro"){
             tipo_form = req.body.OutroSubmit;
         }   
@@ -649,8 +673,26 @@ app.post("/sistema/att-animais-post", logado, async (req, res) => {
             },
             { where: { id: req.body.model_id } }
           )
-        .then(() => {           
+        .then(async () =>  {           
             console.log('Atualizado')
+            
+            console.log(req.body.vacinas_input);
+            var input = req.body.vacinas_input;
+            var vacinas  = input.split('-');
+            for(var i = 0; vacinas.length>i;i++){
+                if(vacinas[i]!=''){
+                    await Vacinacoes.upsert(
+                        { 
+                            animal_id: req.body.model_id,
+                            user_id: id,
+                            vacina_id: vacinas[i],
+                            empresa: req.userValues.empresa,
+                            data_vacina: year + "-" + month + "-" + date
+                        },
+                        { where: { id: req.body.model_id } }
+                    )
+                }
+            }
             res.redirect('/sistema/animais?msg=Atualizado-com-Sucesso');
         }).catch((err) => {
             console.log('Erro ao atualizar:'+ err)
