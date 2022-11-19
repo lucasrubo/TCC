@@ -47,10 +47,10 @@ const Animais = db.define('animais', {
 
 Animais.belongsTo(User,{
     constraint: true,
-    foreignKey: 'user_id'
+    foreignKey: 'userId'
 });
 User.hasMany(Animais,{
-    foreignKey: 'user_id'
+    foreignKey: 'userId'
 });
 //Criar a tabela
 // Animais.sync();

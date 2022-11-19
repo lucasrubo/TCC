@@ -1,11 +1,11 @@
 $(document).ready(function($) {
     var timer = 0;
-    var d = new Date();
 
+    var d = new Date();
     var monthd = ("00" + d.getMonth()).slice(-2);
     var dayd = ("00" + d.getDate()).slice(-2);;
-
     var output = d.getFullYear() + '-' +monthd + '-' +dayd;
+
     $("#cpfcnpj").keydown(function(){
         try {
             $("#cpfcnpj").unmask();
@@ -204,7 +204,7 @@ $(document).ready(function($) {
         $("#id_delete").val(data[1]);
         $("#model_dogname").val(data[2]);
         $("#model_raça").val(data[3]);
-        var obs = data[5].replace('<textarea readonly="" style="border: 0px;resize: none;">','');
+        var obs = data[5].replace('<textarea readonly="">','');
         obs = obs.replace('</textarea>','');
         $("#obs_dog").val(obs);
         $("#model_att_now").val(output);  
@@ -232,7 +232,7 @@ $(document).ready(function($) {
         }
         $("#statusUsuario").val(status);
         
-        
+        $("#vacinas_input").val(data[14]); 
         // console.log(data[7]);
         if(data[7]){
             $('#AvatarDog').attr("src",`../upload/${data[7]}`);
@@ -241,6 +241,15 @@ $(document).ready(function($) {
         }
         $('#mapa-cachorro').attr("src",`https://maps.google.com.br/maps?q=${data[8]},${data[9]}&output=embed&dg=oo`);   
                     
+        $(".checkbox").prop( "checked", false );
+        if(data[14] !=''){   
+            const vacinas = data[14].split('-');
+            for(var i = 0; vacinas.length>i;i++){
+                if(vacinas[i] !=''){   
+                    $("#"+vacinas[i]).prop( "checked", true );
+                }
+            }
+        }    
     });   
 
     $('#statusUser').on('click', function () {
@@ -301,20 +310,18 @@ $(document).ready(function($) {
             },3000);
     }
     var vacinas_input_post = "";
+    var vacina_antes= "";
     $(".checkbox").change(function() {
-        var vacina_antes = $("#vacinas_input").val();
+        vacina_antes = $("#vacinas_input").val();
+        vacinas_input_post = vacina_antes;
         // verifica se ele está no estado checked
         if(this.checked) {
-            console.log("checked");
-            //usando append para incluir o input no
             vacinas_input_post += this.id + "-";
         }else{          
-            console.log("unchecked");
             $("#vacinas_input").val('');
             vacinas_input_post = vacina_antes.replace(this.id+"-",'');
         }
         $("#vacinas_input").val(vacinas_input_post);
-        console.log(vacinas_input_post);
     });
 
 });

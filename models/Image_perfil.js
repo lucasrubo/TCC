@@ -16,10 +16,10 @@ const Image_perfil = db.define('images_perfil', {
 
 Image_perfil.belongsTo(User,{
     constraint: true,
-    foreignKey: 'user_id'
+    foreignKey: 'userId'
 });
 User.hasMany(Image_perfil,{
-    foreignKey: 'user_id'
+    foreignKey: 'userId'
 });
 //Criar a tabela
 //Image_perfil.sync();

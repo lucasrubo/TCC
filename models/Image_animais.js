@@ -16,10 +16,10 @@ const Image_animais = db.define('images_animais', {
 
 Image_animais.belongsTo(Animais,{
     constraint: true,
-    foreignKey: 'animal_id'
+    foreignKey: 'animalId'
 });
 Animais.hasMany(Image_animais,{
-    foreignKey: 'animal_id'
+    foreignKey: 'animalId'
 });
 //Criar a tabela
 //Image_animais.sync();

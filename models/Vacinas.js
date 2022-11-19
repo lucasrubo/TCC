@@ -26,10 +26,10 @@ const Vacinas = db.define('vacinas', {
 
 Vacinas.belongsTo(User,{
     constraint: true,
-    foreignKey: 'user_id'
+    foreignKey: 'userId'
 });
 User.hasMany(Vacinas,{
-    foreignKey: 'user_id'
+    foreignKey: 'userId'
 });
 //Criar a tabela
 // Vacinas.sync();

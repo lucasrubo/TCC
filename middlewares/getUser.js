@@ -44,7 +44,7 @@ module.exports = {
             const getImg = await Image_perfil.findOne({
                 attributes: ['id','image'],
                 where: {
-                    user_id: decode.id
+                    userId: decode.id
                 }
             });
             // console.log(user.dataValues);

@@ -73,6 +73,7 @@ app.get('/mapa', getUser, async (req, res) => {
     if(!req.userValues){
         req.userValues = "";
     }    
+    var vacinacoes = [];
     var animal = await Animais.findAll({            
         where: {
             ativo: 1
@@ -83,19 +84,21 @@ app.get('/mapa', getUser, async (req, res) => {
             const getImage = await Image_animais.findOne({
                 attributes: ['id','image'],
                 where: {
-                    animal_id: animal[i].id
+                    animalId: animal[i].id
                 }
             });      
             const getUser_animal = await User.findOne({
                 attributes: ['id','name','email'],
                 where: {
-                    id: animal[i].user_id
+                    id: animal[i].userId
                 }
             });   
-            const getVacinacoes = await Vacinacoes.findAll({            
+            const getVacinacoes = await Vacinacoes.findAll({          
+                raw:true,  
                 where: {
-                    animal_id: animal[i].id
-                }
+                    animalId: animal[i].id
+                },                
+                include: Vacinas
             });     
             if(getImage){
                 animal[i]['imagem'] = getImage.image;
@@ -105,14 +108,12 @@ app.get('/mapa', getUser, async (req, res) => {
             }
             if(getVacinacoes){
                 for(var a = 0; getVacinacoes.length>a;a++){
-                    // console.log(getVacinacoes[a].dataValues);
-                    // console.log("-----------------------------------------");
-                    animal[i]['vacinacoes'] += (getVacinacoes[a].dataValues);
+                    vacinacoes.push(getVacinacoes[a]);
                 }
             }
         }    
     }
-    res.render('mapa',{'userValues' : req.userValues,'lista':animal});      
+    res.render('mapa',{'userValues' : req.userValues,'lista':animal,'vacinacoes':vacinacoes});      
 });
 app.post('/email-contato', async (req, res) => {
     var name_p = req.body.name;
@@ -171,7 +172,7 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
         const check_id = await Image_perfil.findOne({
             attributes: ['id','image'],
             where: {
-                user_id: decode.id
+                userId: decode.id
             }
         });
         if(!check_id){
@@ -197,7 +198,7 @@ app.post('/usuario/upload-image', uploadUser.single('avatar'), async (req, res) 
         await Image_perfil.upsert({
             id: image_id,
             image: req.file.filename,
-            user_id: decode.id
+            userId: decode.id
         })
         .then(() => {
             sharp(filepath)
@@ -413,7 +414,7 @@ app.get('/sistema/usuarios', logado, async (req, res) => {
         const getImage = await Image_perfil.findOne({
             attributes: ['id','image'],
             where: {
-                user_id: user[i].id
+                userId: user[i].id
             }
         });        
         if(getImage){
@@ -497,7 +498,7 @@ app.post("/sistema/cadastrar-vacina-post",logado, async (req, res) => {
         nome:nome_post,
         empresa: empresa_user,
         estoque: estoque_post,
-        user_id: id
+        userId: id
     }).then(function(){
         console.log("Cadastrado com sucesso");
         res.redirect('/sistema/vacinas?msg=Cadastrado-com-sucesso');
@@ -508,6 +509,25 @@ app.post("/sistema/cadastrar-vacina-post",logado, async (req, res) => {
         return;
     });
     
+});
+app.post("/sistema/att-vacina-post", logado, async (req, res) => { 
+        const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+        var id = decode.id; 
+        await Vacinas.update(
+            { 
+                nome: req.body.model_name,
+                estoque: req.body.model_estoque,
+                userId: id
+            },
+            { where: { id: req.body.model_id } }
+          )
+        .then(async () =>  {           
+            console.log('Atualizado')
+            res.redirect('/sistema/vacinas?msg=Atualizado-com-Sucesso');
+        }).catch((err) => {
+            console.log('Erro ao atualizar:'+ err)
+            res.redirect('/sistema/vacinas?msg=Erro:-Problema-ao-Atualizar');
+        });
 });
 // ##! vacinas
 
@@ -532,7 +552,7 @@ app.post("/sistema/cadastro-animais-post", logado, uploadUser.single('foto'), as
             raça: req.body.raca,
             latitude: req.body.latitude_form,
             longitude: req.body.longitude_form,
-            user_id: id,
+            userId: id,
             empresa: req.userValues.empresa,
             obs: req.body.obs_dog,
             tipo: tipo_form
@@ -550,12 +570,12 @@ app.post("/sistema/cadastro-animais-post", logado, uploadUser.single('foto'), as
             });    
             
             for(var i = 0; last_id_animal.length>i;i++){ 
-                var last_animal_id = last_id_animal[i].id;
+                var last_animalId = last_id_animal[i].id;
             }
             
             await Image_animais.create({
                 image: req.file.filename,
-                animal_id: last_animal_id
+                animalId: last_animalId
             }).then(() => {
                 sharp(filepath)
                 .resize({width:225})
@@ -601,6 +621,7 @@ app.post("/sistema/cadastro-animais-post", logado, uploadUser.single('foto'), as
 
 // listar
 app.get('/sistema/animais', logado, async (req, res) => {   
+    var vacinacoes = [];
     if(req.userValues.empresa == 'dev'){        
         var animal = await Animais.findAll();
         var vacinas = await Vacinas.findAll({          
@@ -623,24 +644,24 @@ app.get('/sistema/animais', logado, async (req, res) => {
                     estoque : 1
                 }     
             }
-        });
+        }); 
     }
     for(var i = 0; animal.length>i;i++){
         const getImage = await Image_animais.findOne({
             attributes: ['id','image'],
             where: {
-                animal_id: animal[i].id
+                animalId: animal[i].id
             }
         });      
         const getUser_animal = await User.findOne({
             attributes: ['id','name','email'],
             where: {
-                id: animal[i].user_id
+                id: animal[i].userId
             }
         });   
         const getVacinacoes = await Vacinacoes.findAll({            
             where: {
-                animal_id: animal[i].id
+                animalId: animal[i].id
             }
         });     
         if(getImage){
@@ -650,11 +671,15 @@ app.get('/sistema/animais', logado, async (req, res) => {
             animal[i]['usuario'] = getUser_animal.name;
         }
         if(getVacinacoes){
-            animal[i]['vacinacoes'] = getVacinacoes;
+            for(var a = 0; getVacinacoes.length>a;a++){
+                // console.log(getVacinacoes[a].dataValues);
+                // console.log("-----------------------------------------");
+                vacinacoes.push(getVacinacoes[a].dataValues);
+            }
         }
     }
-    // console.log(animal)
-    res.render('listar-animais',{'userValues' : req.userValues,'lista':animal,'lista_vacina':vacinas});      
+    // console.log(vacinacoes);
+    res.render('listar-animais',{'userValues' : req.userValues,'lista':animal,'lista_vacina':vacinas,'vacinacoes':vacinacoes});      
 });
 app.post("/sistema/att-animais-post", logado, async (req, res) => { 
         var tipo_form = req.body.animalTipo;
@@ -679,13 +704,14 @@ app.post("/sistema/att-animais-post", logado, async (req, res) => {
             console.log(req.body.vacinas_input);
             var input = req.body.vacinas_input;
             var vacinas  = input.split('-');
+            await Vacinacoes.destroy({ where: { animalId: req.body.model_id } })
             for(var i = 0; vacinas.length>i;i++){
                 if(vacinas[i]!=''){
                     await Vacinacoes.upsert(
                         { 
-                            animal_id: req.body.model_id,
-                            user_id: id,
-                            vacina_id: vacinas[i],
+                            animalId: req.body.model_id,
+                            userId: id,
+                            vacinaId: vacinas[i],
                             empresa: req.userValues.empresa,
                             data_vacina: year + "-" + month + "-" + date
                         },

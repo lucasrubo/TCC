@@ -146,15 +146,11 @@
                                 "</td>"+
                                 "<td  style='border-right: 1px solid white;'>"+
                                     "<b>Vacinas: </b>"+
-                                    <% 
-                                    var lista_vacina= lista[i].vacinacoes;
-                                    for(var a = 0; lista_vacina.length > a;a++){ 
-                                    %>   
-                                        "<%= lista_vacina[a] %>"+
-                                    <% 
-                                    } 
-                                    %>   
-                                    
+                                    <%                        ;
+                                        for(var a = 0; vacinacoes.length>a;a++){
+                                        if(lista[i].id == vacinacoes[a].animalId){%>"<%=(vacinacoes[a]['vacina.nome']) %><br>"+<%}        
+                                        }
+                                    %>                                    
                                 "</td>"+
                             "</tr>"+
                             "<tr  style='border-right: 1px solid white;border-left: 1px solid white;border-bottom: 1px solid white;'>"+

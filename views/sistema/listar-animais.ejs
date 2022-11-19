@@ -7,6 +7,9 @@
         bottom: -55px;
         z-index: 99;
      }
+     textarea{
+      border: 0px;resize: none;
+     }
 </style>
 <% if(userValues.type != 'admin'){%>
     <style>
@@ -17,9 +20,13 @@
 <% } %>
 <script type="text/javascript">  
       var vacinas_inputs = "";
-      <% for(var i = 0; lista_vacina.length>i;i++){ %>
-        vacinas_inputs += "<div><input class='checkbox' type='checkbox' id='<%= lista_vacina[i].id %>' value='<%= lista_vacina[i].id %>'><label for='<%= lista_vacina[i].id %>'><%= lista_vacina[i].nome %></label></div>";
-      <%}%>
+      const vacina =  <%-JSON.stringify(lista_vacina)%>;
+      for(var i = 0; vacina.length>i;i++){
+        vacinas_inputs += "<div>"+
+          "<input class='checkbox' type='checkbox' id='"+vacina[i].id+"' value='"+vacina[i].id+"'>"+
+          "<label for='"+vacina[i].id+"'>"+vacina[i].nome +"</label>"+
+        "</div>";
+      }
     conteudo = (
     '<form method="post" action="/sistema/deletar-animais" class="delete-form" onsubmit="return confirm(\'Tem certeza que gostaria de deletar este animal?\');">'+
       '<input hidden id="id_delete" name="id_delete" type="text" readonly>'+
@@ -98,6 +105,7 @@
                         <th >Status</th>
                         <th>Criado</th>
                         <th>Atualizado</th>
+                        <th hidden>Vacinas</th>
                         <th class="no-sort" >Ações</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -110,7 +118,7 @@
                         <td><%= lista[i].nome %></td>
                         <td><%= lista[i].raça %></td>
                         <td><%= lista[i].tipo %></td>
-                        <td><textarea readonly style="border: 0px;resize: none;"><%= lista[i].obs %></textarea></td>
+                        <td><textarea readonly><%= lista[i].obs %></textarea></td>
                         <td><%= lista[i].empresa %></td>
                         <td hidden><%= lista[i].imagem %></td>
                         <td hidden><%= lista[i].latitude %></td>
@@ -130,6 +138,13 @@
                                 let dataFormatada = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
                             %>
                             <%=  dataFormatada  %>
+                        </td>
+                        <td hidden>   
+                          <%                        
+                            for(var a = 0; vacinacoes.length>a;a++){
+                              if(lista[i].id == vacinacoes[a].animalId){%><%=(vacinacoes[a].vacinaId)%>-<%}        
+                            }
+                          %>
                         </td>
                         <td id="editar"><b>Editar</b></td>
                         <td id="vacinas"><b>Vacinas</b></td>
