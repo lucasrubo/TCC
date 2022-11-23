@@ -22,7 +22,7 @@ const Vacinas = require('./models/Vacinas');
 const Vacinacoes = require('./models/Vacinacoes');
 const Compras = require('./models/compras');
 const db = require('./models/db');
-db.sync({ alter: true,force:true});
+// db.sync({ alter: true,force:true});
 
 const func = require('./models/functions');
 const path = require('path');
@@ -443,7 +443,7 @@ app.post("/sistema/att-usuario-post", logado, async (req, res) => {
             res.redirect('/sistema/usuarios?msg=Erro:-Problema-ao-Atualizar');
         });
     }else{
-        res.redirect('../');
+        res.redirect('/sistema/usuarios?msg=Erro:-Sem-acesso');
     }
 });
 app.post('/sistema/deletar-usuarios', logado, async (req, res) => {   
@@ -470,7 +470,7 @@ app.post('/sistema/deletar-usuarios', logado, async (req, res) => {
 // ##! usuários
 
 // ## vacinas
-// listar
+// # listar
 app.get('/sistema/vacinas', logado, async (req, res) => {   
     if(req.userValues.empresa == 'dev'){        
         var vacinas = await Vacinas.findAll();
@@ -547,6 +547,8 @@ app.post('/sistema/deletar-vacinas', logado, async (req, res) => {
         }
     }
 });
+// #! listar
+// # compras
 app.get('/sistema/lancar-compra-vacina', logado, async (req, res) => { 
     if(req.userValues.empresa == 'dev'){    
         var compras = await Compras.findAll({        
@@ -674,6 +676,7 @@ app.post('/sistema/deletar-compras', logado, async (req, res) => {
         }
     }
 });
+// #! compras
 // ##! vacinas
 
 app.get('/sistema/relatorio', logado, async (req, res) => {   
@@ -798,8 +801,8 @@ app.get('/sistema/animais', logado, async (req, res) => {
         var vacinas = await Vacinas.findAll({            
             where: {
                 empresa: req.userValues.empresa,
-                [Op.gt]: {
-                    estoque : 1
+                estoque: {
+                    [Op.gt]: 1
                 }     
             }
         }); 
@@ -857,9 +860,44 @@ app.post("/sistema/att-animais-post", logado, async (req, res) => {
             { where: { id: req.body.model_id } }
           )
         .then(async () =>  {           
-            console.log('Atualizado')
-            
-            console.log(req.body.vacinas_input);
+            console.log('Atualizado');
+            if(req.body.statusUsuario == 1){               
+                var animal = await Animais.findAll({       
+                    raw : true,     
+                    where: {
+                        ativo: 1,
+                        id: req.body.model_id
+                    }
+                });                      
+                var usuarios = await User.findAll({ 
+                    raw : true,                
+                    where: {
+                        ativo: 1,
+                        newsletter: 'on'
+                    }
+                });           
+                var titulo = "Novo cachorro encontrado! - segue as informações: ";
+                var mensagem = "<b>Nome:</b> "+req.body.model_dogname+"<br><b>Raça:</b> "+req.body.model_raça+" - "+tipo_form+"<br><b>Empresa que achou:</b> "+animal[0].empresa+'<br><b><a href="www.google.com.br/maps/place/'+animal[0].latitude+','+animal[0].longitude+'" target="_blank">Localização</a></b>';
+                var transport = nodemailer.createTransport({
+                    host: "smtp.mailtrap.io",
+                    port: 2525,
+                    auth: {
+                    user: "1551d051b21b35",
+                    pass: "35a1d7d2beba9e"
+                    }
+                });
+                for(var i = 0; usuarios.length>i;i++){ 
+                    console.log('entrando'+usuarios[i].email);    
+                    var message = {
+                        from: "norelpay@tcc.com.br",
+                        to: usuarios[i].email,
+                        subject: titulo,
+                        text: 'Novo Cachorro encontrado segue as informações:',
+                        html: mensagem
+                    };
+                    transport.sendMail(message);
+                }
+            }
             var input = req.body.vacinas_input;
             var vacinas  = input.split('-');
             await Vacinacoes.destroy({ where: { animalId: req.body.model_id } })
@@ -904,16 +942,19 @@ app.post('/sistema/deletar-animais', logado, async (req, res) => {
 
 // #! Sistema
 
-//The 404 Route (ALWAYS Keep this as the last route)
+//Erro 404 sempre no final
 app.get('*',function(req, res){
     res.redirect('/?msg=Erro:-404-Pagina-nao-encontrada');  
 });
 
+// redirect para https
 app.use(function(request, response){
     if(!request.secure){    
         response.redirect("https://" + request.headers.host + request.url);    
     }    
 });
+
+// rodando em https
 https.createServer({
     cert: fs.readFileSync('ssl/code.crt'),
     key: fs.readFileSync('ssl/code.key'),
