@@ -637,7 +637,6 @@ app.post('/sistema/att-compra-post', logado, async (req, res) => {
         qtd: qtd_post,
         custo: custo_post,
         obs: obs_post,
-        vacinaId: nome_post,
         userId: id
     },{ where: { id: model_id } }).then(function(){
         console.log("Atualizado com sucesso");
