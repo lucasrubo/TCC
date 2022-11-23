@@ -347,7 +347,9 @@ app.post("/sistema/cadastrar-usuario-post",getUser, async (req, res) => {
     }else if(!empresa_post){
         empresa_post = "normal";
     }
-    if(!user_type){
+    if(req.body.type){
+        user_type = req.body.type;
+    }else if(!user_type){
         user_type = "normal";
     }
     if(!nascimento){
