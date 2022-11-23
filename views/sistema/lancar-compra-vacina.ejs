@@ -1,0 +1,151 @@
+<%- include('header', {titulo:'Compras de Vacinas'}); %>
+<%- include('menu', {variant:'sistema'}); %>
+<style>
+     .delete-form{
+        position:absolute;
+        right:16px;
+        bottom:16px;
+     }
+    
+    textarea{
+      border: 0px;resize: none;
+            background:#ffffff00;
+     }
+</style>
+<% if(userValues.type != 'admin'){%>
+    <style>
+         .delete-form{
+            display:none;
+         }
+    </style>
+<% } %>
+<script type="text/javascript">  
+    const vacina =  <%-JSON.stringify(lista_vacinas)%>;
+    vacinas_inputs='';
+    for(var i = 0; vacina.length>i;i++){
+        vacinas_inputs += "<option value='"+vacina[i].id+"'>"+vacina[i].nome +"</option>";
+    }
+    
+    conteudo = '<form method="post" action="/sistema/deletar-compras" class="delete-form" onsubmit="return confirm(\'Tem certeza que gostaria de deletar este animal?\');">'+
+      '<input hidden id="id_delete" name="id_delete" type="text" readonly>'+
+      '<button class="w3-button w3-red" type="submit">Deletar</button>'+
+    '</form>'+
+    '<form action="/sistema/att-compra-post" method="post">'+
+        '<input hidden name="model_id" id="model_id" required>'+
+        '<div class="row">'+
+            '<div class="col-md-12 mx-auto">'+
+                '<div class="row-n" style="justify-content: center;">'+
+                    '<div class="col-md-6 w3-margin-bottom">'+
+                        '<label><b>Nome</b></label><div id="nome"></div>'+
+                    '</select></div>'+
+                    '<div class="col-md-3 w3-margin-bottom">'+
+                        '<label><b>Qtd</b></label><input class="w3-input w3-border" type="number" placeholder="" id="qtd" name="qtd" required>'+
+                    '</div>'+
+                    '<div class="col-md-3 w3-margin-bottom">'+
+                        '<label><b>Custo</b></label><input class="w3-input w3-border dinheiro" type="text" placeholder="" id="custo" name="custo" required>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="row-n" style="justify-content: center;">'+
+                    '<div class="col-md-9 w3-margin-bottom">'+
+                        '<label><b>Qtd</b></label><textarea class="w3-input w3-border" placeholder="obs:." id="obs" name="obs"></textarea>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'+
+        '</div>'+
+        '<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">'+
+            '<button class="w3-button w3-green" type="submit">Salvar</button>'+
+        '</div>'+
+    '</form>';
+    conteudoCadastro = (
+    '<form action="/sistema/cadastrar-compra-post" method="post">'+
+        '<input hidden name="retornarLista" value="1">'+
+        '<div class="row">'+
+            '<div class="col-md-12 mx-auto">'+
+                '<div class="row-n" style="justify-content: center;">'+
+                    '<div class="col-md-6 w3-margin-bottom">'+
+                        '<label><b>Nome</b></label><select class="w3-input w3-border" name="nome" required><option checked value="" >Selecione</option>'+vacinas_inputs+
+                    '</select></div>'+
+                    '<div class="col-md-3 w3-margin-bottom">'+
+                        '<label><b>Qtd</b></label><input class="w3-input w3-border" type="number" placeholder="" id="qtd" name="qtd" required>'+
+                    '</div>'+
+                    '<div class="col-md-3 w3-margin-bottom">'+
+                        '<label><b>Custo</b></label><input class="w3-input w3-border dinheiro" type="text" placeholder="" id="custo" name="custo" required>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="row-n" style="justify-content: center;">'+
+                    '<div class="col-md-9 w3-margin-bottom">'+
+                        '<label><b>Qtd</b></label><textarea class="w3-input w3-border" placeholder="obs:." id="obs" name="obs"></textarea>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'+
+        '</div>'+
+        '<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">'+
+            '<button class="w3-button w3-green" type="submit">Salvar</button>'+
+        '</div>'+
+    '</form>');
+</script>
+<section class="layout_padding">
+    <div class="custom_heading-container">
+      <h3 class=" ">
+        Compras de Vacinas
+      </h3>
+    </div>
+    <div class="menu-simples">
+        <a href="/sistema/vacinas">Vacinas</a>
+        <a href="/sistema/relatorio">Relatório</a>
+    </div>
+    <div class="container layout_padding2-top">
+      <div class="row">
+        <div style="padding: 10px;">
+            <button type="button" id="cadastroModel" style="border: 0;vertical-align: middle;padding: 9px;">
+                <div class="button-mais">+</div>
+                <div class="button-text">Novo</div>
+            </button>            
+        </div>
+      </div>
+
+      <div class="row layout_padding2-top">
+        <div class="col-md-12 mx-auto" style='overflow: auto;'> 
+            <table id="tabela" class="display" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th hidden></th>
+                        <th>Vacina</th>
+                        <th>Qtd</th>
+                        <th>Custo</th>
+                        <th>Estoque Antes</th>
+                        <th>Obs</th>
+                        <th>Empresa</th>
+                        <th>Lançado</th>
+                    </tr>
+                </thead>
+                <tbody id="compras-vacinas">
+                    <% var contator = 0; for(var i = 0; lista.length>i;i++){ contator++;%>
+                    <tr style="cursor:pointer;">
+                        <td><%= contator %></td>
+                        <td hidden><%= lista[i].id %></td>
+                        <td><%= lista[i]['vacina.nome'] %></td>
+                        <td><%= lista[i].qtd %></td>
+                        <td><%= lista[i].custo %></td>
+                        <td><%= lista[i].estoque_antes %></td>
+                        <td><textarea readonly><%= lista[i].obs %></textarea></td>
+                        <td><%= lista[i].empresa %></td>
+                        <td>
+                            <%
+                                let data_criada = lista[i].createdAt;
+                                let dataFormatada_criada = ((data_criada.getDate() )) + "/" + ((data_criada.getMonth() + 1)) + "/" + data_criada.getFullYear(); 
+                            %>
+                            <%=  dataFormatada_criada  %>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  
+<%- include('footer',{variant:''}); %>
