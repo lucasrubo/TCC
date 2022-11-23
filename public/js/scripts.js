@@ -6,6 +6,8 @@ $(document).ready(function($) {
     var dayd = ("00" + d.getDate()).slice(-2);;
     var output = d.getFullYear() + '-' +monthd + '-' +dayd;
 
+
+
     $("#cpfcnpj").keydown(function(){
         try {
             $("#cpfcnpj").unmask();
@@ -252,6 +254,31 @@ $(document).ready(function($) {
         }    
     });   
 
+    $('#tabela #compras-vacinas').on('click', 'tr', function () {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        $("#conteudoModelCadastro").css('display','none'); 
+        $("#conteudoModel").css('display','block'); 
+        $("#ModelNotificacao").css('display','none'); 
+        $("#full-tela").css("pointer-events" ,"auto");
+        $("#full-tela").css("z-index" ,"101");
+        var data = table.row(this).data();
+        // console.log(data);
+        $("#full-tela").removeClass("invisible");
+        $("#Model").css('display','block');
+        $("html").css('overflow','hidden');
+        
+        $("#id_delete").val(data[1]);
+        $("#model_id").val(data[1]);
+        $('#nome').html(data[2]);
+        $("#qtd").val(data[3]);
+        $("#custo").val(data[4]);  
+        var obs = data[6].replace('<textarea readonly="">','');
+        obs = obs.replace('</textarea>','');
+        $("#obs").val(obs);  
+});
     $('#statusUser').on('click', function () {
         $(this).toggleClass("w3-green");
         $(this).toggleClass("w3-red");

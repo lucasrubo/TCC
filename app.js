@@ -20,8 +20,9 @@ const Image_animais = require('./models/Image_animais');
 const Animais = require('./models/Animais');
 const Vacinas = require('./models/Vacinas');
 const Vacinacoes = require('./models/Vacinacoes');
+const Compras = require('./models/compras');
 const db = require('./models/db');
-// db.sync({ alter: true,force:true});
+db.sync({ alter: true,force:true});
 
 const func = require('./models/functions');
 const path = require('path');
@@ -529,7 +530,164 @@ app.post("/sistema/att-vacina-post", logado, async (req, res) => {
             res.redirect('/sistema/vacinas?msg=Erro:-Problema-ao-Atualizar');
         });
 });
+app.post('/sistema/deletar-vacinas', logado, async (req, res) => {   
+    if(req.userValues.type == 'admin'){
+        if(req.body.id_delete != ''){   
+            var count = await Vacinas.destroy({ where: { id: req.body.id_delete } })
+            .then(() => {           
+                console.log('Deletado');
+                console.log(`deleted row(s): ${count}`);
+                res.redirect('/sistema/vacinas?msg=Deletado-com-sucesso');    
+                return true;
+            }).catch((err) => {
+                console.log('Erro ao deletar:'+ err);
+                res.redirect('/sistema/vacinas?msg=Erro:-Problema-ao-Deletetar');  
+                return false;  
+            });
+        }
+    }
+});
+app.get('/sistema/lancar-compra-vacina', logado, async (req, res) => { 
+    if(req.userValues.empresa == 'dev'){    
+        var compras = await Compras.findAll({        
+            raw:true,               
+            include: Vacinas
+        });
+        var vacinas = await Vacinas.findAll();    
+    }else{
+        var compras = await Compras.findAll({       
+            raw:true,                
+            where: {
+                empresa: req.userValues.empresa
+            },               
+            include: Vacinas
+        });
+        var vacinas = await Vacinas.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
+    res.render('lancar-compra-vacina',{'userValues' : req.userValues,'lista':compras,'lista_vacinas':vacinas});      
+});
+app.post('/sistema/cadastrar-compra-post', logado, async (req, res) => {        
+    var nome_post = req.body.nome;
+    var qtd_post = req.body.qtd;
+    var obs_post = req.body.obs;    
+    var custo_post = (req.body.custo).replace('.','');
+    custo_post = custo_post.replace(',','.');
+    var empresa_user = req.userValues.empresa;
+    const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+    var id = decode.id; 
+    if(!empresa_user){
+        empresa_user = "normal";
+    }
+    if(!qtd_post){
+        qtd_post = 0;
+    }
+    var vacinas = await Vacinas.findAll({        
+        raw:true,             
+        where: {
+            id: nome_post
+        }
+    });
+    var estoque_antes = vacinas[0].estoque;
+    var estoque_atual = parseFloat(estoque_antes) + parseFloat(qtd_post);
+    await Vacinas.update( { 
+            estoque: estoque_atual
+        },
+        { where: { id: nome_post } 
+    });
+    Compras.create({
+        nome:nome_post,
+        qtd: qtd_post,
+        custo: custo_post,
+        obs: obs_post,
+        estoque_antes: estoque_antes,
+        empresa: empresa_user,
+        vacinaId: nome_post,
+        userId: id
+    }).then(function(){
+        console.log("Cadastrado com sucesso");
+        res.redirect('/sistema/lancar-compra-vacina?msg=Cadastrado-com-sucesso');
+        return;
+    }).catch(function(erro){
+        console.log("Erro: Não Cadastrado! " + erro);
+        res.redirect('/sistema/lancar-compra-vacina?msg=Erro:-Nao-Cadastrado!');
+        return;
+    });
+      
+});
+app.post('/sistema/att-compra-post', logado, async (req, res) => {        
+    var model_id = req.body.model_id;      
+    var qtd_post = req.body.qtd;
+    var obs_post = req.body.obs;    
+    var custo_post = (req.body.custo).replace('.','');
+    custo_post = custo_post.replace(',','.');
+    const decode = await promisify(jwt.verify)(req.cookies.Authorization, "D62ST92Y7A6V7K5C6W9ZU6W8KS3");
+    var id = decode.id; 
+    if(!qtd_post){
+        qtd_post = 0;
+    }
+    Compras.update({
+        qtd: qtd_post,
+        custo: custo_post,
+        obs: obs_post,
+        vacinaId: nome_post,
+        userId: id
+    },{ where: { id: model_id } }).then(function(){
+        console.log("Atualizado com sucesso");
+        res.redirect('/sistema/lancar-compra-vacina?msg=Atualizado-com-sucesso');
+        return;
+    }).catch(function(erro){
+        console.log("Erro: Não Atualizado! " + erro);
+        res.redirect('/sistema/lancar-compra-vacina?msg=Erro:-Nao-Atualizado!');
+        return;
+    });
+      
+});
+app.post('/sistema/deletar-compras', logado, async (req, res) => {   
+    if(req.userValues.type == 'admin'){
+        if(req.body.id_delete != ''){   
+            var compras = await Compras.findAll({        
+                raw:true,             
+                where: {
+                    id: req.body.id_delete
+                }
+            });
+            await Vacinas.update( { 
+                    estoque: compras[0].estoque_antes
+                },
+                { where: { id: compras[0].vacinaId } 
+            });
+            var count = await Compras.destroy({ where: { id: req.body.id_delete } })
+            .then(() => {           
+                console.log('Deletado');
+                console.log(`deleted row(s): ${count}`);
+                res.redirect('/sistema/lancar-compra-vacina?msg=Deletado-com-sucesso');    
+                return true;
+            }).catch((err) => {
+                console.log('Erro ao deletar:'+ err);
+                res.redirect('/sistema/lancar-compra-vacina?msg=Erro:-Problema-ao-Deletetar');  
+                return false;  
+            });
+        }
+    }
+});
 // ##! vacinas
+
+app.get('/sistema/relatorio', logado, async (req, res) => {   
+    if(req.userValues.empresa == 'dev'){        
+        var vacinas = await Vacinas.findAll();
+    }else{
+        var vacinas = await Vacinas.findAll({            
+            where: {
+                empresa: req.userValues.empresa
+            }
+        });
+    }
+    res.render('relatorio',{'userValues' : req.userValues,'lista':vacinas});      
+});
 
 // ## animais
 
@@ -751,6 +909,11 @@ app.get('*',function(req, res){
     res.redirect('/?msg=Erro:-404-Pagina-nao-encontrada');  
 });
 
+app.use(function(request, response){
+    if(!request.secure){    
+        response.redirect("https://" + request.headers.host + request.url);    
+    }    
+});
 https.createServer({
     cert: fs.readFileSync('ssl/code.crt'),
     key: fs.readFileSync('ssl/code.key'),

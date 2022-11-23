@@ -3,6 +3,9 @@ body {
   color: #000000;
   background-color: #ffffff;
 }
+.img-box{
+  text-align:center;
+}
 .name{
   width: 275px;
   margin:-35px 10px 0px 10px;
@@ -42,6 +45,9 @@ body {
   text-align: left;
 }
 .col-md-3{
+  text-align: left;
+}
+.col-md-9{
   text-align: left;
 }
 .col-md-10{

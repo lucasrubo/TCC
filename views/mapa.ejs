@@ -92,7 +92,30 @@
     }
     function habilitarMarkers(){
         clearMarkers();
-        <% for(var i = 0; lista.length>i;i++){ %>   
+        <% 
+            for(var i = 0; lista.length>i;i++){ 
+                var icone = '';
+                var cor_linha = '';
+                switch(lista[i].tipo){
+                    
+                    case "Silvestre":
+                        icone = 'patinha-map-blue.png'
+                        cor_linha ='#7b85ff';
+                        break;
+                    case "Cachorro":
+                        icone = 'patinha-map-red.png'
+                        cor_linha ='#eb5252';
+                        break;
+                    case "Gato":
+                        icone = 'patinha-map.png'
+                        cor_linha ='#a9a9a9';
+                        break;
+                    default:
+                        icone = 'patinha-map-green.png'
+                        cor_linha ='#52eb7a';
+                        break;
+                }
+        %>   
                      
             pos = {
                 lat: <%=lista[i].latitude %>,
@@ -103,7 +126,7 @@
                 position: pos,
                 map: map,
                 title: '<%=lista[i].id %>',
-                icon: '../images/patinha-map.png'
+                icon: '../images/<%=icone%>'
             });   
             markers.push(marker);
             google.maps.event.addListener(marker,'click',function() { 
@@ -123,7 +146,7 @@
                 $("html").css('overflow','hidden');
                 $("#conteudoModel").html(
                     "<div class='w3-container' style='background:white;width: 40rem;height:max-content;border-radius: 10px;box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);padding: 10px 15px;'>"+
-                        "<table border='1' id='tabela-mapa' style='width: 100%;height:100%;border-color: #7b85ff;'>"+
+                        "<table border='1' id='tabela-mapa' style='width: 100%;height:100%;border-color: <%=cor_linha%>;'>"+
                             "<tr  style='border-top: 1px solid white;'>"+
                                 "<td rowspan='3' style='height: 13rem;width: 10rem;border-left: 1px solid white;'>"+
                                     "<img id='AvatarDog' alt='Avatar' style='width: 10rem;max-height: 13rem;' class='w3-margin-top' src='../upload/<%=lista[i].imagem %>'>"+
