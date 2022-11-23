@@ -34,12 +34,12 @@
                     ])
                     const options = {
                         title: 'Estoque de Vacinas',
-                        height: 400,
+                        height: 600,
                         width: 820
                     }
 
-                    const chart = new google.visualization.ColumnChart(container)
-                    // const chart = new google.visualization.BarChart(container)
+                    // const chart = new google.visualization.ColumnChart(container)
+                    const chart = new google.visualization.BarChart(container)
                     // const chart = new google.visualization.LineChart(container)
                     // const chart = new google.visualization.PieChart(container)
                     chart.draw(data, options)
