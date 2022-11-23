@@ -274,7 +274,7 @@ $(document).ready(function($) {
         $("#model_id").val(data[1]);
         $('#nome').html(data[2]);
         $("#qtd").val(data[3]);
-        $("#custo").val(data[4]);  
+        $("#custo").val((data[4]).replace('.',',');  
         var obs = data[6].replace('<textarea readonly="">','');
         obs = obs.replace('</textarea>','');
         $("#obs").val(obs);  
