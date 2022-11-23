@@ -21,17 +21,21 @@
                 function drawChart() {
                     const container = document.querySelector('#chart')
                     const data = new google.visualization.arrayToDataTable([
-                        [ 'Character', 'Ki' ],
-                        [ 'Goku', 10000 ],
-                        [ 'Vegeta', 9000 ],
-                        [ 'Gohan', 8000 ],
-                        [ 'Freeza', 5000 ],
-                        [ 'Piccolo', 2000 ]
+                        [ 'Vacina', 'Estoque' ],
+                        [ 'Antirrábica', 50 ],
+                        [ 'v3', 15 ],
+                        [ 'v4', 13 ],
+                        [ 'v5', 19 ],
+                        [ 'v8', 23 ],
+                        [ 'v10', 30 ],
+                        [ 'Leishmaniose', 4 ],
+                        [ 'Giárdia', 6 ],
+                        [ 'Gripe Canina', 33 ]
                     ])
                     const options = {
-                        title: 'Dragon Ball Z - Characters Ki',
+                        title: 'Estoque de Vacinas',
                         height: 400,
-                        width: 720
+                        width: 100%
                     }
 
                     const chart = new google.visualization.ColumnChart(container)
