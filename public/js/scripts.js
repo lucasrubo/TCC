@@ -92,7 +92,7 @@ $(document).ready(function($) {
               "targets": 'no-sort',
               "orderable": false,
         } ],
-         "lengthMenu": [[ -1, 10, 25, 50, 100], [ "Todos",10, 25, 50, 100]],
+         "lengthMenu": [[ 10, 25, 50, 100,-1], [ 10, 25, 50, 100,"Todos"]],
          "order":[[0,"desc"]]
     });
 
